@@ -1,5 +1,9 @@
-# La maison des mimis — fond ocre dégradé
+# Maison 50/50 — version synchronisée Supabase
 
-Version générée avec le fond général remis en jaune / ocre dégradé, sans image de maison en arrière-plan.
+- Authentification Supabase par e-mail/mot de passe
+- Données communes Mac/iPhone via `app_data`
+- Documents privés via le bucket `maison-documents`
+- Synchronisation au démarrage, au retour dans l'app et toutes les 15 secondes
 
-Fonctionnalités conservées : dépenses, remboursements, solde 50/50, projets à venir, modification/suppression.
+## Mise à jour GitHub Pages
+Remplacer les fichiers du dépôt `maison-50-50` par ceux de ce dossier, puis attendre le redéploiement GitHub Pages.
