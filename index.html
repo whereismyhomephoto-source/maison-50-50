@@ -4,25 +4,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#d89b21">
+  <meta name="theme-color" content="#151411">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app">
     <header class="top">
-      <div class="brand"><div class="logo">🏠💛</div><div><h1>La maison des mimis</h1><p>322 Chemin du Mounet du Hour à Lectoure</p></div></div>
+      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis</p></div></div>
       <button class="secondary" onclick="resetAll()">Réinitialiser</button>
     </header>
     <main id="root"></main>
   </div>
   <nav class="bottom">
-    <button onclick="show('home')" id="nav-home">Accueil</button>
-    <button onclick="show('add')" id="nav-add">+ Dépense</button>
-    <button onclick="show('reimburse')" id="nav-reimburse">Remboursement</button>
-    <button onclick="show('projects')" id="nav-projects">Projets</button>
-    <button onclick="show('documents')" id="nav-documents">Documents</button>
-    <button onclick="show('history')" id="nav-history">Historique</button>
+    <button onclick="show('home')" id="nav-home"><span class="navico">⌂</span><span>Accueil</span></button>
+    <button onclick="show('add')" id="nav-add"><span class="navico">▣</span><span>Dépenses</span></button>
+    <button onclick="show('reimburse')" id="nav-reimburse"><span class="navico">⇄</span><span>Remboursements</span></button>
+    <button onclick="show('projects')" id="nav-projects"><span class="navico">□</span><span>Projets</span></button>
+    <button onclick="show('documents')" id="nav-documents"><span class="navico">▤</span><span>Documents</span></button>
+    <button onclick="show('history')" id="nav-history"><span class="navico">◷</span><span>Historique</span></button>
   </nav>
   <div id="toast"></div>
   <script src="app.js"></script>

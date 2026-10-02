@@ -10,7 +10,7 @@ let view='home';
 let editingId=null;
 let editingReimbursementId=null;
 let editingProjectId=null;
-function applyTheme(){const t=localStorage.getItem(THEME_KEY)||'light';document.documentElement.dataset.theme=t;const b=document.getElementById('themeToggle');if(b)b.textContent=t==='dark'?'☀️ Light':'🌙 Dark'}
+function applyTheme(){const t=localStorage.getItem(THEME_KEY)||'dark';document.documentElement.dataset.theme=t;const b=document.getElementById('themeToggle');if(b)b.textContent=t==='dark'?'☀️ Clair':'🌙 Sombre'}
 function toggleTheme(){const next=(document.documentElement.dataset.theme==='dark')?'light':'dark';localStorage.setItem(THEME_KEY,next);applyTheme()}
 applyTheme();
 function load(){try{const data=JSON.parse(localStorage.getItem(KEY))||{}; return {expenses:data.expenses||[], reimbursements:data.reimbursements||[], projects:data.projects||[], docFolders:data.docFolders||[{id:'general',name:'Général'}], documents:data.documents||[]}}catch(e){return{expenses:[],reimbursements:[],projects:[],docFolders:[{id:'general',name:'Général'}],documents:[]}}}
@@ -170,7 +170,7 @@ async function startCloud(){
     render(); addCloudButton(); ensureSyncIndicator(); clearInterval(syncTimer);syncTimer=setInterval(pullCloud,15000)
   }catch(e){loginView('Connexion au cloud impossible. Vérifie la connexion internet.')}
 }
-function addCloudButton(){const top=document.querySelector('.top');if(!top)return;if(!document.getElementById('cloudLogout')){const b=document.createElement('button');b.id='cloudLogout';b.className='secondary';b.textContent='Déconnexion';b.onclick=logout;top.appendChild(b)}ensureSyncIndicator()}
+function addCloudButton(){const top=document.querySelector('.top');if(!top)return;let actions=top.querySelector('.top-actions');if(!actions){actions=document.createElement('div');actions.className='top-actions';const reset=top.querySelector('button.secondary');if(reset){reset.classList.add('reset-btn');actions.appendChild(reset)}top.appendChild(actions)}if(!document.getElementById('themeToggle')){const t=document.createElement('button');t.id='themeToggle';t.className='secondary theme-toggle';t.onclick=toggleTheme;actions.appendChild(t)}if(!document.getElementById('cloudLogout')){const b=document.createElement('button');b.id='cloudLogout';b.className='secondary';b.textContent='Déconnexion';b.onclick=logout;actions.appendChild(b)}applyTheme();ensureSyncIndicator()}
 async function boot(){try{cloudSession=JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(e){} if(cloudSession){await startCloud()}else loginView()}
 window.addEventListener('focus',()=>{if(cloudSession)pullCloud()});
 window.addEventListener('online',()=>{updateSyncIndicator();if(cloudSession)pullCloud()});
