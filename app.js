@@ -112,6 +112,19 @@ const SUPABASE_URL='https://vcdztuiwethnqdubqbkf.supabase.co';
 const SUPABASE_KEY='sb_publishable_rcdRN1EIjIpLR0TEZ5kW9g_uWYpdGW3';
 const SESSION_KEY='maison5050_supabase_session';
 let cloudSession=null, syncTimer=null;
+let syncState='idle', lastSyncAt=null, syncBusy=0;
+function syncLabel(){
+  if(!navigator.onLine)return '⚠️ Hors ligne';
+  if(syncState==='syncing')return '↻ Synchronisation…';
+  if(syncState==='error')return '⚠️ Erreur de synchro';
+  if(lastSyncAt)return '☁️ Synchronisé · '+lastSyncAt.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  return '☁️ Connecté';
+}
+function updateSyncIndicator(){const el=document.getElementById('syncIndicator');if(!el)return;el.textContent=syncLabel();el.dataset.state=!navigator.onLine?'offline':syncState;}
+function beginSync(){syncBusy++;syncState='syncing';updateSyncIndicator()}
+function endSync(ok=true){syncBusy=Math.max(0,syncBusy-1);if(syncBusy===0){syncState=ok?'ok':'error';if(ok)lastSyncAt=new Date();updateSyncIndicator()}}
+function ensureSyncIndicator(){const top=document.querySelector('.top');if(!top)return;let el=document.getElementById('syncIndicator');if(!el){el=document.createElement('div');el.id='syncIndicator';el.className='sync-indicator';el.setAttribute('aria-live','polite');top.appendChild(el)}updateSyncIndicator()}
+
 function apiHeaders(extra={}){return {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+cloudSession.access_token,...extra}}
 function loginView(message=''){
   document.querySelector('.bottom').style.display='none';
@@ -129,13 +142,19 @@ async function refreshSession(){
 }
 function cloudState(){return {...state,documents:(state.documents||[]).map(({dataUrl,...d})=>d)}}
 async function cloudFetch(){
-  let r=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.maison-50-50&select=data,updated_at',{headers:apiHeaders()});
-  if(r.status===401&&await refreshSession())r=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.maison-50-50&select=data,updated_at',{headers:apiHeaders()});
-  if(!r.ok)throw new Error('Lecture cloud impossible'); const rows=await r.json(); return rows[0]?.data||{}
+  beginSync();
+  try{
+    let r=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.maison-50-50&select=data,updated_at',{headers:apiHeaders()});
+    if(r.status===401&&await refreshSession())r=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.maison-50-50&select=data,updated_at',{headers:apiHeaders()});
+    if(!r.ok)throw new Error('Lecture cloud impossible'); const rows=await r.json(); endSync(true); return rows[0]?.data||{}
+  }catch(e){endSync(false);throw e}
 }
 async function cloudSave(){
-  const body={data:cloudState(),updated_at:new Date().toISOString()}; let r=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.maison-50-50',{method:'PATCH',headers:apiHeaders({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(body)});
-  if(r.status===401&&await refreshSession())r=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.maison-50-50',{method:'PATCH',headers:apiHeaders({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(body)}); if(!r.ok)throw new Error('Sauvegarde cloud impossible')
+  beginSync();
+  try{
+    const body={data:cloudState(),updated_at:new Date().toISOString()}; let r=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.maison-50-50',{method:'PATCH',headers:apiHeaders({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(body)});
+    if(r.status===401&&await refreshSession())r=await fetch(SUPABASE_URL+'/rest/v1/app_data?id=eq.maison-50-50',{method:'PATCH',headers:apiHeaders({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(body)}); if(!r.ok)throw new Error('Sauvegarde cloud impossible'); endSync(true)
+  }catch(e){endSync(false);throw e}
 }
 function dataUrlToBlob(dataUrl){const [h,b]=dataUrl.split(',');const mime=(h.match(/data:(.*?);/)||[])[1]||'application/octet-stream';const bin=atob(b),a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new Blob([a],{type:mime})}
 async function uploadDocument(d){if(!d.dataUrl||d.storagePath)return; const safe=(d.name||'document').replace(/[^a-zA-Z0-9._-]/g,'_'); const path=d.id+'-'+safe; const r=await fetch(SUPABASE_URL+'/storage/v1/object/maison-documents/'+encodeURIComponent(path),{method:'POST',headers:apiHeaders({'Content-Type':d.mime||'application/octet-stream','x-upsert':'true'}),body:dataUrlToBlob(d.dataUrl)}); if(!r.ok)throw new Error('Envoi document impossible'); d.storagePath=path; delete d.dataUrl}
@@ -148,11 +167,13 @@ async function startCloud(){
   try{const cloud=await cloudFetch(); const local=load(); const cloudEmpty=!(cloud.expenses?.length||cloud.reimbursements?.length||cloud.projects?.length||cloud.documents?.length);
     if(cloudEmpty&&(local.expenses.length||local.reimbursements.length||local.projects.length||local.documents.length)){state=local;await migrateLocalDocuments();await cloudSave();toast('Données locales envoyées dans le cloud')}
     else if(Object.keys(cloud).length){state={expenses:cloud.expenses||[],reimbursements:cloud.reimbursements||[],projects:cloud.projects||[],docFolders:cloud.docFolders||[{id:'general',name:'Général'}],documents:cloud.documents||[]};localStorage.setItem(KEY,JSON.stringify(state))}
-    render(); addCloudButton(); clearInterval(syncTimer);syncTimer=setInterval(pullCloud,15000)
+    render(); addCloudButton(); ensureSyncIndicator(); clearInterval(syncTimer);syncTimer=setInterval(pullCloud,15000)
   }catch(e){loginView('Connexion au cloud impossible. Vérifie la connexion internet.')}
 }
-function addCloudButton(){const top=document.querySelector('.top');if(!top||document.getElementById('cloudLogout'))return;const b=document.createElement('button');b.id='cloudLogout';b.className='secondary';b.textContent='☁️ Déconnexion';b.onclick=logout;top.appendChild(b)}
+function addCloudButton(){const top=document.querySelector('.top');if(!top)return;if(!document.getElementById('cloudLogout')){const b=document.createElement('button');b.id='cloudLogout';b.className='secondary';b.textContent='Déconnexion';b.onclick=logout;top.appendChild(b)}ensureSyncIndicator()}
 async function boot(){try{cloudSession=JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(e){} if(cloudSession){await startCloud()}else loginView()}
 window.addEventListener('focus',()=>{if(cloudSession)pullCloud()});
+window.addEventListener('online',()=>{updateSyncIndicator();if(cloudSession)pullCloud()});
+window.addEventListener('offline',updateSyncIndicator);
 boot();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
