@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>La maison des mimis — Suivi des dépenses</title>
+  <meta name="theme-color" content="#d89b21">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="brand"><div class="logo">🏠💛</div><div><h1>La maison des mimis</h1><p>322 Chemin du Mounet du Hour à Lectoure</p></div></div>
+      <button class="secondary" onclick="resetAll()">Réinitialiser</button>
+    </header>
+    <main id="root"></main>
+  </div>
+  <nav class="bottom">
+    <button onclick="show('home')" id="nav-home">Accueil</button>
+    <button onclick="show('add')" id="nav-add">+ Dépense</button>
+    <button onclick="show('reimburse')" id="nav-reimburse">Remboursement</button>
+    <button onclick="show('projects')" id="nav-projects">Projets</button>
+    <button onclick="show('documents')" id="nav-documents">Documents</button>
+    <button onclick="show('history')" id="nav-history">Historique</button>
+  </nav>
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
