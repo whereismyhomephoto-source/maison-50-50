@@ -31,6 +31,15 @@ function other(name){return name==='Guillaume'?'Claire':'Guillaume'}
 function balance(){const t=total()/2; const g=netPaid('Guillaume')-t; const c=netPaid('Claire')-t; return {t,g,c}}
 function settleText(){const b=balance(); if(Math.abs(b.g)<0.005)return 'Vous êtes à l’équilibre.'; return b.g>0?`Claire doit ${money(b.g)} à Guillaume.`:`Guillaume doit ${money(-b.g)} à Claire.`}
 function show(x){view=x;editingId=null;editingReimbursementId=null;editingProjectId=null;render()}
+function fabAdd(event){
+  const fab=document.getElementById('quick-add-fab');
+  if(fab){
+    fab.classList.remove('fab-pop'); void fab.offsetWidth; fab.classList.add('fab-pop');
+    setTimeout(()=>fab.classList.remove('fab-pop'),650);
+  }
+  if(navigator.vibrate) try{navigator.vibrate(10)}catch(e){}
+  setTimeout(()=>show('add'),150);
+}
 function toast(t){const el=document.getElementById('toast'); el.textContent=t; el.className='show'; setTimeout(()=>el.className='',1600)}
 function render(){applyTheme();document.querySelectorAll('.bottom button,.topnav button').forEach(b=>b.classList.remove('active')); document.getElementById('nav-'+view)?.classList.add('active'); document.getElementById('topnav-'+view)?.classList.add('active'); document.getElementById('topnav-'+view)?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); if(view==='add')addView(); else if(view==='reimburse')reimburseView(); else if(view==='history')historyView(); else if(view==='projects')projectsView(); else if(view==='documents')documentsView(); else homeView()}
 function layout(html){document.getElementById('root').innerHTML=html}

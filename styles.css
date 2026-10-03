@@ -276,3 +276,72 @@ html,body{overflow-x:hidden}
   .home-shortcuts{grid-template-columns:1fr 1fr}
   #toast{bottom:calc(92px + env(safe-area-inset-bottom))!important}
 }
+
+/* ===== v6 — bottom dock inspired by native banking apps ===== */
+:root{--dock-accent:#df8750;--dock-accent-2:#b75e36;--dock-text:#8f918d;--dock-surface:rgba(19,20,18,.96);--dock-border:rgba(255,255,255,.09);--dock-ease:cubic-bezier(.2,.9,.25,1)}
+.app{padding-bottom:calc(122px + env(safe-area-inset-bottom))!important}
+.bottom.app-dock{
+  position:fixed!important;top:auto!important;left:0!important;right:0!important;bottom:0!important;transform:none!important;
+  width:100%!important;max-width:none!important;height:calc(82px + env(safe-area-inset-bottom))!important;
+  display:grid!important;grid-template-columns:1fr 1fr 82px 1fr 1fr!important;align-items:start!important;gap:0!important;
+  padding:10px 8px calc(8px + env(safe-area-inset-bottom))!important;margin:0!important;
+  border:0!important;border-top:1px solid var(--dock-border)!important;border-radius:0!important;
+  background:linear-gradient(180deg,rgba(27,28,25,.96),rgba(16,17,15,.985))!important;
+  box-shadow:0 -14px 38px rgba(0,0,0,.32)!important;backdrop-filter:blur(24px) saturate(1.25)!important;-webkit-backdrop-filter:blur(24px) saturate(1.25)!important;
+  overflow:visible!important;z-index:9999!important;
+}
+.bottom.app-dock::before{
+  content:"";position:absolute;left:50%;top:-1px;transform:translateX(-50%);width:100px;height:50px;pointer-events:none;
+  background:radial-gradient(circle at 50% 0,transparent 0 41px,rgba(255,255,255,.09) 42px 43px,rgba(19,20,18,.98) 44px 100%);
+  opacity:.95;
+}
+.bottom.app-dock .dock-item,.bottom.app-dock .dock-item:not(.active){
+  position:relative!important;z-index:2!important;width:100%!important;height:62px!important;min-width:0!important;margin:0!important;padding:4px 2px!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important;
+  border:0!important;border-radius:16px!important;background:transparent!important;box-shadow:none!important;color:var(--dock-text)!important;
+  font-size:10px!important;font-weight:760!important;letter-spacing:.01em!important;line-height:1!important;
+  transition:color .28s var(--dock-ease),transform .22s var(--dock-ease),background .28s var(--dock-ease)!important;
+}
+.bottom.app-dock .dock-item:active{transform:scale(.90)!important;background:rgba(255,255,255,.035)!important}
+.bottom.app-dock .dock-icon{width:26px;height:26px;display:grid;place-items:center;transition:transform .35s var(--dock-ease),filter .3s var(--dock-ease)}
+.bottom.app-dock .dock-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.bottom.app-dock .dock-item.active{color:#f0a46f!important;background:transparent!important}
+.bottom.app-dock .dock-item.active::after{content:"";position:absolute;bottom:0;width:22px;height:3px;border-radius:99px;background:linear-gradient(90deg,#f2b17e,#cf7044);box-shadow:0 0 14px rgba(223,135,80,.42);animation:dockIndicator .34s var(--dock-ease) both}
+.bottom.app-dock .dock-item.active .dock-icon{transform:translateY(-2px) scale(1.08);filter:drop-shadow(0 3px 8px rgba(223,135,80,.22));animation:dockIconPop .42s var(--dock-ease)}
+
+.bottom.app-dock .fab,.bottom.app-dock .fab.active{
+  position:relative!important;z-index:5!important;align-self:start!important;justify-self:center!important;
+  width:72px!important;height:72px!important;min-width:72px!important;min-height:72px!important;margin:-31px 0 0!important;padding:0!important;
+  display:grid!important;place-items:center!important;border-radius:50%!important;border:5px solid #151612!important;
+  background:linear-gradient(145deg,#f0a46a 0%,#d57b47 48%,#ad5633 100%)!important;color:white!important;
+  box-shadow:0 14px 30px rgba(190,92,49,.38),0 4px 10px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.35)!important;
+  overflow:visible!important;transform:translateZ(0);transition:transform .24s var(--dock-ease),box-shadow .28s var(--dock-ease),filter .28s!important;
+}
+.bottom.app-dock .fab:active{transform:scale(.90) translateY(2px)!important;box-shadow:0 7px 16px rgba(190,92,49,.28),0 2px 5px rgba(0,0,0,.4)!important}
+.fab-plus{position:relative;width:27px;height:27px;display:block;transition:transform .42s var(--dock-ease)}
+.fab-plus::before,.fab-plus::after{content:"";position:absolute;left:50%;top:50%;width:27px;height:3px;border-radius:99px;background:#fff7ee;transform:translate(-50%,-50%);box-shadow:0 1px 2px rgba(0,0,0,.16)}
+.fab-plus::after{transform:translate(-50%,-50%) rotate(90deg)}
+.fab-halo{position:absolute;inset:-8px;border:2px solid rgba(240,164,106,.0);border-radius:50%;pointer-events:none}
+.bottom.app-dock .fab.fab-pop{animation:fabSpring .62s var(--dock-ease)}
+.bottom.app-dock .fab.fab-pop .fab-plus{animation:plusSpin .62s var(--dock-ease)}
+.bottom.app-dock .fab.fab-pop .fab-halo{animation:fabHalo .62s ease-out}
+
+@keyframes dockIndicator{from{opacity:0;transform:scaleX(.2)}to{opacity:1;transform:scaleX(1)}}
+@keyframes dockIconPop{0%{transform:translateY(0) scale(.82)}55%{transform:translateY(-4px) scale(1.15)}100%{transform:translateY(-2px) scale(1.08)}}
+@keyframes fabSpring{0%{transform:scale(1)}30%{transform:scale(.86) rotate(-5deg)}62%{transform:scale(1.10) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes plusSpin{0%{transform:rotate(0) scale(1)}42%{transform:rotate(92deg) scale(.82)}100%{transform:rotate(180deg) scale(1)}}
+@keyframes fabHalo{0%{inset:-5px;border-color:rgba(240,164,106,.62);opacity:1}100%{inset:-24px;border-color:rgba(240,164,106,0);opacity:0}}
+
+/* give content a subtle native-app transition when switching sections */
+#root{animation:pageInV6 .34s var(--dock-ease) both}
+@keyframes pageInV6{from{opacity:0;transform:translateY(8px) scale(.992);filter:blur(1.5px)}to{opacity:1;transform:none;filter:none}}
+
+@media(max-width:430px){
+  .app{padding-bottom:calc(116px + env(safe-area-inset-bottom))!important}
+  .bottom.app-dock{grid-template-columns:1fr 1fr 76px 1fr 1fr!important;height:calc(78px + env(safe-area-inset-bottom))!important;padding-left:3px!important;padding-right:3px!important}
+  .bottom.app-dock .dock-item,.bottom.app-dock .dock-item:not(.active){font-size:9px!important;height:58px!important;gap:4px!important}
+  .bottom.app-dock .dock-icon svg{width:23px;height:23px}
+  .bottom.app-dock .fab,.bottom.app-dock .fab.active{width:68px!important;height:68px!important;min-width:68px!important;min-height:68px!important;margin-top:-29px!important}
+  #toast{bottom:calc(90px + env(safe-area-inset-bottom))!important}
+}
+@media(prefers-reduced-motion:reduce){.bottom.app-dock .fab.fab-pop,.bottom.app-dock .fab.fab-pop .fab-plus,.bottom.app-dock .fab.fab-pop .fab-halo,.bottom.app-dock .dock-item.active .dock-icon{animation:none!important}}

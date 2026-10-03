@@ -1,5 +1,7 @@
-# Maison 50/50 — Dark v3
+Maison 50/50 — v6 Dock
 
-Version sombre validée avec icône méditerranéenne, navigation type app bancaire, indicateur de synchronisation Supabase et PWA iPhone.
-
-Pour GitHub Pages : envoyer **le contenu de ce dossier** à la racine du dépôt `maison-50-50` et remplacer les fichiers existants.
+- Barre basse inspirée des apps bancaires, avec icônes SVG.
+- Bouton + central surélevé avec animation ressort + halo.
+- Navigation : Accueil, Dépenses, +, Projets, Historique.
+- Documents et Remboursements restent accessibles dans le rail horizontal supérieur.
+- Cache PWA : v6.
