@@ -1,7 +1,3 @@
-Maison 50/50 — v6 Dock
+# Maison 50/50 — v7
 
-- Barre basse inspirée des apps bancaires, avec icônes SVG.
-- Bouton + central surélevé avec animation ressort + halo.
-- Navigation : Accueil, Dépenses, +, Projets, Historique.
-- Documents et Remboursements restent accessibles dans le rail horizontal supérieur.
-- Cache PWA : v6.
+Accueil simplifié : total centré, cartes Guillaume/Claire côte à côte, cartes Projets/Documents retirées de l’accueil. Projets et Documents sont accessibles depuis le dock inférieur. Cache PWA v7.

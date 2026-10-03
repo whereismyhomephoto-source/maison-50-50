@@ -21,8 +21,6 @@
       <button onclick="show('home')" id="topnav-home"><span class="navico">⌂</span><span>Accueil</span></button>
       <button onclick="show('add')" id="topnav-add"><span class="navico">▣</span><span>Dépenses</span></button>
       <button onclick="show('reimburse')" id="topnav-reimburse"><span class="navico">⇄</span><span>Remboursements</span></button>
-      <button onclick="show('projects')" id="topnav-projects"><span class="navico">□</span><span>Projets</span></button>
-      <button onclick="show('documents')" id="topnav-documents"><span class="navico">▤</span><span>Documents</span></button>
       <button onclick="show('history')" id="topnav-history"><span class="navico">◷</span><span>Historique</span></button>
     </nav>
     <main id="root"></main>
@@ -31,14 +29,14 @@
     <button onclick="show('home')" id="nav-home" class="dock-item" aria-label="Accueil">
       <span class="dock-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8v9.1a1.1 1.1 0 0 1-1.1 1.1H15v-6H9v6H4.1A1.1 1.1 0 0 1 3 19.9z"/></svg></span><span>Accueil</span>
     </button>
-    <button onclick="show('add')" id="nav-add" class="dock-item" aria-label="Dépenses">
-      <span class="dock-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9h18M7 14h4"/></svg></span><span>Dépenses</span>
+    <button onclick="show('projects')" id="nav-projects" class="dock-item" aria-label="Projets">
+      <span class="dock-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h6l1.8 2H20v9.4A1.1 1.1 0 0 1 18.9 20H5.1A1.1 1.1 0 0 1 4 18.9z"/><path d="M4 7.5V5.1A1.1 1.1 0 0 1 5.1 4H9l1.6 1.8"/></svg></span><span>Projets</span>
     </button>
     <button class="fab" onclick="fabAdd(event)" id="quick-add-fab" aria-label="Ajouter une dépense">
       <span class="fab-halo" aria-hidden="true"></span><span class="fab-plus" aria-hidden="true"></span>
     </button>
-    <button onclick="show('projects')" id="nav-projects" class="dock-item" aria-label="Projets">
-      <span class="dock-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h6l1.8 2H20v9.4A1.1 1.1 0 0 1 18.9 20H5.1A1.1 1.1 0 0 1 4 18.9z"/><path d="M4 7.5V5.1A1.1 1.1 0 0 1 5.1 4H9l1.6 1.8"/></svg></span><span>Projets</span>
+    <button onclick="show('documents')" id="nav-documents" class="dock-item" aria-label="Documents">
+      <span class="dock-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h9l3 3V20.5H6z"/><path d="M15 3.5v4h4M9 11h6M9 14.5h6M9 18h4"/></svg></span><span>Documents</span>
     </button>
     <button onclick="show('history')" id="nav-history" class="dock-item" aria-label="Historique">
       <span class="dock-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6v5h5"/><path d="M5.3 17.3A8 8 0 1 0 4.2 9"/><path d="M12 8v4l2.8 1.8"/></svg></span><span>Historique</span>
