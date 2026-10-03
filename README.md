@@ -1,3 +1,3 @@
-# Maison 50/50 — v7
+Maison 50/50 — v8 inline anti-cache
 
-Accueil simplifié : total centré, cartes Guillaume/Claire côte à côte, cartes Projets/Documents retirées de l’accueil. Projets et Documents sont accessibles depuis le dock inférieur. Cache PWA v7.
+Cette version embarque le CSS et le JavaScript directement dans index.html pour éviter les mélanges de versions sur iPhone/PWA.
