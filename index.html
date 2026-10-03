@@ -455,7 +455,7 @@ function paidOut(name){return paidBy(name)+sentBy(name)}
 function other(name){return name==='Guillaume'?'Claire':'Guillaume'}
 function balance(){const t=total()/2; const g=netPaid('Guillaume')-t; const c=netPaid('Claire')-t; return {t,g,c}}
 function settleText(){const b=balance(); if(Math.abs(b.g)<0.005)return 'Vous êtes à l’équilibre.'; return b.g>0?`Claire doit ${money(b.g)} à Guillaume.`:`Guillaume doit ${money(-b.g)} à Claire.`}
-function show(x){view=x;editingId=null;editingReimbursementId=null;editingProjectId=null;render()}
+function show(x){view=x;editingId=null;editingReimbursementId=null;editingProjectId=null;pendingCloudRender=false;render()}
 function fabAdd(event){
   const fab=document.getElementById('quick-add-fab');
   if(fab){
@@ -546,7 +546,11 @@ const SUPABASE_URL='https://vcdztuiwethnqdubqbkf.supabase.co';
 const SUPABASE_KEY='sb_publishable_rcdRN1EIjIpLR0TEZ5kW9g_uWYpdGW3';
 const SESSION_KEY='maison5050_supabase_session';
 let cloudSession=null, syncTimer=null;
-let syncState='idle', lastSyncAt=null, syncBusy=0;
+let syncState='idle', lastSyncAt=null, syncBusy=0, pendingCloudRender=false;
+function normalizedState(src){return {expenses:src?.expenses||[],reimbursements:src?.reimbursements||[],projects:src?.projects||[],docFolders:src?.docFolders||[{id:'general',name:'Général'}],documents:src?.documents||[]}}
+function stateSignature(src){try{return JSON.stringify(normalizedState(src))}catch(e){return ''}}
+function formIsOpen(){const root=document.getElementById('root');return !!root?.querySelector('input, textarea, select')}
+function safeToRefreshUI(){return !formIsOpen() && !['add','reimburse'].includes(view)}
 function syncLabel(){
   if(!navigator.onLine)return '⚠️ Hors ligne';
   if(syncState==='syncing')return '↻ Synchronisation…';
@@ -595,18 +599,39 @@ async function uploadDocument(d){if(!d.dataUrl||d.storagePath)return; const safe
 async function signedDocumentUrl(path){const r=await fetch(SUPABASE_URL+'/storage/v1/object/sign/maison-documents/'+encodeURIComponent(path),{method:'POST',headers:apiHeaders({'Content-Type':'application/json'}),body:JSON.stringify({expiresIn:3600})});const j=await r.json();if(!r.ok)throw new Error('Ouverture impossible');return SUPABASE_URL+'/storage/v1'+j.signedURL}
 async function deleteStoredDocument(path){const r=await fetch(SUPABASE_URL+'/storage/v1/object/maison-documents/'+encodeURIComponent(path),{method:'DELETE',headers:apiHeaders()});if(!r.ok)throw new Error('Suppression cloud impossible')}
 async function migrateLocalDocuments(){for(const d of state.documents||[]){if(d.dataUrl&&!d.storagePath){try{await uploadDocument(d)}catch(e){console.error(e)}}}}
-async function pullCloud(){try{const c=await cloudFetch(); if(c&&Object.keys(c).length){state={expenses:c.expenses||[],reimbursements:c.reimbursements||[],projects:c.projects||[],docFolders:c.docFolders||[{id:'general',name:'Général'}],documents:c.documents||[]};localStorage.setItem(KEY,JSON.stringify(state));render()}}catch(e){console.error(e)}}
+async function pullCloud(){
+  // Ne jamais interrompre une sauvegarde en cours : évite qu'une ancienne version cloud
+  // remplace momentanément une dépense qui vient d'être ajoutée.
+  if(syncBusy>0)return;
+  try{
+    const c=await cloudFetch();
+    if(!c||!Object.keys(c).length)return;
+    const next=normalizedState(c);
+    // Si rien n'a changé dans Supabase, on ne reconstruit surtout pas l'interface.
+    if(stateSignature(next)===stateSignature(state))return;
+    state=next;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    // Pendant une saisie, on synchronise les données en arrière-plan mais on conserve
+    // intégralement le formulaire affiché (texte, montant, clavier, focus, etc.).
+    if(!safeToRefreshUI()){
+      pendingCloudRender=true;
+      return;
+    }
+    pendingCloudRender=false;
+    render();
+  }catch(e){console.error(e)}
+}
 async function startCloud(){
   document.querySelector('.bottom').style.display='flex';document.querySelector('.topnav').style.display='flex';
   try{const cloud=await cloudFetch(); const local=load(); const cloudEmpty=!(cloud.expenses?.length||cloud.reimbursements?.length||cloud.projects?.length||cloud.documents?.length);
     if(cloudEmpty&&(local.expenses.length||local.reimbursements.length||local.projects.length||local.documents.length)){state=local;await migrateLocalDocuments();await cloudSave();toast('Données locales envoyées dans le cloud')}
     else if(Object.keys(cloud).length){state={expenses:cloud.expenses||[],reimbursements:cloud.reimbursements||[],projects:cloud.projects||[],docFolders:cloud.docFolders||[{id:'general',name:'Général'}],documents:cloud.documents||[]};localStorage.setItem(KEY,JSON.stringify(state))}
-    render(); addCloudButton(); ensureSyncIndicator(); clearInterval(syncTimer);syncTimer=setInterval(pullCloud,15000)
+    render(); addCloudButton(); ensureSyncIndicator(); clearInterval(syncTimer);syncTimer=setInterval(pullCloud,60000)
   }catch(e){loginView('Connexion au cloud impossible. Vérifie la connexion internet.')}
 }
 function addCloudButton(){const top=document.querySelector('.top');if(!top)return;let actions=top.querySelector('.top-actions');if(!actions){actions=document.createElement('div');actions.className='top-actions';const reset=top.querySelector('button.secondary');if(reset){reset.classList.add('reset-btn');actions.appendChild(reset)}top.appendChild(actions)}if(!document.getElementById('themeToggle')){const t=document.createElement('button');t.id='themeToggle';t.className='secondary theme-toggle';t.onclick=toggleTheme;actions.appendChild(t)}if(!document.getElementById('cloudLogout')){const b=document.createElement('button');b.id='cloudLogout';b.className='secondary';b.textContent='Déconnexion';b.onclick=logout;actions.appendChild(b)}applyTheme();ensureSyncIndicator()}
 async function boot(){try{cloudSession=JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(e){} if(cloudSession){await startCloud()}else loginView()}
-window.addEventListener('focus',()=>{if(cloudSession)pullCloud()});
+window.addEventListener('focus',()=>{if(cloudSession&&safeToRefreshUI())pullCloud()});
 window.addEventListener('online',()=>{updateSyncIndicator();if(cloudSession)pullCloud()});
 window.addEventListener('offline',updateSyncIndicator);
 boot();
