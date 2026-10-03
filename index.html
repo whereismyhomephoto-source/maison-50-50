@@ -17,13 +17,20 @@
       <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis</p></div></div>
       <button class="secondary" onclick="resetAll()">Réinitialiser</button>
     </header>
+    <nav class="topnav" aria-label="Navigation principale">
+      <button onclick="show('home')" id="topnav-home"><span class="navico">⌂</span><span>Accueil</span></button>
+      <button onclick="show('add')" id="topnav-add"><span class="navico">▣</span><span>Dépenses</span></button>
+      <button onclick="show('reimburse')" id="topnav-reimburse"><span class="navico">⇄</span><span>Remboursements</span></button>
+      <button onclick="show('projects')" id="topnav-projects"><span class="navico">□</span><span>Projets</span></button>
+      <button onclick="show('documents')" id="topnav-documents"><span class="navico">▤</span><span>Documents</span></button>
+      <button onclick="show('history')" id="topnav-history"><span class="navico">◷</span><span>Historique</span></button>
+    </nav>
     <main id="root"></main>
   </div>
-  <nav class="bottom">
+  <nav class="bottom" aria-label="Raccourcis">
     <button onclick="show('home')" id="nav-home"><span class="navico">⌂</span><span>Accueil</span></button>
-    <button onclick="show('add')" id="nav-add"><span class="navico">▣</span><span>Dépenses</span></button>
-    <button onclick="show('reimburse')" id="nav-reimburse"><span class="navico">⇄</span><span>Remboursements</span></button>
     <button onclick="show('projects')" id="nav-projects"><span class="navico">□</span><span>Projets</span></button>
+    <button class="fab" onclick="show('add')" id="nav-add" aria-label="Ajouter une dépense"><span>+</span></button>
     <button onclick="show('documents')" id="nav-documents"><span class="navico">▤</span><span>Documents</span></button>
     <button onclick="show('history')" id="nav-history"><span class="navico">◷</span><span>Historique</span></button>
   </nav>

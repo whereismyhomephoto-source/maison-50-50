@@ -182,3 +182,52 @@ button{background:linear-gradient(135deg,#d38a4f,#a95c35);box-shadow:none;border
 input,select,textarea{border-radius:14px!important}html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#191b19!important;border-color:rgba(255,255,255,.09)!important}
 #toast{background:#f3e7d2;color:#191612;box-shadow:0 12px 30px rgba(0,0,0,.3)}
 @media(max-width:760px){.app{padding:8px 10px 102px}.top{margin-bottom:10px}.brand-icon{width:40px;height:40px;border-radius:12px}.brand h1{font-size:19px}.top-actions{width:auto!important;margin-left:auto}.top-actions .reset-btn{display:none!important}.top-actions button{padding:8px 10px;font-size:11px}.sync-indicator{order:3;width:100%;min-height:36px!important}.card{padding:15px!important}.bottom{width:calc(100% - 16px);bottom:6px}.bottom button{font-size:9px!important;padding:7px 2px!important}.navico{font-size:20px}.metric .value{font-size:25px}}
+
+/* ===== Mobile UX v4: scrollable top navigation + banking dock + motion ===== */
+:root{--ease-app:cubic-bezier(.2,.8,.2,1)}
+html{scroll-behavior:smooth}
+body{overscroll-behavior-y:none}
+.topnav{display:flex;gap:9px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 12px;margin:0 0 12px;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch;mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%)}
+.topnav::-webkit-scrollbar{display:none}
+.topnav button{flex:0 0 auto;scroll-snap-align:center;display:flex;align-items:center;gap:8px;min-height:44px;padding:10px 14px!important;border-radius:15px!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.08)!important;color:#aaa!important;box-shadow:none!important;font-size:13px;white-space:nowrap;transition:transform .22s var(--ease-app),background .22s,color .22s,border-color .22s}
+.topnav button .navico{font-size:19px}
+.topnav button.active{color:var(--bank-gold)!important;background:rgba(232,182,109,.12)!important;border-color:rgba(232,182,109,.28)!important}
+.topnav button:active{transform:scale(.96)}
+
+.bottom{height:auto!important;overflow:visible!important;align-items:flex-end!important;padding:7px 8px calc(7px + env(safe-area-inset-bottom))!important}
+.bottom button{transition:transform .2s var(--ease-app),color .2s,background .2s!important}
+.bottom button:active{transform:scale(.91)}
+.bottom .fab{flex:0 0 62px!important;width:62px!important;height:62px!important;min-width:62px!important;margin-top:-25px!important;border-radius:50%!important;background:linear-gradient(145deg,#e3a064,#ad6339)!important;color:#fff7ea!important;border:4px solid #151411!important;box-shadow:0 10px 28px rgba(192,112,62,.38)!important;display:grid!important;place-items:center!important;padding:0!important;position:relative;z-index:4}
+.bottom .fab span{font-size:38px;font-weight:300;line-height:1;transform:translateY(-2px)}
+.bottom .fab.active{background:linear-gradient(145deg,#efb172,#bd6d3e)!important;color:white!important}
+.bottom .fab:active{transform:scale(.92) rotate(4deg)}
+
+#root{animation:pageIn .32s var(--ease-app) both;transform-origin:50% 10%}
+.card{animation:cardIn .42s var(--ease-app) both;transition:transform .22s var(--ease-app),border-color .22s,box-shadow .22s}
+.grid>.card:nth-child(2){animation-delay:.035s}.grid>.card:nth-child(3){animation-delay:.07s}.grid>.card:nth-child(4){animation-delay:.105s}.grid>.card:nth-child(5){animation-delay:.14s}.grid>.card:nth-child(6){animation-delay:.175s}
+.item{transition:transform .18s var(--ease-app),background .18s,border-color .18s;animation:itemIn .34s var(--ease-app) both}
+.item:active{transform:scale(.985)}
+button{transition:transform .18s var(--ease-app),filter .18s,box-shadow .18s}
+button:active{transform:scale(.965)}
+.sync-indicator{transition:background .25s,color .25s,border-color .25s,transform .25s var(--ease-app)}
+#toast{transition:opacity .22s var(--ease-app),transform .28s var(--ease-app)!important}
+@keyframes pageIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes itemIn{from{opacity:0;transform:translateX(7px)}to{opacity:1;transform:none}}
+@media (hover:hover){.card:hover{transform:translateY(-2px);border-color:rgba(232,182,109,.16)}.topnav button:hover{color:#ddd!important}.bottom button:hover{transform:translateY(-1px)}}
+@media(max-width:760px){
+  .app{padding:8px 10px 112px!important}
+  .topnav{margin-left:-10px;margin-right:-10px;padding-left:12px;padding-right:12px;mask-image:linear-gradient(90deg,transparent,#000 12px,#000 calc(100% - 12px),transparent)}
+  .topnav button{font-size:12px!important;padding:9px 12px!important;min-height:42px}
+  .bottom{width:calc(100% - 18px)!important;bottom:7px!important;border-radius:24px!important}
+  .bottom button:not(.fab){font-size:9px!important;padding:7px 2px!important}
+  .bottom .fab{flex-basis:58px!important;width:58px!important;height:58px!important;min-width:58px!important}
+  .bottom .fab span{font-size:35px}
+  .actions{display:grid!important;grid-template-columns:1fr 1fr;gap:9px!important}
+  .actions button{width:100%;min-height:44px;padding:11px 12px!important}
+  .hero .actions button:first-child{grid-column:1/-1}
+  .rowactions{display:grid!important;grid-template-columns:1fr 1fr;gap:7px!important;width:100%;margin-top:12px!important}
+  .rowactions .amount{grid-column:1/-1;margin-bottom:2px}
+  .rowactions button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}

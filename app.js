@@ -32,7 +32,7 @@ function balance(){const t=total()/2; const g=netPaid('Guillaume')-t; const c=ne
 function settleText(){const b=balance(); if(Math.abs(b.g)<0.005)return 'Vous êtes à l’équilibre.'; return b.g>0?`Claire doit ${money(b.g)} à Guillaume.`:`Guillaume doit ${money(-b.g)} à Claire.`}
 function show(x){view=x;editingId=null;editingReimbursementId=null;editingProjectId=null;render()}
 function toast(t){const el=document.getElementById('toast'); el.textContent=t; el.className='show'; setTimeout(()=>el.className='',1600)}
-function render(){applyTheme();document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active')); document.getElementById('nav-'+view)?.classList.add('active'); if(view==='add')addView(); else if(view==='reimburse')reimburseView(); else if(view==='history')historyView(); else if(view==='projects')projectsView(); else if(view==='documents')documentsView(); else homeView()}
+function render(){applyTheme();document.querySelectorAll('.bottom button,.topnav button').forEach(b=>b.classList.remove('active')); document.getElementById('nav-'+view)?.classList.add('active'); document.getElementById('topnav-'+view)?.classList.add('active'); document.getElementById('topnav-'+view)?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); if(view==='add')addView(); else if(view==='reimburse')reimburseView(); else if(view==='history')historyView(); else if(view==='projects')projectsView(); else if(view==='documents')documentsView(); else homeView()}
 function layout(html){document.getElementById('root').innerHTML=html}
 function homeView(){
   const b=balance();
@@ -127,7 +127,7 @@ function ensureSyncIndicator(){const top=document.querySelector('.top');if(!top)
 
 function apiHeaders(extra={}){return {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+cloudSession.access_token,...extra}}
 function loginView(message=''){
-  document.querySelector('.bottom').style.display='none';
+  document.querySelector('.bottom').style.display='none';document.querySelector('.topnav').style.display='none';
   layout(`<div class="card login-card"><h2>🏠 La maison des mimis</h2><p class="muted">Connecte-toi pour retrouver les mêmes données sur Mac et iPhone.</p>${message?`<p class="sync-error">${esc(message)}</p>`:''}<div class="field"><label>E-mail</label><input id="loginEmail" type="email" autocomplete="username"></div><div class="field"><label>Mot de passe</label><input id="loginPassword" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"></div><div class="actions"><button onclick="login()">Se connecter</button></div></div>`)
 }
 async function login(){
@@ -163,7 +163,7 @@ async function deleteStoredDocument(path){const r=await fetch(SUPABASE_URL+'/sto
 async function migrateLocalDocuments(){for(const d of state.documents||[]){if(d.dataUrl&&!d.storagePath){try{await uploadDocument(d)}catch(e){console.error(e)}}}}
 async function pullCloud(){try{const c=await cloudFetch(); if(c&&Object.keys(c).length){state={expenses:c.expenses||[],reimbursements:c.reimbursements||[],projects:c.projects||[],docFolders:c.docFolders||[{id:'general',name:'Général'}],documents:c.documents||[]};localStorage.setItem(KEY,JSON.stringify(state));render()}}catch(e){console.error(e)}}
 async function startCloud(){
-  document.querySelector('.bottom').style.display='flex';
+  document.querySelector('.bottom').style.display='flex';document.querySelector('.topnav').style.display='flex';
   try{const cloud=await cloudFetch(); const local=load(); const cloudEmpty=!(cloud.expenses?.length||cloud.reimbursements?.length||cloud.projects?.length||cloud.documents?.length);
     if(cloudEmpty&&(local.expenses.length||local.reimbursements.length||local.projects.length||local.documents.length)){state=local;await migrateLocalDocuments();await cloudSave();toast('Données locales envoyées dans le cloud')}
     else if(Object.keys(cloud).length){state={expenses:cloud.expenses||[],reimbursements:cloud.reimbursements||[],projects:cloud.projects||[],docFolders:cloud.docFolders||[{id:'general',name:'Général'}],documents:cloud.documents||[]};localStorage.setItem(KEY,JSON.stringify(state))}
