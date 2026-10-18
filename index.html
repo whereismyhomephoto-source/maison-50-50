@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MAISON_50_50_RELEASE: v19-true-glass-dock -->
+<!-- MAISON_50_50_RELEASE: v21-iphone-fix -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v19-true-glass-dock">
+  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v21-iphone-fix">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -914,7 +914,7 @@ td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
 }
 
 </style>
-  <meta name="maison-build" content="v19-true-glass-dock">
+  <meta name="maison-build" content="v21-iphone-fix">
 
 <style id="maison-v18-premium-overrides">
 /* ===== v18 premium abstract glass ===== */
@@ -1191,13 +1191,293 @@ html[data-theme="dark"] nav.bottom.app-dock .dock-add:active>.dock-add-symbol{tr
 @media(prefers-reduced-motion:reduce){#ambientBackdrop *{filter:none!important}}
 </style>
 
+
+<style id="maison-v20-authoritative-glass">
+/* v20: consistent premium treatment in both themes. The v19 light-mode overrides
+   had restored white backgrounds and hidden quick-action text. */
+:root{--v20-deep:#081226;--v20-text:#f6f9ff;--v20-muted:#b9c9e6;--v20-softline:rgba(255,255,255,.18)}
+html[data-theme="dark"] body{
+  color:var(--v20-text)!important;
+  background:linear-gradient(160deg,#071126 0%,#122b64 39%,#152c61 68%,#0c1935 100%)!important;
+  background-attachment:fixed!important;
+}
+html[data-theme="light"] body{
+  color:#162448!important;
+  background:linear-gradient(160deg,#dce8fc 0%,#a8c8ed 46%,#cfddf5 100%)!important;
+  background-attachment:fixed!important;
+}
+#ambientBackdrop{position:fixed!important;inset:0!important;z-index:0!important;pointer-events:none!important;overflow:hidden!important;isolation:isolate}
+#ambientBackdrop .ambient-a{opacity:1!important;filter:blur(36px)!important;background:radial-gradient(ellipse at 52% 58%,rgba(117,173,255,.68),rgba(69,102,222,.32) 55%,transparent 76%)!important}
+#ambientBackdrop .ambient-b{opacity:1!important;filter:blur(32px)!important;background:radial-gradient(ellipse,rgba(64,210,242,.33),rgba(64,127,219,.15) 55%,transparent 78%)!important}
+#ambientBackdrop .ambient-c{opacity:.8!important;filter:blur(35px)!important;background:radial-gradient(ellipse,rgba(219,144,226,.26),rgba(250,174,119,.12) 58%,transparent 79%)!important}
+html[data-theme="light"] #ambientBackdrop{opacity:.46!important}
+.app{position:relative!important;z-index:1!important;padding-bottom:calc(126px + env(safe-area-inset-bottom))!important}
+html[data-theme="dark"] .top,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .banking-home .bank-category,
+html[data-theme="dark"] .banking-home .bank-payer,
+html[data-theme="dark"] .banking-home .bank-settlement,
+html[data-theme="dark"] .banking-home .bank-transactions,
+html[data-theme="dark"] .banking-home .classification-alert,
+html[data-theme="dark"] .movement-card.premium-movement{
+  background:linear-gradient(138deg,rgba(255,255,255,.18),rgba(73,111,189,.09) 52%,rgba(10,23,54,.22))!important;
+  border:1px solid rgba(225,240,255,.25)!important;
+  box-shadow:0 19px 48px rgba(0,9,37,.18),inset 0 1px 0 rgba(255,255,255,.20)!important;
+  backdrop-filter:blur(24px) saturate(150%)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(150%)!important;
+  color:var(--v20-text)!important;
+}
+html[data-theme="dark"] .banking-home .bank-category-material{background:linear-gradient(135deg,rgba(91,225,203,.19),rgba(47,103,143,.13) 60%,rgba(12,35,80,.23))!important}
+html[data-theme="dark"] .banking-home .bank-category-labor{background:linear-gradient(135deg,rgba(131,166,255,.22),rgba(58,94,169,.15) 60%,rgba(12,35,80,.25))!important}
+html[data-theme="dark"] .banking-home .bank-category-acquisition{background:linear-gradient(135deg,rgba(242,173,204,.19),rgba(110,75,138,.15) 60%,rgba(12,35,80,.25))!important}
+html[data-theme="dark"] .banking-home .bank-category-name,
+html[data-theme="dark"] .banking-home .bank-section-heading span,
+html[data-theme="dark"] .banking-home .bank-payer .label,
+html[data-theme="dark"] .banking-home .bank-category-top,
+html[data-theme="dark"] .banking-home .bank-balance-caption{color:#d3e0fa!important}
+html[data-theme="dark"] .banking-home .bank-category-amount,
+html[data-theme="dark"] .banking-home .bank-section-heading h2,
+html[data-theme="dark"] .banking-home .bank-payer .value,
+html[data-theme="dark"] .banking-home .bank-action,
+html[data-theme="dark"] .banking-home .bank-action>span:last-child,
+html[data-theme="dark"] .top h1{color:#f9fbff!important;text-shadow:none!important}
+html[data-theme="dark"] .banking-home .bank-quick-actions{background:transparent!important}
+html[data-theme="dark"] .banking-home .bank-action,
+html[data-theme="dark"] .banking-home .bank-action:hover{
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  color:#f7faff!important;opacity:1!important;
+}
+html[data-theme="dark"] .banking-home .bank-action-icon{
+  background:linear-gradient(140deg,rgba(255,255,255,.22),rgba(255,255,255,.07))!important;
+  border:1px solid rgba(255,255,255,.22)!important;
+  box-shadow:0 12px 26px rgba(0,0,0,.13),inset 0 1px 0 rgba(255,255,255,.17)!important;
+  backdrop-filter:blur(14px) saturate(150%)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(150%)!important;
+  color:#eff6ff!important;
+}
+html[data-theme="dark"] .banking-home .bank-action:first-child .bank-action-icon{
+  background:linear-gradient(140deg,#7099ff,#456bf2)!important;
+  border:1px solid rgba(255,255,255,.22)!important;
+}
+/* Light theme is intentionally legible and glassy, not dark cards on a white void. */
+html[data-theme="light"] .top,
+html[data-theme="light"] .card,
+html[data-theme="light"] .banking-home .bank-category,
+html[data-theme="light"] .banking-home .bank-payer,
+html[data-theme="light"] .banking-home .bank-settlement,
+html[data-theme="light"] .banking-home .bank-transactions,
+html[data-theme="light"] .banking-home .classification-alert,
+html[data-theme="light"] .movement-card.premium-movement{
+  background:linear-gradient(135deg,rgba(255,255,255,.57),rgba(236,247,255,.32))!important;
+  border:1px solid rgba(255,255,255,.70)!important;
+  box-shadow:0 20px 44px rgba(31,72,135,.13),inset 0 1px 0 rgba(255,255,255,.56)!important;
+  backdrop-filter:blur(22px) saturate(130%)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(130%)!important;
+  color:#132244!important;
+}
+html[data-theme="light"] .banking-home .bank-category-amount,
+html[data-theme="light"] .banking-home .bank-section-heading h2,
+html[data-theme="light"] .banking-home .bank-payer .value,
+html[data-theme="light"] .banking-home .bank-action>span:last-child,
+html[data-theme="light"] .banking-home .bank-action,
+html[data-theme="light"] .top h1{color:#152343!important}
+html[data-theme="light"] .banking-home .bank-category-name,
+html[data-theme="light"] .banking-home .bank-category-top,
+html[data-theme="light"] .banking-home .bank-section-heading span{color:#4c618b!important}
+html[data-theme="light"] .banking-home .bank-action{
+  background:transparent!important;box-shadow:none!important;border:0!important;opacity:1!important;
+}
+html[data-theme="light"] .banking-home .bank-action-icon{
+  color:#3a579d!important;background:rgba(255,255,255,.49)!important;
+  box-shadow:0 12px 24px rgba(45,92,164,.11),inset 0 1px 0 rgba(255,255,255,.68)!important;
+  border:1px solid rgba(255,255,255,.72)!important;
+}
+html[data-theme="light"] .banking-home .bank-action:first-child .bank-action-icon{background:#536df4!important;color:white!important}
+html[data-theme="light"] .banking-home .classification-alert{color:#273c65!important}
+html[data-theme="dark"] .banking-home .classification-alert{color:#f6e8ce!important}
+/* dock: a single translucent floating capsule, no extra solid bar below. */
+html[data-theme] nav.bottom.app-dock{
+  position:fixed!important;top:auto!important;left:10px!important;right:10px!important;
+  bottom:calc(10px + env(safe-area-inset-bottom))!important;
+  width:calc(100% - 20px)!important;max-width:690px!important;
+  margin:0 auto!important;height:78px!important;min-height:78px!important;
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  align-items:center!important;gap:2px!important;padding:6px!important;
+  border-radius:26px!important;
+  background:linear-gradient(150deg,rgba(22,38,77,.62),rgba(9,20,44,.71))!important;
+  border:1px solid rgba(255,255,255,.25)!important;
+  box-shadow:0 22px 56px rgba(0,8,35,.36),inset 0 1px 0 rgba(255,255,255,.18)!important;
+  backdrop-filter:blur(26px) saturate(160%)!important;
+  -webkit-backdrop-filter:blur(26px) saturate(160%)!important;
+  overflow:hidden!important;isolation:isolate!important;z-index:9999!important;
+}
+html[data-theme="light"] nav.bottom.app-dock{
+  background:linear-gradient(145deg,rgba(255,255,255,.73),rgba(210,228,251,.57))!important;
+  border:1px solid rgba(255,255,255,.85)!important;
+  box-shadow:0 20px 40px rgba(42,77,137,.18),inset 0 1px 0 rgba(255,255,255,.73)!important;
+}
+html[data-theme] nav.bottom.app-dock::before{content:none!important;display:none!important}
+html[data-theme] nav.bottom.app-dock .dock-item,
+html[data-theme] nav.bottom.app-dock .dock-item:not(.active),
+html[data-theme] nav.bottom.app-dock .fab.dock-add,
+html[data-theme] nav.bottom.app-dock .fab.dock-add.active{
+  position:relative!important;align-self:center!important;justify-self:stretch!important;
+  width:100%!important;min-width:0!important;min-height:0!important;height:66px!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:5px!important;margin:0!important;padding:4px 1px!important;
+  font-size:10px!important;line-height:1.12!important;letter-spacing:0!important;
+  font-weight:650!important;border-radius:18px!important;border:0!important;
+  background:transparent!important;box-shadow:none!important;overflow:visible!important;transform:none!important;
+  color:rgba(242,247,255,.74)!important;
+}
+html[data-theme="light"] nav.bottom.app-dock .dock-item,
+html[data-theme="light"] nav.bottom.app-dock .dock-item:not(.active){color:#5b6e99!important}
+html[data-theme="dark"] nav.bottom.app-dock .dock-item.active{
+  background:linear-gradient(145deg,rgba(139,180,255,.20),rgba(89,133,213,.09))!important;color:white!important;
+}
+html[data-theme="light"] nav.bottom.app-dock .dock-item.active{
+  background:rgba(73,105,193,.13)!important;color:#2f4db1!important;
+}
+html[data-theme] nav.bottom.app-dock .dock-icon,
+html[data-theme] nav.bottom.app-dock .dock-icon svg{
+  display:grid!important;place-items:center!important;width:24px!important;height:24px!important;flex:none!important;
+}
+html[data-theme] nav.bottom.app-dock .fab.dock-add>.dock-add-symbol{
+  display:grid!important;place-items:center!important;
+  flex:none!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;
+  padding:0!important;margin:0!important;
+  border:1px solid rgba(255,255,255,.24)!important;border-radius:14px!important;
+  background:linear-gradient(135deg,#719aff,#526cf0)!important;
+  box-shadow:0 8px 17px rgba(74,107,246,.32),inset 0 1px 0 rgba(255,255,255,.22)!important;
+  color:white!important;font-size:0!important;line-height:1!important;transform:none!important;
+}
+html[data-theme] nav.bottom.app-dock .fab.dock-add>.dock-add-symbol svg{display:block!important;width:24px!important;height:24px!important;stroke:white!important;fill:none!important}
+html[data-theme] nav.bottom.app-dock .fab.dock-add>.dock-add-label{
+  display:block!important;position:static!important;visibility:visible!important;opacity:1!important;
+  width:auto!important;height:12px!important;max-height:12px!important;min-height:12px!important;
+  padding:0!important;margin:0!important;transform:none!important;
+  color:#ecf2ff!important;font-size:10px!important;line-height:12px!important;font-weight:670!important;
+  overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;
+}
+html[data-theme="light"] nav.bottom.app-dock .fab.dock-add>.dock-add-label{color:#2b47a0!important}
+html[data-theme] nav.bottom.app-dock .fab.dock-add:active>.dock-add-symbol{transform:scale(.90) rotate(12deg)!important}
+@media(max-width:390px){
+  html[data-theme] nav.bottom.app-dock{left:6px!important;right:6px!important;width:calc(100% - 12px)!important;bottom:calc(7px + env(safe-area-inset-bottom))!important;padding:5px 3px!important;gap:1px!important}
+  html[data-theme] nav.bottom.app-dock .dock-item,html[data-theme] nav.bottom.app-dock .dock-item:not(.active){font-size:9px!important}
+  html[data-theme] nav.bottom.app-dock .fab.dock-add>.dock-add-label{font-size:9px!important}
+}
+@media(prefers-reduced-motion:reduce){#ambientBackdrop *{animation:none!important;transition:none!important}}
+</style>
+
+
+<style id="maison-v21-iphone-final-fix">
+/* Version 21: fix unexpected white page in light theme; make all surfaces readable.
+   The app contains a built-in stylesheet. CSS in styles.css is NOT loaded. */
+:root{--v21-navy:#08142b;--v21-ink:#f5f8ff;--v21-quiet:#b7cae8;--v21-glass:rgba(110,157,255,.12)}
+html{background:#08142b!important;overflow-x:hidden!important}
+html[data-theme="light"]{background:#b1c9ec!important}
+html[data-theme="dark"] body{
+ background:radial-gradient(110vw 75vw at 5% 8%,rgba(65,99,205,.38),transparent 75%),radial-gradient(110vw 86vw at 100% 52%,rgba(30,145,216,.25),transparent 64%),linear-gradient(160deg,#09142a,#142f66 65%,#091b3c)!important;
+ color:#f5f9ff!important;background-attachment:fixed!important;
+}
+html[data-theme="light"] body{
+ background:radial-gradient(110vw 75vw at 3% 11%,rgba(114,170,255,.46),transparent 70%),radial-gradient(94vw 74vw at 95% 54%,rgba(104,201,229,.30),transparent 66%),linear-gradient(158deg,#cfe0f9,#a9c5ed 57%,#bccdf0)!important;
+ color:#142746!important;background-attachment:fixed!important;
+}
+body{margin:0!important;min-height:100vh!important;min-height:100dvh!important;overflow-x:hidden!important}
+#ambientBackdrop{z-index:0!important;position:fixed!important;inset:0!important;pointer-events:none!important;overflow:hidden!important}
+#ambientBackdrop .ambient-a{opacity:.88!important;background:radial-gradient(ellipse,rgba(117,162,255,.69),rgba(71,107,236,.26) 55%,transparent 76%)!important}
+#ambientBackdrop .ambient-b{opacity:.95!important;background:radial-gradient(ellipse,rgba(56,204,233,.38),rgba(43,108,206,.20) 56%,transparent 76%)!important}
+#ambientBackdrop .ambient-c{opacity:.85!important;background:radial-gradient(ellipse,rgba(232,146,218,.31),rgba(244,163,108,.15) 56%,transparent 76%)!important}
+html[data-theme="light"] #ambientBackdrop{opacity:.52!important}
+#root,.app{position:relative!important;z-index:1!important}
+.app{padding-bottom:calc(142px + env(safe-area-inset-bottom))!important}
+/* Readable frosted glass, consistent from top to bottom. */
+html[data-theme="dark"] :is(.top,.card,.banking-home .bank-category,.banking-home .bank-payer,.banking-home .bank-settlement,.banking-home .bank-transactions,.banking-home .classification-alert,.movement-card.premium-movement){
+ background:linear-gradient(135deg,rgba(177,207,255,.19) 0%,rgba(93,139,236,.12) 45%,rgba(17,34,76,.27) 100%)!important;
+ border:1px solid rgba(232,243,255,.24)!important;
+ box-shadow:0 16px 38px rgba(2,12,38,.19),inset 0 1px 0 rgba(255,255,255,.19)!important;
+ backdrop-filter:blur(23px) saturate(160%)!important;-webkit-backdrop-filter:blur(23px) saturate(160%)!important;
+ color:#f5f8ff!important;
+}
+html[data-theme="light"] :is(.top,.card,.banking-home .bank-category,.banking-home .bank-payer,.banking-home .bank-settlement,.banking-home .bank-transactions,.banking-home .classification-alert,.movement-card.premium-movement){
+ background:linear-gradient(145deg,rgba(255,255,255,.76),rgba(220,237,255,.56) 52%,rgba(193,217,252,.47))!important;
+ border:1px solid rgba(255,255,255,.83)!important;
+ box-shadow:0 17px 38px rgba(31,69,132,.12),inset 0 1px 0 rgba(255,255,255,.75)!important;
+ backdrop-filter:blur(21px) saturate(133%)!important;-webkit-backdrop-filter:blur(21px) saturate(133%)!important;
+ color:#142746!important;
+}
+html[data-theme="dark"] .banking-home .bank-category-material{background:linear-gradient(125deg,rgba(96,219,198,.18),rgba(15,59,78,.22))!important}
+html[data-theme="dark"] .banking-home .bank-category-labor{background:linear-gradient(125deg,rgba(125,167,255,.22),rgba(30,56,105,.22))!important}
+html[data-theme="dark"] .banking-home .bank-category-acquisition{background:linear-gradient(125deg,rgba(235,156,201,.20),rgba(55,36,93,.23))!important}
+html[data-theme="light"] .banking-home .bank-category-material{background:linear-gradient(125deg,rgba(219,255,244,.80),rgba(233,244,255,.48))!important}
+html[data-theme="light"] .banking-home .bank-category-labor{background:linear-gradient(125deg,rgba(228,237,255,.88),rgba(231,244,255,.45))!important}
+html[data-theme="light"] .banking-home .bank-category-acquisition{background:linear-gradient(125deg,rgba(250,229,239,.78),rgba(232,243,255,.43))!important}
+html[data-theme="dark"] .banking-home :is(.bank-section-heading h2,.bank-category-amount,.bank-payer .value,.movement-title,.movement-amount,.bank-settlement .settle,.bank-action>span:last-child,.top h1,.bank-category-name){color:#f8faff!important;opacity:1!important}
+html[data-theme="dark"] .banking-home :is(.bank-section-heading>span,.bank-category-top,.bank-payer .label,.bank-payer .submetric,.bank-transactions>.muted,.bank-settlement .muted,.movement-meta,.movement-sub,.bank-category-name){color:#c9d9f5!important;opacity:1!important}
+/* Light: override old dark-only text and white-on-white labels in every home section */
+html[data-theme="light"] .banking-home :is(.bank-section-heading h2,.bank-category-amount,.bank-payer .value,.movement-title,.movement-amount,.bank-settlement .settle,.bank-action>span:last-child,.top h1,.bank-category-name){color:#142747!important;opacity:1!important}
+html[data-theme="light"] .banking-home :is(.bank-section-heading>span,.bank-category-top,.bank-payer .label,.bank-payer .submetric,.bank-transactions>.muted,.bank-settlement .muted,.movement-meta,.movement-sub){color:#506587!important;opacity:1!important}
+html[data-theme="light"] .banking-home :is(.bank-settlement,.bank-transactions,.bank-payer,.bank-category) .muted{color:#526789!important;opacity:1!important}
+html[data-theme="light"] .banking-home :is(.bank-settlement,.bank-transactions,.bank-payer,.bank-category) :is(p,span,small,div,strong,b){text-shadow:none!important}
+html[data-theme="light"] .banking-home .bank-transactions .movement-card.premium-movement{color:#142747!important}
+html[data-theme="light"] .banking-home .bank-transactions .movement-card.premium-movement :is(.movement-title,.movement-amount){color:#1b2c4b!important}
+html[data-theme="light"] .banking-home .bank-transactions .movement-card.premium-movement :is(.movement-meta,.movement-sub,.movement-split){color:#526789!important}
+html[data-theme="dark"] .banking-home .classification-alert{background:linear-gradient(125deg,rgba(176,158,101,.21),rgba(20,33,66,.22))!important;border-color:rgba(252,222,157,.26)!important;color:#f8ebd5!important}
+html[data-theme="light"] .banking-home .classification-alert{background:linear-gradient(125deg,rgba(255,243,204,.84),rgba(232,237,250,.56))!important;border-color:rgba(255,250,235,.79)!important;color:#5b4932!important}
+html[data-theme="light"] .banking-home .classification-alert :is(span,strong,button){color:#493b30!important}
+html[data-theme="dark"] .banking-home .bank-action,html[data-theme="light"] .banking-home .bank-action{background:transparent!important;border:0!important;box-shadow:none!important;opacity:1!important}
+html[data-theme="dark"] .banking-home .bank-action>span:last-child{color:#f8fbff!important}
+html[data-theme="light"] .banking-home .bank-action>span:last-child{color:#1e345a!important}
+html[data-theme="dark"] .banking-home .bank-action-icon{background:linear-gradient(135deg,rgba(233,244,255,.19),rgba(116,162,255,.09))!important;border:1px solid rgba(255,255,255,.20)!important;color:#f8fbff!important}
+html[data-theme="light"] .banking-home .bank-action-icon{background:linear-gradient(135deg,rgba(255,255,255,.89),rgba(220,235,255,.70))!important;border:1px solid rgba(255,255,255,.96)!important;color:#3b5aa0!important}
+html[data-theme] .banking-home .bank-action:first-child .bank-action-icon{background:linear-gradient(140deg,#7098ff,#516cf7)!important;color:white!important;border:1px solid rgba(255,255,255,.19)!important}
+html[data-theme] .banking-home .bank-quick-actions{background:transparent!important;border:0!important;box-shadow:none!important}
+/* Final dock: ensure tabs and + label are inside the capsule on every iPhone. */
+html[data-theme] nav.bottom.app-dock{left:10px!important;right:10px!important;width:calc(100% - 20px)!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;
+ height:80px!important;min-height:80px!important;max-width:700px!important;margin:0 auto!important;padding:7px 7px!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:2px!important;align-items:center!important;overflow:hidden!important;isolation:isolate!important;border-radius:27px!important;z-index:9999!important;backdrop-filter:blur(30px) saturate(150%)!important;-webkit-backdrop-filter:blur(30px) saturate(150%)!important}
+html[data-theme="dark"] nav.bottom.app-dock{background:linear-gradient(145deg,rgba(33,50,89,.77),rgba(8,20,46,.82))!important;border:1px solid rgba(255,255,255,.27)!important;box-shadow:0 16px 44px rgba(2,9,28,.37),inset 0 1px 0 rgba(255,255,255,.18)!important}
+html[data-theme="light"] nav.bottom.app-dock{background:linear-gradient(145deg,rgba(243,249,255,.82),rgba(206,225,251,.75))!important;border:1px solid rgba(255,255,255,.9)!important;box-shadow:0 16px 38px rgba(51,84,143,.24),inset 0 1px 0 white!important}
+html[data-theme] nav.bottom.app-dock::before{content:none!important;display:none!important}
+html[data-theme] nav.bottom.app-dock :is(.dock-item,.dock-item:not(.active),.fab.dock-add,.fab.dock-add.active){position:relative!important;min-width:0!important;width:100%!important;height:65px!important;min-height:65px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important;margin:0!important;padding:3px 0!important;border:0!important;border-radius:18px!important;background:transparent!important;box-shadow:none!important;transform:none!important;overflow:visible!important;font-size:10px!important;line-height:1.1!important;white-space:nowrap!important}
+html[data-theme="dark"] nav.bottom.app-dock :is(.dock-item,.fab.dock-add){color:#dbe6fc!important}
+html[data-theme="light"] nav.bottom.app-dock :is(.dock-item,.fab.dock-add){color:#4e638e!important}
+html[data-theme="dark"] nav.bottom.app-dock .dock-item.active{background:rgba(133,177,255,.20)!important;color:white!important}
+html[data-theme="light"] nav.bottom.app-dock .dock-item.active{background:rgba(91,124,204,.14)!important;color:#284ba1!important}
+html[data-theme] nav.bottom.app-dock .dock-icon{height:25px!important;width:25px!important;display:grid!important;place-items:center!important;flex:none!important}
+html[data-theme] nav.bottom.app-dock .dock-icon svg{width:23px!important;height:23px!important}
+html[data-theme] nav.bottom.app-dock .fab.dock-add>.dock-add-symbol{width:41px!important;height:41px!important;min-width:41px!important;min-height:41px!important;display:grid!important;place-items:center!important;margin:0!important;padding:0!important;flex:none!important;border:1px solid rgba(255,255,255,.30)!important;border-radius:14px!important;background:linear-gradient(145deg,#7eabff,#536df4)!important;box-shadow:0 8px 19px rgba(67,109,248,.28),inset 0 1px 0 rgba(255,255,255,.22)!important;color:#fff!important;transform:none!important;font-size:0!important}
+html[data-theme] nav.bottom.app-dock .fab.dock-add>.dock-add-symbol svg{display:block!important;width:23px!important;height:23px!important;fill:none!important;stroke:#fff!important}
+html[data-theme] nav.bottom.app-dock .fab.dock-add>.dock-add-label{position:static!important;width:auto!important;height:12px!important;min-height:12px!important;max-height:none!important;display:block!important;visibility:visible!important;opacity:1!important;margin:0!important;padding:0!important;line-height:12px!important;font-size:10px!important;font-weight:700!important;letter-spacing:0!important;overflow:visible!important;white-space:nowrap!important;transform:none!important}
+html[data-theme="dark"] nav.bottom.app-dock .fab.dock-add>.dock-add-label{color:#f9fbff!important}
+html[data-theme="light"] nav.bottom.app-dock .fab.dock-add>.dock-add-label{color:#283e78!important}
+html[data-theme] nav.bottom.app-dock .fab.dock-add:active>.dock-add-symbol{transform:scale(.91) rotate(8deg)!important}
+@media(max-width:365px){html[data-theme] nav.bottom.app-dock{left:6px!important;right:6px!important;width:calc(100% - 12px)!important}html[data-theme] nav.bottom.app-dock :is(.dock-item,.dock-item:not(.active),.fab.dock-add){font-size:9px!important}html[data-theme] nav.bottom.app-dock .fab.dock-add>.dock-add-label{font-size:9px!important}}
+/* Legible financial transfer pills and metadata in light mode */
+html[data-theme="light"] .banking-home .mini-recap span{
+ background:rgba(255,255,255,.62)!important;border:1px solid rgba(63,94,151,.15)!important;
+ color:#415779!important;box-shadow:none!important;
+}
+html[data-theme="light"] .banking-home .mini-recap span b{color:#253d69!important}
+html[data-theme="dark"] .banking-home .mini-recap span{background:rgba(10,23,48,.35)!important;border:1px solid rgba(255,255,255,.12)!important;color:#cfdef6!important}
+html[data-theme="dark"] .banking-home .mini-recap span b{color:#f4f8ff!important}
+html[data-theme="light"] .banking-home .bank-link, html[data-theme="light"] .banking-home .movement-split{color:#3556a8!important}
+html[data-theme="dark"] .banking-home .bank-link, html[data-theme="dark"] .banking-home .movement-split{color:#a9c7ff!important}
+html[data-theme="light"] .banking-home .movement-kind,html[data-theme="light"] .banking-home .movement-chip{color:#35567d!important}
+html[data-theme="dark"] .banking-home .bank-settlement .settle.positive{color:#baf6d3!important}
+html[data-theme="light"] .banking-home .bank-settlement .settle.positive{color:#176c4d!important}
+html[data-theme="dark"] .banking-home .bank-settlement .settle.negative{color:#ffbbbb!important}
+html[data-theme="light"] .banking-home .bank-settlement .settle.negative{color:#a52b43!important}
+@media(prefers-reduced-motion:reduce){#ambientBackdrop *{animation:none!important}}
+</style>
+
 </head>
 <body>
   <div id="ambientBackdrop" aria-hidden="true"><div class="ambient-blob ambient-a"></div><div class="ambient-blob ambient-b"></div><div class="ambient-blob ambient-c"></div><div class="ambient-ribbon"></div><div class="ambient-glow"></div></div>
 
   <div class="app">
     <header class="top">
-      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis</p></div></div>
+      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v21</span></p></div></div>
       <button class="secondary" onclick="resetAll()">Réinitialiser</button>
     </header>
     <nav class="topnav" aria-label="Navigation principale">
@@ -1258,7 +1538,7 @@ let editingReimbursementId=null;
 let editingProjectId=null;
 function applyTheme(){const t=localStorage.getItem(THEME_KEY)||'dark';document.documentElement.dataset.theme=t;const b=document.getElementById('themeToggle');if(b)b.textContent=t==='dark'?'☀️ Clair':'🌙 Sombre'}
 function toggleTheme(){const next=(document.documentElement.dataset.theme==='dark')?'light':'dark';localStorage.setItem(THEME_KEY,next);applyTheme()}
-applyTheme();
+try{if(!localStorage.getItem('maison_v20_premium_theme_initialized')){localStorage.setItem(THEME_KEY,'dark');localStorage.setItem('maison_v20_premium_theme_initialized','1')}}catch(e){} applyTheme();
 function load(){try{const data=JSON.parse(localStorage.getItem(KEY))||{}; return {expenses:data.expenses||[], reimbursements:data.reimbursements||[], projects:data.projects||[], docFolders:data.docFolders||[{id:'general',name:'Général'}], documents:data.documents||[]}}catch(e){return{expenses:[],reimbursements:[],projects:[],docFolders:[{id:'general',name:'Général'}],documents:[]}}}
 function save(){localStorage.setItem(KEY,JSON.stringify(state)); if(cloudSession) cloudSave().catch(e=>console.error('Sync:',e))}
 function money(n){return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(Number(n||0))}

@@ -1,3 +1,5 @@
-Maison 50/50 v19 — Transparence ciblée sur les cartes Répartition / Mouvements, fond abstrait à formes visibles et dock flottant.
-Publier le contenu du dossier à la racine du dépôt, pas le dossier lui-même.
-Les données demeurent gérées par Supabase; aucune migration ni politique RLS requise.
+Maison 50/50 v21 — correctif interface iPhone.
+
+Corrections: fond visible sur toute la page, mode clair et sombre lisibles, cartes translucides, dock + entier, cache incrémenté.
+
+Installer: transférer LES FICHIERS de cette archive à la racine du dépôt GitHub Pages maison-50-50, puis attendre la publication. Le numéro v21 apparaît sous Maison 50/50. La synchronisation et les données Supabase sont conservées.
