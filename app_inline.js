@@ -39,16 +39,13 @@ function balance(){const t=total()/2; const g=netPaid('Guillaume')-t; const c=ne
 function settleText(){const b=balance(); if(Math.abs(b.g)<0.005)return 'Vous êtes à l’équilibre.'; return b.g>0?`Claire doit ${money(b.g)} à Guillaume.`:`Guillaume doit ${money(-b.g)} à Claire.`}
 function show(x){view=x;editingId=null;editingReimbursementId=null;editingProjectId=null;pendingCloudRender=false;render()}
 function fabAdd(event){
-  const fab=document.getElementById('quick-add-fab');
-  if(fab){
-    fab.classList.remove('fab-pop'); void fab.offsetWidth; fab.classList.add('fab-pop');
-    setTimeout(()=>fab.classList.remove('fab-pop'),650);
-  }
-  if(navigator.vibrate) try{navigator.vibrate(10)}catch(e){}
-  setTimeout(()=>show('add'),150);
+  // Le clic doit ouvrir le formulaire immédiatement, même si les animations sont désactivées.
+  if(event && event.preventDefault) event.preventDefault();
+  if(navigator.vibrate) try{navigator.vibrate(8)}catch(e){}
+  show('add');
 }
 function toast(t){const el=document.getElementById('toast'); el.textContent=t; el.className='show'; setTimeout(()=>el.className='',1600)}
-function render(){applyTheme();document.querySelectorAll('.bottom button,.topnav button').forEach(b=>b.classList.remove('active')); document.getElementById('nav-'+view)?.classList.add('active'); document.getElementById('topnav-'+view)?.classList.add('active'); document.getElementById('topnav-'+view)?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); if(view==='add')addView(); else if(view==='reimburse')reimburseView(); else if(view==='history')historyView(); else if(view==='projects')projectsView(); else if(view==='documents')documentsView(); else homeView()}
+function render(){applyTheme();document.querySelectorAll('.bottom button,.topnav button').forEach(b=>b.classList.remove('active')); document.getElementById('nav-'+view)?.classList.add('active'); document.getElementById('quick-add-fab')?.classList.toggle('active',view==='add'); document.getElementById('topnav-'+view)?.classList.add('active'); document.getElementById('topnav-'+view)?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); if(view==='add')addView(); else if(view==='reimburse')reimburseView(); else if(view==='history')historyView(); else if(view==='projects')projectsView(); else if(view==='documents')documentsView(); else homeView()}
 function layout(html){document.getElementById('root').innerHTML=html}
 function homeView(){
   const b=balance();
@@ -96,7 +93,42 @@ function combinedLinesChronological(){
   const reimb=state.reimbursements.map(r=>({kind:'reimbursement',date:r.date||'',created:r.id||'',data:r}));
   return exp.concat(reimb).sort((a,b)=>(b.date||'').localeCompare(a.date||'') || String(b.created).localeCompare(String(a.created)));
 }
-function expenseLine(e){const half=Number(e.amount||0)/2; const phrase=e.payer==='Guillaume'?`Claire doit ${money(half)} à Guillaume`:`Guillaume doit ${money(half)} à Claire`; const emo=e.emoji||emojiFor(e.category); return `<div class="item"><div class="expense-main"><div class="expense-emoji">${esc(emo)}</div><div><b>${esc(e.title||e.category)}</b><span><span class="type-chip ${expenseType(e)==='a_classer'?'unclassified':''}">${expenseTypeLabel(expenseType(e))}</span> ${esc(e.date)} · ${esc(e.category||'Sans catégorie')} · payé par ${esc(e.payer)}<br>Montant : ${money(e.amount)} · Part Guillaume : ${money(half)} · Part Claire : ${money(half)}<br><strong class="redline">${phrase}</strong></span></div></div><div class="rowactions"><div class="amount">${money(e.amount)}</div><button class="small secondary" onclick="edit('${e.id}')">Modifier</button><button class="small danger" onclick="del('${e.id}')">Supprimer</button></div></div>`}
+function movementIcon(type){
+  const common='viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+  const paths={
+    materiel:'<path d="M4 9h16l-1.3 11H5.3L4 9Z"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+    main_oeuvre:'<path d="m14.6 7.5-7.1 7.1-3.4 1 .9-3.4 7.2-7.1"/><path d="m15 4 5 5-3.3 3.3-5-5L15 4Z"/><path d="m4.5 19.5 2-2"/>',
+    apport_frais_notaire:'<path d="m3 11 9-7 9 7"/><path d="M5 10.5V20h14v-9.5"/><path d="M9 20v-7h6v7"/>',
+    reimbursement:'<path d="M4 8h15l-4-4"/><path d="m19 8-4 4"/><path d="M20 16H5l4 4"/><path d="m5 16 4-4"/>',
+    a_classer:'<path d="M5 4h14v16H5z"/><path d="M8 9h8M8 13h5"/>'
+  };
+  return `<svg ${common}>${paths[type]||paths.a_classer}</svg>`;
+}
+function movementDateLabel(date){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||'')))return String(date||'');
+  const d=new Date(date+'T12:00:00');
+  if(Number.isNaN(d.getTime()))return String(date||'');
+  return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:d.getFullYear()===new Date().getFullYear()?undefined:'numeric'});
+}
+function movementActionButton(item,kind){
+  return `<button type="button" class="premium-more" data-movement-id="${esc(item.id)}" data-movement-kind="${kind}" onclick="openMovementActions(this)" aria-label="Options de ${kind==='expense'?'la dépense':'ce remboursement'}" title="Options"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></button>`;
+}
+function expenseLine(e){
+  const half=Number(e.amount||0)/2;
+  const phrase=e.payer==='Guillaume'?`Claire doit ${money(half)} à Guillaume`:`Guillaume doit ${money(half)} à Claire`;
+  const type=expenseType(e);
+  const typeClass=type==='materiel'?'material':type==='main_oeuvre'?'labor':type==='apport_frais_notaire'?'acquisition':'unclassified';
+  return `<article class="movement-card premium-movement movement-expense premium-${typeClass}" data-swipe-kind="expense">
+    <span class="movement-icon movement-icon-${typeClass}" aria-hidden="true">${movementIcon(type)}</span>
+    <div class="movement-body">
+      <div class="movement-title">${esc(e.title||e.category||'Dépense')}</div>
+      <div class="movement-subtitle">${esc(e.category||'Sans catégorie')} <span class="movement-sep">·</span> ${esc(movementDateLabel(e.date))}</div>
+      <div class="movement-footer"><span class="movement-chip">${esc(expenseTypeLabel(type))}</span><span class="movement-payer">${esc(e.payer||'—')}</span></div>
+      <details class="movement-detail"><summary>Répartition 50/50 <span aria-hidden="true">⌄</span></summary><div class="movement-breakdown"><span>Part de chacun : <b>${money(half)}</b></span><span>${phrase}</span>${e.note?`<span>Note : ${esc(e.note)}</span>`:''}</div></details>
+    </div>
+    <div class="premium-trailing"><div class="movement-amount">− ${money(e.amount)}</div>${movementActionButton(e,'expense')}</div>
+  </article>`;
+}
 function emojiFor(category){const map={'Apport personnel':'🏡','Frais de notaire':'📜','Frais d’agence':'🏠','Frais de dossier bancaire':'🏦','Frais de garantie / caution':'🔑','Autres frais d’acquisition':'🧾','Salle de bains':'🛁','Cuisine':'🍽️','Électricité':'⚡','Plomberie':'🚿','Peinture':'🎨','Sol':'🪵','Extérieur':'🌿','Outillage':'🛠️','Mobilier / déco':'🪑','Autre':'🧾'};return map[category]||'🏠'}
 function categoryOptions(type,selected){
   const opts=categoriesForType(type);
@@ -146,7 +178,67 @@ function saveExpense(){
 function reimburseView(){const r=editingReimbursementId?state.reimbursements.find(x=>x.id===editingReimbursementId):null;layout(`<div class="card"><h2>${r?'Modifier':'Ajouter'} un remboursement</h2><p class="muted">Note un virement ou paiement entre Guillaume et Claire. Ce montant ne compte pas comme une dépense : il vient uniquement réduire le solde dû entre vous.</p><div class="formgrid"><div class="field"><label>Date</label><input id="rdate" type="date" value="${esc(r?.date||new Date().toISOString().slice(0,10))}"></div><div class="field"><label>Qui a envoyé l’argent ?</label><select id="rfrom">${people.map(p=>`<option ${r?.from===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="field"><label>À qui ?</label><select id="rto">${people.map(p=>`<option ${r?.to===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="field"><label>Montant envoyé</label><input id="ramount" type="number" step="0.01" placeholder="0,00" value="${r?Number(r.amount||0):''}"></div><div class="field"><label>Note facultative</label><input id="rnote" placeholder="Ex : virement pour solder les dépenses en retard" value="${esc(r?.note||'')}"></div></div><div class="summaryline" id="rpreview">Le remboursement sera déduit du solde entre vous.</div><div class="actions"><button onclick="saveReimbursement()">${r?'Enregistrer les modifications':'Enregistrer le remboursement'}</button><button class="secondary" onclick="show('home')">Annuler</button></div></div>`); ['rfrom','rto','ramount'].forEach(id=>document.getElementById(id).addEventListener('input',previewReimbursement)); previewReimbursement()}
 function previewReimbursement(){const amount=num('ramount'), from=v('rfrom'), to=v('rto'); if(from===to){document.getElementById('rpreview').innerHTML='<b>Choisis deux personnes différentes.</b>';return} document.getElementById('rpreview').innerHTML=amount?`${from} envoie <b>${money(amount)}</b> à ${to}. Ce montant viendra réduire ce que ${from} doit éventuellement à ${to}.`:'Le remboursement sera déduit du solde entre vous.'}
 function saveReimbursement(){const amount=num('ramount'), from=v('rfrom'), to=v('rto'); if(!amount){toast('Entre un montant');return} if(from===to){toast('Choisis deux personnes différentes');return} const data={date:v('rdate'),from,to,amount,note:v('rnote')}; if(editingReimbursementId){Object.assign(state.reimbursements.find(r=>r.id===editingReimbursementId),data); toast('Remboursement modifié')} else {state.reimbursements.push({id:uid(),...data}); toast('Remboursement ajouté')} save(); show('home')}
-function reimbursementLine(r){return `<div class="item reimbursement"><div class="expense-main"><div class="expense-emoji">💸</div><div><b>Remboursement</b><span>${esc(r.date)} · ${esc(r.from)} → ${esc(r.to)}<br><strong class="redline">${esc(r.from)} a envoyé ${money(r.amount)} à ${esc(r.to)}</strong>${r.note?'<br>'+esc(r.note):''}</span></div></div><div class="rowactions"><div class="amount">${money(r.amount)}</div><button class="small secondary" onclick="editReimbursement('${r.id}')">Modifier</button><button class="small danger" onclick="delReimbursement('${r.id}')">Supprimer</button></div></div>`}
+function reimbursementLine(r){return `<article class="movement-card premium-movement movement-reimbursement premium-transfer" data-swipe-kind="reimbursement">
+  <span class="movement-icon movement-icon-reimbursement" aria-hidden="true">${movementIcon('reimbursement')}</span>
+  <div class="movement-body"><div class="movement-title">Remboursement</div>
+  <div class="movement-subtitle">${esc(r.from||'—')} → ${esc(r.to||'—')} <span class="movement-sep">·</span> ${esc(movementDateLabel(r.date))}</div>
+  <div class="movement-footer"><span class="movement-chip movement-chip-reimbursement">Virement</span></div>
+  ${r.note?`<div class="movement-note">${esc(r.note)}</div>`:''}</div>
+  <div class="premium-trailing"><div class="movement-amount movement-credit">+ ${money(r.amount)}</div>${movementActionButton(r,'reimbursement')}</div>
+</article>`}
+let movementActionContext=null;
+let movementSheetHideTimer=null;
+let movementTouchStart=null;
+function openMovementActions(button){
+  const kind=button?.dataset?.movementKind;
+  const id=button?.dataset?.movementId;
+  const item=kind==='expense'?state.expenses.find(e=>e.id===id):kind==='reimbursement'?state.reimbursements.find(r=>r.id===id):null;
+  if(!item)return;
+  clearTimeout(movementSheetHideTimer);
+  movementActionContext={kind,id,origin:button};
+  const sheet=document.getElementById('movementSheet');
+  document.getElementById('movementSheetTitle').textContent=kind==='expense'?(item.title||item.category||'Dépense'):'Remboursement';
+  document.getElementById('movementSheetSubtitle').textContent=(kind==='expense'?expenseTypeLabel(expenseType(item)):'Virement')+' · '+money(item.amount);
+  sheet.hidden=false;
+  document.body.classList.add('movement-sheet-open');
+  requestAnimationFrame(()=>{sheet.classList.add('is-open');document.getElementById('movementEditAction')?.focus({preventScroll:true})});
+}
+function closeMovementActions(immediate=false){
+  const sheet=document.getElementById('movementSheet');
+  if(!sheet||sheet.hidden)return;
+  sheet.classList.remove('is-open');
+  document.body.classList.remove('movement-sheet-open');
+  const origin=movementActionContext?.origin;
+  movementActionContext=null;
+  clearTimeout(movementSheetHideTimer);
+  if(immediate||window.matchMedia('(prefers-reduced-motion: reduce)').matches){sheet.hidden=true;origin?.isConnected&&origin.focus({preventScroll:true})}
+  else movementSheetHideTimer=setTimeout(()=>{if(!sheet.classList.contains('is-open'))sheet.hidden=true;origin?.isConnected&&origin.focus({preventScroll:true})},240);
+}
+function executeMovementAction(action){
+  if(!movementActionContext)return;
+  const {kind,id}=movementActionContext;
+  closeMovementActions(true);
+  if(action==='edit')return kind==='expense'?edit(id):editReimbursement(id);
+  if(action==='delete')return kind==='expense'?del(id):delReimbursement(id);
+}
+// Le balayage est facultatif : le bouton Options fonctionne aussi sans geste tactile.
+document.addEventListener('touchstart',event=>{
+  const card=event.target.closest('.premium-movement');
+  if(!card||event.target.closest('button,summary,details,a,input,select,textarea')){movementTouchStart=null;return;}
+  const t=event.touches[0];if(!t)return;
+  movementTouchStart={x:t.clientX,y:t.clientY,card};
+},{passive:true});
+document.addEventListener('touchend',event=>{
+  const data=movementTouchStart;movementTouchStart=null;
+  if(!data||!data.card.isConnected)return;
+  const t=event.changedTouches[0];if(!t)return;
+  const dx=t.clientX-data.x,dy=t.clientY-data.y;
+  if(dx< -65&&Math.abs(dx)>Math.abs(dy)*1.35){
+    const button=data.card.querySelector('.premium-more');
+    if(button)openMovementActions(button);
+  }
+},{passive:true});
+document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMovementActions()});
 function editReimbursement(id){editingReimbursementId=id; editingId=null; view='reimburse'; render()}
 function delReimbursement(id){if(!confirm('Supprimer ce remboursement ?'))return; state.reimbursements=state.reimbursements.filter(r=>r.id!==id); save(); render(); toast('Remboursement supprimé')}
 
@@ -291,4 +383,5 @@ window.addEventListener('online',()=>{updateSyncIndicator();if(cloudSession)pull
 window.addEventListener('offline',updateSyncIndicator);
 boot();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
+
 

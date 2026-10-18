@@ -745,3 +745,158 @@ html[data-theme="light"] .bottom.app-dock .dock-add > .dock-add-label{color:#445
   .bottom.app-dock .dock-add > .dock-add-symbol{width:38px!important;height:38px!important;min-width:38px!important}
   .bottom.app-dock .dock-add > .dock-add-label{font-size:9px!important}
 }
+
+
+
+/* ===== v16 Glassmorphism premium ===== */
+:root{
+  --glass-bg: rgba(18, 26, 43, 0.42);
+  --glass-bg-soft: rgba(18, 26, 43, 0.28);
+  --glass-line: rgba(255,255,255,0.16);
+  --glass-line-strong: rgba(255,255,255,0.24);
+  --glass-highlight: rgba(255,255,255,0.18);
+  --bank-accent: #7fb6ff;
+  --bank-accent-2: #5c8cff;
+  --bank-gold: #f3d59f;
+  --bank-text: #f6f8fd;
+  --bank-muted: rgba(235,240,250,0.74);
+}
+html[data-theme="dark"] body, body{
+  color: var(--bank-text) !important;
+  background:
+    radial-gradient(circle at 14% 8%, rgba(89,126,255,0.42), transparent 28%),
+    radial-gradient(circle at 88% 10%, rgba(48,163,255,0.18), transparent 24%),
+    radial-gradient(circle at 50% 95%, rgba(250,173,80,0.16), transparent 34%),
+    linear-gradient(180deg,#08101f 0%, #0d1730 38%, #111d3d 100%) !important;
+  background-attachment: fixed !important;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(600px 250px at 15% 22%, rgba(255,255,255,0.12), transparent 70%),
+    radial-gradient(500px 220px at 78% 12%, rgba(113,173,255,0.10), transparent 72%),
+    linear-gradient(140deg, rgba(255,255,255,0.08), transparent 38%, rgba(255,255,255,0.02) 70%, transparent 90%);
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.65;
+  background-image: radial-gradient(rgba(255,255,255,.10) 0.65px, transparent 0.75px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,.8), rgba(0,0,0,.25));
+}
+.card,
+.top,
+.bottom,
+.item,
+.summaryline,
+.project-total,
+.metric,
+.total-top,
+.halfmetric,
+button.secondary,
+table,
+input,select,textarea{
+  backdrop-filter: blur(18px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
+}
+.top{
+  background: rgba(17,24,39,.38) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  box-shadow: 0 18px 40px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.09) !important;
+}
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06)) !important;
+  border: 1px solid var(--glass-line) !important;
+  box-shadow: 0 20px 42px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+.card:hover{box-shadow: 0 24px 52px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.16) !important;}
+.metric .label, .muted, .item span, .brand p, .submetric, .summaryline, .project-total .label, th, td {color: var(--bank-muted) !important;}
+h1,.brand h1,.metric .value,.settle,.amount,strong,b,th{color: var(--bank-text) !important;}
+.positive{color: #7af0ab !important}
+.negative{color: #ff8c88 !important}
+.logo,.brand-icon{
+  box-shadow: 0 12px 24px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+.item{
+  background: linear-gradient(180deg, rgba(13,24,44,.42), rgba(17,29,53,.30)) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 12px 24px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.expense-emoji{
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14) !important;
+}
+button.secondary{
+  background: rgba(255,255,255,.07) !important;
+  color: var(--bank-text) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+}
+button.small.secondary{
+  background: rgba(255,255,255,.05) !important;
+}
+button{
+  box-shadow: 0 10px 24px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+input,select,textarea{
+  background: rgba(255,255,255,.08) !important;
+  color: var(--bank-text) !important;
+  border: 1px solid rgba(255,255,255,.11) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+input::placeholder, textarea::placeholder{color: rgba(235,240,250,.44) !important;}
+.pill, .mini-recap span{
+  background: rgba(255,255,255,.10) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  color: var(--bank-gold) !important;
+}
+.bottom{
+  background: rgba(9,14,26,.52) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  box-shadow: 0 18px 40px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+.bottom button,.bottom button:not(.active){color: rgba(237,241,250,.70) !important;}
+.bottom button.active:not(.fab){background: rgba(255,255,255,.08) !important; color: var(--bank-gold) !important;}
+.bottom .fab,.bottom .fab.active{
+  background: linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.08)), linear-gradient(135deg,#6e95ff,#4e7cff) !important;
+  border-color: rgba(255,255,255,.16) !important;
+  box-shadow: 0 16px 32px rgba(63,98,210,.35), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.bottom .fab span{color:#fff !important; text-shadow: 0 2px 10px rgba(0,0,0,.12);}
+.topnav button{
+  background: rgba(255,255,255,.06) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  color: rgba(245,247,253,.78) !important;
+}
+.topnav button.active{
+  background: rgba(123,182,255,.16) !important;
+  border-color: rgba(123,182,255,.32) !important;
+  color: #dce9ff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+.sync-indicator{
+  background: linear-gradient(180deg, rgba(111,205,149,.18), rgba(73,161,107,.12)) !important;
+  border: 1px solid rgba(118,232,159,.22) !important;
+  color: #c9ffd9 !important;
+}
+#toast{
+  background: rgba(13,20,35,.86) !important;
+  color: var(--bank-text) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+}
+table{background: rgba(15,24,42,.36) !important; border:1px solid rgba(255,255,255,.10) !important;}
+th{background: rgba(255,255,255,.08) !important;}
+td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
+@media(max-width:760px){
+  .card{border-radius:24px !important}
+  .item{border-radius:20px !important}
+  .bottom{background: rgba(9,14,26,.60) !important}
+}

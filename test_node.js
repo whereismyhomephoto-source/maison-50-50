@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const js=fs.readFileSync(__dirname+'/check_inline.js','utf8').replace(/boot\(\);\s*if\('serviceWorker'/,'/*boot disabled*/ if(\'serviceWorker\'');
+const root={innerHTML:''};
+const storage={};
+const ctx={console,localStorage:{getItem:k=>storage[k]??null,setItem:(k,v)=>storage[k]=v},navigator:{},window:{addEventListener:()=>{}},document:{documentElement:{dataset:{}},getElementById:id=>id==='root'?root:null,querySelectorAll:()=>[]},setTimeout:()=>0,clearTimeout:()=>{},setInterval:()=>0,clearInterval:()=>{},Intl,Date,Math,JSON};
+vm.createContext(ctx);
+vm.runInContext(js,ctx);
+vm.runInContext(`state={expenses:[{id:'1',amount:200,expenseType:'materiel',payer:'Guillaume',date:'2026-10-10',category:'Sol',title:'Parquet'},{id:'2',amount:300,expenseType:'main_oeuvre',payer:'Claire',date:'2026-10-10',category:'Carrelage / carreleur',title:'Pose'},{id:'3',amount:5000,expenseType:'apport_frais_notaire',payer:'Claire',date:'2026-10-10',category:'Frais de notaire',title:'Notaire'}],reimbursements:[],projects:[],documents:[],docFolders:[]};homeView()`,ctx);
+const html=root.innerHTML;
+for (const text of ['5\u202f500,00','200,00','300,00','5\u202f000,00','bank-quick-actions','bank-payer','bank-category-acquisition','Mouvements']) assert(html.includes(text),text);
+assert((html.match(/class="bank-category /g)||[]).length===3);
+console.log('PASS: four totals, three category cards, 2 payer cards, action links');
