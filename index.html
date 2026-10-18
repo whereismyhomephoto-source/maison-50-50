@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MAISON_50_50_RELEASE: v15-mouvements-dock-fix -->
+<!-- MAISON_50_50_RELEASE: v17-inline-glass-fix -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v15-mouvements-dock-fix">
+  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v17-inline-glass-fix">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <style id="maison-v15-styles">
+  <style id="maison-v17-glass-styles">
 :root{--bg:#fff7df;--card:#fffdf6;--ink:#2f2615;--muted:#84765a;--brand:#d89b21;--brand2:#b97809;--line:#ead9a9;--green:#2f7d59;--red:#b24842;--shadow:0 18px 50px rgba(150,100,0,.13)}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 10% 0%,#ffe7a8,transparent 32%),linear-gradient(135deg,#fff9e8,#f2d884);min-height:100vh}.app{max-width:1050px;margin:auto;padding:18px 18px 96px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:54px;height:54px;border-radius:20px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:white;font-size:28px;font-weight:900;box-shadow:var(--shadow)}h1{font-size:28px;margin:0;letter-spacing:-.04em}.brand p{margin:2px 0 0;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:rgba(255,250,245,.88);border:1px solid rgba(255,255,255,.7);border-radius:28px;padding:18px;box-shadow:var(--shadow);backdrop-filter:blur(14px)}.hero{grid-column:span 7}.side{grid-column:span 5}.full{grid-column:1/-1}.metric{grid-column:span 4}.metric .label{color:var(--muted);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em}.metric .value{font-weight:900;font-size:30px;margin-top:8px;letter-spacing:-.04em}.positive{color:var(--green)}.negative{color:var(--red)}button{border:0;border-radius:16px;padding:12px 16px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;font-weight:800;cursor:pointer;box-shadow:0 12px 26px rgba(154,98,61,.22)}button.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}button.danger{background:linear-gradient(135deg,#c45b55,#94302d)}button.small{padding:8px 10px;border-radius:12px;font-size:13px;box-shadow:none}.actions{display:flex;gap:10px;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-weight:800}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px;font:inherit;color:var(--ink)}input:focus,select:focus,textarea:focus{outline:3px solid rgba(154,98,61,.16);border-color:var(--brand)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.list{display:flex;flex-direction:column;gap:10px}.item{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px}.item b{display:block}.item span{display:block;color:var(--muted);font-size:14px;line-height:1.35}.amount{font-weight:900;white-space:nowrap}.rowactions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.settle{font-size:24px;font-weight:900;line-height:1.15}.muted{color:var(--muted)}.bottom{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;justify-content:center;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(255,250,245,.9);backdrop-filter:blur(16px);border-top:1px solid var(--line)}.bottom button{box-shadow:none}.bottom button:not(.active){background:#fff;color:var(--ink);border:1px solid var(--line)}#toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(12px);background:#2c241f;color:white;border-radius:999px;padding:11px 16px;opacity:0;transition:.2s;pointer-events:none}#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}table{width:100%;border-collapse:collapse;background:#fff;border-radius:18px;overflow:hidden}td,th{padding:12px;border-bottom:1px solid var(--line);text-align:left}th{background:#f3e4d6}.summaryline{padding:12px;border-radius:18px;background:#fff;border:1px solid var(--line);margin-top:10px}.pill{display:inline-block;border-radius:999px;padding:6px 10px;background:#f1dfce;color:#6f3f24;font-weight:800;font-size:13px}@media(max-width:760px){.app{padding:14px 14px 92px}.grid{display:block}.card{margin-bottom:13px;border-radius:24px}.formgrid{grid-template-columns:1fr}.top{align-items:flex-start}.top .secondary{display:none}.item{display:block}.rowactions{justify-content:flex-start;margin-top:10px}.metric .value{font-size:26px}h1{font-size:24px}.settle{font-size:21px}}
 /* Améliorations demandées */
 .metric{grid-column:span 3}.expense-main{display:flex;gap:12px;align-items:flex-start}.expense-emoji{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:#ffefb5;font-size:23px;flex:0 0 auto}.redline{display:inline-block;margin-top:4px;color:var(--red);font-weight:900}.item .redline{color:var(--red)}
@@ -758,8 +758,163 @@ html[data-theme="light"] .bottom.app-dock .dock-add > .dock-add-label{color:#445
   .bottom.app-dock .dock-add > .dock-add-label{font-size:9px!important}
 }
 
+
+/* ===== v17 INLINE GLASS FIX ===== */
+/* ===== v16 Glassmorphism premium ===== */
+:root{
+  --glass-bg: rgba(18, 26, 43, 0.42);
+  --glass-bg-soft: rgba(18, 26, 43, 0.28);
+  --glass-line: rgba(255,255,255,0.16);
+  --glass-line-strong: rgba(255,255,255,0.24);
+  --glass-highlight: rgba(255,255,255,0.18);
+  --bank-accent: #7fb6ff;
+  --bank-accent-2: #5c8cff;
+  --bank-gold: #f3d59f;
+  --bank-text: #f6f8fd;
+  --bank-muted: rgba(235,240,250,0.74);
+}
+html[data-theme="dark"] body, body{
+  color: var(--bank-text) !important;
+  background:
+    radial-gradient(circle at 14% 8%, rgba(89,126,255,0.42), transparent 28%),
+    radial-gradient(circle at 88% 10%, rgba(48,163,255,0.18), transparent 24%),
+    radial-gradient(circle at 50% 95%, rgba(250,173,80,0.16), transparent 34%),
+    linear-gradient(180deg,#08101f 0%, #0d1730 38%, #111d3d 100%) !important;
+  background-attachment: fixed !important;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(600px 250px at 15% 22%, rgba(255,255,255,0.12), transparent 70%),
+    radial-gradient(500px 220px at 78% 12%, rgba(113,173,255,0.10), transparent 72%),
+    linear-gradient(140deg, rgba(255,255,255,0.08), transparent 38%, rgba(255,255,255,0.02) 70%, transparent 90%);
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.65;
+  background-image: radial-gradient(rgba(255,255,255,.10) 0.65px, transparent 0.75px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,.8), rgba(0,0,0,.25));
+}
+.card,
+.top,
+.bottom,
+.item,
+.summaryline,
+.project-total,
+.metric,
+.total-top,
+.halfmetric,
+button.secondary,
+table,
+input,select,textarea{
+  backdrop-filter: blur(18px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
+}
+.top{
+  background: rgba(17,24,39,.38) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  box-shadow: 0 18px 40px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.09) !important;
+}
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06)) !important;
+  border: 1px solid var(--glass-line) !important;
+  box-shadow: 0 20px 42px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+.card:hover{box-shadow: 0 24px 52px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.16) !important;}
+.metric .label, .muted, .item span, .brand p, .submetric, .summaryline, .project-total .label, th, td {color: var(--bank-muted) !important;}
+h1,.brand h1,.metric .value,.settle,.amount,strong,b,th{color: var(--bank-text) !important;}
+.positive{color: #7af0ab !important}
+.negative{color: #ff8c88 !important}
+.logo,.brand-icon{
+  box-shadow: 0 12px 24px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+.item{
+  background: linear-gradient(180deg, rgba(13,24,44,.42), rgba(17,29,53,.30)) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 12px 24px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.expense-emoji{
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14) !important;
+}
+button.secondary{
+  background: rgba(255,255,255,.07) !important;
+  color: var(--bank-text) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+}
+button.small.secondary{
+  background: rgba(255,255,255,.05) !important;
+}
+button{
+  box-shadow: 0 10px 24px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+input,select,textarea{
+  background: rgba(255,255,255,.08) !important;
+  color: var(--bank-text) !important;
+  border: 1px solid rgba(255,255,255,.11) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+input::placeholder, textarea::placeholder{color: rgba(235,240,250,.44) !important;}
+.pill, .mini-recap span{
+  background: rgba(255,255,255,.10) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  color: var(--bank-gold) !important;
+}
+.bottom{
+  background: rgba(9,14,26,.52) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  box-shadow: 0 18px 40px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+.bottom button,.bottom button:not(.active){color: rgba(237,241,250,.70) !important;}
+.bottom button.active:not(.fab){background: rgba(255,255,255,.08) !important; color: var(--bank-gold) !important;}
+.bottom .fab,.bottom .fab.active{
+  background: linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.08)), linear-gradient(135deg,#6e95ff,#4e7cff) !important;
+  border-color: rgba(255,255,255,.16) !important;
+  box-shadow: 0 16px 32px rgba(63,98,210,.35), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.bottom .fab span{color:#fff !important; text-shadow: 0 2px 10px rgba(0,0,0,.12);}
+.topnav button{
+  background: rgba(255,255,255,.06) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  color: rgba(245,247,253,.78) !important;
+}
+.topnav button.active{
+  background: rgba(123,182,255,.16) !important;
+  border-color: rgba(123,182,255,.32) !important;
+  color: #dce9ff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+.sync-indicator{
+  background: linear-gradient(180deg, rgba(111,205,149,.18), rgba(73,161,107,.12)) !important;
+  border: 1px solid rgba(118,232,159,.22) !important;
+  color: #c9ffd9 !important;
+}
+#toast{
+  background: rgba(13,20,35,.86) !important;
+  color: var(--bank-text) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+}
+table{background: rgba(15,24,42,.36) !important; border:1px solid rgba(255,255,255,.10) !important;}
+th{background: rgba(255,255,255,.08) !important;}
+td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
+@media(max-width:760px){
+  .card{border-radius:24px !important}
+  .item{border-radius:20px !important}
+  .bottom{background: rgba(9,14,26,.60) !important}
+}
+
 </style>
-  <meta name="maison-build" content="v13-banking-movements-dock">
+  <meta name="maison-build" content="v17-inline-glass-fix">
 </head>
 <body>
   <div class="app">

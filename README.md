@@ -1,1 +1,1 @@
-Maison 50/50 v16 — version glassmorphism / transparence.\n
+Maison 50/50 v17 — transparence corrigée directement dans index.html. Publier les fichiers à la racine du dépôt GitHub Pages (pas le dossier parent). Cache Service Worker v17. Aucune modification des données Supabase.
