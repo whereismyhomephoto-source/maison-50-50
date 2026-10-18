@@ -537,3 +537,71 @@ html[data-theme="light"] .bank-category-amount{color:#18223b}
 html[data-theme="light"] .bank-payer .label{color:#34405a!important}
 @media(prefers-reduced-motion:reduce){.bank-action,.bank-action-icon{transition:none!important}}
 
+
+/* ===== v13 · mouvements modernes et dock fiable ===== */
+.bank-transactions{padding:17px 13px!important}
+.bank-transactions>.muted{margin:0 3px 16px!important}
+.bank-transactions .list, .list:has(> .movement-card){gap:9px!important;overflow:visible!important}
+.movement-card{position:relative;display:grid;grid-template-columns:46px minmax(0,1fr) 32px;align-items:start;gap:12px;min-width:0;padding:14px 12px!important;border:1px solid #303c58!important;border-radius:19px!important;background:#202940!important;color:#f7f8ff!important;box-shadow:none!important;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.movement-card:active{background:#27334f!important}
+.movement-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:15px;background:#2c3e60;color:#c7d5ff;font-size:22px;flex:none}
+.movement-icon-material{background:#203c3d}.movement-icon-labor{background:#29385a}.movement-icon-acquisition{background:#403449}.movement-icon-unclassified{background:#423a2e}
+.movement-icon-reimbursement{background:#21433d;color:#8ae5bf;font-size:27px;font-weight:800}
+.movement-body{min-width:0}
+.movement-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;min-width:0}
+.movement-title{font-size:14px;font-weight:760;line-height:1.35;min-width:0;overflow-wrap:anywhere}
+.movement-amount{font-size:15px;font-weight:820;letter-spacing:-.035em;white-space:nowrap;font-variant-numeric:tabular-nums;color:#f8faff}
+.movement-credit{color:#8ae5bf}
+.movement-subtitle{font-size:11px;color:#a9b7d0;line-height:1.5;margin-top:4px;overflow-wrap:anywhere}
+.movement-sep{padding:0 3px;color:#687894}
+.movement-footer{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px}
+.movement-chip{display:inline-flex;align-items:center;padding:5px 8px;border-radius:99px;background:#2d3c5d;color:#bfcfff;font-size:10px;font-weight:700;line-height:1.2}
+.movement-chip-reimbursement{background:#204139;color:#8ce1bf}
+.movement-payer{font-size:10px;color:#aab7d0}
+.movement-detail{margin-top:10px;font-size:11px;color:#a9b7d0}
+.movement-detail>summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;list-style:none;padding:3px 0;color:#a9b7f6;font-weight:700}
+.movement-detail>summary::-webkit-details-marker,.movement-menu>summary::-webkit-details-marker{display:none}
+.movement-detail[open]>summary span{transform:rotate(180deg)}
+.movement-breakdown{display:grid;gap:5px;margin-top:8px;padding:10px;border-radius:11px;background:#182238;color:#bdc8dd;line-height:1.5}
+.movement-note{margin-top:8px;font-size:11px;color:#a9b7d0}
+.movement-menu{position:relative;justify-self:end;z-index:2}
+.movement-menu[open]{z-index:30}
+.movement-menu>summary{list-style:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;color:#acb9d4;cursor:pointer;background:transparent;transition:background .15s ease}
+.movement-menu>summary:active,.movement-menu[open]>summary{background:#33415d;color:white}
+.movement-menu>summary svg{width:19px;height:19px;fill:currentColor}
+.movement-menu-panel{position:absolute;right:0;top:37px;width:151px;padding:5px;background:#293651;border:1px solid #475779;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);display:grid;gap:2px;z-index:50}
+.movement-menu-panel button,.movement-menu-panel button.secondary,.movement-menu-panel button.danger{display:flex;align-items:center;gap:9px;text-align:left;width:100%;padding:11px!important;border:0!important;border-radius:10px!important;background:transparent!important;color:#e8eeff!important;box-shadow:none!important;font-size:12px;font-weight:700}
+.movement-menu-panel button:active{background:#3a4a6b!important}
+.movement-menu-panel button.movement-delete{color:#ffacb8!important}
+.movement-menu-panel button svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* Dock unifié : les cinq boutons sont intégrés à la barre, sans débordement du + */
+.app{padding-bottom:calc(100px + env(safe-area-inset-bottom))!important}
+.bottom.app-dock{position:fixed!important;inset:auto 0 0 0!important;transform:none!important;max-width:none!important;width:100%!important;height:calc(77px + env(safe-area-inset-bottom))!important;margin:0!important;padding:8px 8px calc(8px + env(safe-area-inset-bottom))!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;align-items:stretch!important;gap:2px!important;border:0!important;border-top:1px solid #303a57!important;border-radius:22px 22px 0 0!important;background:#151d30!important;box-shadow:0 -9px 26px rgba(5,10,25,.23)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;overflow:visible!important;z-index:9999!important}
+.bottom.app-dock::before{content:none!important;display:none!important}
+.bottom.app-dock .dock-item,.bottom.app-dock .dock-item:not(.active),.bottom.app-dock .fab,.bottom.app-dock .fab.active{position:relative!important;z-index:1!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important;width:100%!important;height:60px!important;min-width:0!important;min-height:0!important;flex:none!important;align-self:center!important;justify-self:stretch!important;margin:0!important;padding:5px 1px!important;border:0!important;border-radius:15px!important;background:transparent!important;box-shadow:none!important;color:#98a6c2!important;font-size:10px!important;line-height:1!important;font-weight:700!important;letter-spacing:0!important;transform:none;transition:background .16s ease,color .16s ease,transform .16s ease!important}
+.bottom.app-dock .dock-item.active,.bottom.app-dock .dock-add.active{background:#26365b!important;color:#e3e9ff!important}
+.bottom.app-dock .dock-item.active::after{content:none!important}
+.bottom.app-dock .dock-icon{width:24px;height:24px;display:grid;place-items:center;filter:none!important;transform:none!important;animation:none!important}
+.bottom.app-dock .dock-icon svg{width:23px;height:23px;stroke-width:1.9}
+.bottom.app-dock .dock-item:active,.bottom.app-dock .dock-add:active{transform:scale(.92)!important;background:#293b66!important}
+.bottom.app-dock .dock-add .dock-add-symbol{display:grid;place-items:center;width:40px;height:40px;border-radius:14px;background:#5c70ff;color:#fff;box-shadow:none;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .18s}
+.bottom.app-dock .dock-add .dock-add-symbol svg{display:block;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round}
+.bottom.app-dock .dock-add:active .dock-add-symbol{transform:scale(.87) rotate(90deg);background:#8190ff}
+.bottom.app-dock .dock-add .dock-add-label{font-size:10px;color:#c9d2f5;font-weight:760}
+html[data-theme="dark"] .bottom.app-dock{background:#151d30!important;border-color:#303a57!important}
+html[data-theme="dark"] .bottom.app-dock .fab,html[data-theme="dark"] .bottom.app-dock .fab.active{background:transparent!important;border:0!important;box-shadow:none!important;color:#c9d2f5!important}
+html[data-theme="dark"] .bottom.app-dock .dock-item.active,html[data-theme="dark"] .bottom.app-dock .dock-add.active{background:#26365b!important;color:#e3e9ff!important}
+html[data-theme="light"] .movement-card{background:#fff!important;color:#18223b!important;border-color:#e0e5f0!important}
+html[data-theme="light"] .movement-title,html[data-theme="light"] .movement-amount{color:#18223b}
+html[data-theme="light"] .movement-subtitle,html[data-theme="light"] .movement-payer{color:#68758f}
+html[data-theme="light"] .movement-detail>summary{color:#4459a7}
+html[data-theme="light"] .movement-breakdown{background:#f0f3fa;color:#44516a}
+html[data-theme="light"] .movement-chip{background:#edf0fa;color:#475ba4}
+html[data-theme="light"] .movement-credit{color:#13835b}
+html[data-theme="light"] .movement-menu>summary{color:#62708d}
+html[data-theme="light"] .bottom.app-dock{background:#fff!important;border-color:#e0e5f0!important}
+html[data-theme="light"] .bottom.app-dock .dock-item{color:#6b7793!important}
+html[data-theme="light"] .bottom.app-dock .dock-item.active{color:#445bd0!important;background:#eef0ff!important}
+html[data-theme="light"] .bottom.app-dock .dock-add .dock-add-label{color:#445bd0!important}
+@media(max-width:430px){.bottom.app-dock{height:calc(75px + env(safe-area-inset-bottom))!important;padding:6px 4px calc(7px + env(safe-area-inset-bottom))!important}.bottom.app-dock .dock-item,.bottom.app-dock .dock-item:not(.active),.bottom.app-dock .fab,.bottom.app-dock .fab.active{height:59px!important;font-size:9px!important}.bottom.app-dock .dock-add .dock-add-symbol{width:38px;height:38px}.movement-card{grid-template-columns:40px minmax(0,1fr) 28px;gap:9px;padding:12px 9px!important}.movement-icon{width:40px;height:40px;border-radius:13px}.movement-head{display:block}.movement-amount{margin-top:3px;font-size:15px}.movement-title{font-size:13px}.movement-menu>summary{width:28px;height:28px}}
+@media(prefers-reduced-motion:reduce){.movement-card,.bottom.app-dock button,.bottom.app-dock .dock-add-symbol{transition:none!important;animation:none!important}}

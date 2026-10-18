@@ -1,10 +1,11 @@
-# Maison 50/50 — v12 · Design bancaire
+# Maison 50/50 — v13 · Mouvements & navigation bancaire
 
-Nouvelle interface d’accueil inspirée des codes graphiques des applications bancaires, sans reprendre la marque Revolut : bleu profond, solde principal, raccourcis circulaires, ventilation des dépenses, cartes Guillaume/Claire, solde et historique.
+- Cartes Mouvements et Historique modernisées, montant mis en évidence, catégorie, date et payeur.
+- Modifier/Supprimer dans un menu discret « … » pour chaque mouvement, suppression toujours confirmée.
+- Détails de répartition 50/50 dépliables.
+- Dock inférieur repensé, cinq boutons accessibles, + en SVG véritable et action immédiate sans temporisation.
+- Les quatre catégories de total, Supabase et la protection des formulaires v9 sont conservés.
 
-## Données et installation
-Les quatre totaux restent présents : total général, matériel, main d’œuvre, apport frais et notaire. Les formulaires et la synchronisation Supabase sont inchangés. Les anciennes dépenses non classées restent dans le total général.
+## Déploiement
 
-Remplacer les fichiers à la racine du dépôt GitHub Pages puis attendre la publication. Ne pas modifier les tables Supabase. Faire une sauvegarde JSON avant déploiement.
-
-L’application inclut le CSS et le JavaScript directement dans index.html pour éviter les versions mixtes sur iPhone. Cache PWA v12.
+Exporter une sauvegarde JSON de l'application avant de remplacer les fichiers à la racine du dépôt GitHub Pages. La v13 conserve les données existantes et ne demande aucun changement Supabase. Le JS et le CSS sont intégrés à index.html pour éviter les versions mixtes sur iPhone. Cache PWA v13.
