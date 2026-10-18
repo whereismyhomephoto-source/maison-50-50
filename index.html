@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MAISON_50_50_RELEASE: v21-iphone-fix -->
+<!-- MAISON_50_50_RELEASE: v22-iphone-fix -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v21-iphone-fix">
+  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v22-totaux-interactifs">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -914,7 +914,7 @@ td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
 }
 
 </style>
-  <meta name="maison-build" content="v21-iphone-fix">
+  <meta name="maison-build" content="v22-totaux-interactifs">
 
 <style id="maison-v18-premium-overrides">
 /* ===== v18 premium abstract glass ===== */
@@ -1471,13 +1471,55 @@ html[data-theme="light"] .banking-home .bank-settlement .settle.negative{color:#
 @media(prefers-reduced-motion:reduce){#ambientBackdrop *{animation:none!important}}
 </style>
 
+
+<style id="maison-v22-type-drilldown-styles">
+/* Cartes de totaux cliquables — respect de la mise en page existante */
+.bank-category[role="button"]{position:relative;cursor:pointer;touch-action:manipulation;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease!important}
+.bank-category[role="button"]:focus-visible{outline:2px solid #94c6ff!important;outline-offset:3px}
+.bank-category[role="button"]:active{transform:scale(.975)!important}
+.bank-category[role="button"]:hover{border-color:rgba(169,207,255,.40)!important;box-shadow:0 15px 40px rgba(14,25,56,.17)!important}
+.bank-category[role="button"]::after{content:"›";position:absolute;right:13px;top:44%;font-size:21px;color:rgba(208,224,255,.62);transform:translateY(-50%)}
+.bank-category-acquisition[role="button"]::after{top:57%;right:13px}
+.bank-category[role="button"] .bank-category-top{padding-right:11px}
+@media(max-width:760px){.bank-category-acquisition[role="button"] .bank-category-amount{padding-right:18px}}
+/* Détail par type : verre teinté, même identité que l’accueil */
+.expense-drilldown{display:flex;flex-direction:column;gap:16px;width:100%;padding:4px 0 22px}
+.expense-drilldown-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.expense-drilldown-eyebrow{font-size:10px;letter-spacing:.12em;font-weight:800;color:#9eb3d8;text-align:right}
+.expense-drilldown-back{display:inline-flex;align-items:center;gap:8px;border-radius:16px!important;padding:11px 15px!important;background:rgba(255,255,255,.09)!important;color:#f4f8ff!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:none!important;font-size:13px!important;font-weight:750;min-height:42px}
+.expense-drilldown-back:hover{background:rgba(255,255,255,.15)!important}
+.expense-drilldown-hero{isolation:isolate;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;min-height:194px;padding:22px 22px 23px;border-radius:26px;background:radial-gradient(circle at 15% 0%,rgba(112,185,255,.22),transparent 55%),linear-gradient(125deg,rgba(44,81,163,.55),rgba(17,30,68,.54));border:1px solid rgba(178,210,255,.22);box-shadow:0 17px 45px rgba(4,12,42,.25),inset 0 1px rgba(255,255,255,.14);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%)}
+.expense-drilldown-hero::after{content:"";position:absolute;z-index:-1;width:210px;height:210px;right:-90px;top:-90px;border:42px solid rgba(255,255,255,.045);border-radius:100%}
+.expense-drilldown-hero-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:rgba(255,255,255,.10);color:#cae0ff;border:1px solid rgba(255,255,255,.12)}
+.expense-drilldown-hero-icon svg{width:23px;height:23px}
+.expense-drilldown-category{font-size:15px;font-weight:700;color:#dce8ff}
+.expense-drilldown-amount{font-size:clamp(27px,7vw,45px);font-weight:850;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:#fff;line-height:1.1;overflow-wrap:anywhere}
+.expense-drilldown-caption{color:#bccfe9;font-size:12px;line-height:1.4}
+.expense-drilldown-main_oeuvre .expense-drilldown-hero{background:radial-gradient(circle at 15% 0%,rgba(143,165,255,.26),transparent 54%),linear-gradient(125deg,rgba(48,73,149,.60),rgba(17,30,68,.54))}
+.expense-drilldown-apport_frais_notaire .expense-drilldown-hero{background:radial-gradient(circle at 15% 0%,rgba(248,181,214,.22),transparent 56%),linear-gradient(125deg,rgba(94,63,116,.55),rgba(17,30,68,.54))}
+.expense-drilldown-movements{border-radius:23px;background:rgba(16,28,54,.23);border:1px solid rgba(255,255,255,.10);padding:15px 12px 16px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.expense-drilldown-list-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:1px 3px 16px}
+.expense-drilldown-list-heading h2{font-size:20px;margin:0;color:#f5f8ff}
+.expense-drilldown-list-heading span{font-size:12px;color:#bcc9e2}
+.expense-drilldown-empty{padding:28px 12px;text-align:center;color:#c7d4ec;font-size:14px}
+.expense-drilldown-empty span{display:block;font-size:24px;color:#a5bbff}
+.expense-drilldown .movement-card{max-width:100%}
+html[data-theme="light"] .expense-drilldown-back{background:rgba(255,255,255,.56)!important;color:#19355a!important;border-color:rgba(64,108,177,.20)!important}
+html[data-theme="light"] .expense-drilldown-movements{background:rgba(255,255,255,.38);border-color:rgba(49,86,159,.17)}
+html[data-theme="light"] .expense-drilldown-list-heading h2{color:#13284c}
+html[data-theme="light"] .expense-drilldown-list-heading span{color:#596c8c}
+html[data-theme="light"] .expense-drilldown-eyebrow{color:#526b94}
+@media(max-width:420px){.expense-drilldown-hero{padding:19px;min-height:180px}.expense-drilldown-movements{padding:13px 9px}.expense-drilldown-heading{gap:5px}}
+@media(prefers-reduced-motion:reduce){.bank-category[role="button"]{transition:none!important}}
+</style>
+
 </head>
 <body>
   <div id="ambientBackdrop" aria-hidden="true"><div class="ambient-blob ambient-a"></div><div class="ambient-blob ambient-b"></div><div class="ambient-blob ambient-c"></div><div class="ambient-ribbon"></div><div class="ambient-glow"></div></div>
 
   <div class="app">
     <header class="top">
-      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v21</span></p></div></div>
+      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v22</span></p></div></div>
       <button class="secondary" onclick="resetAll()">Réinitialiser</button>
     </header>
     <nav class="topnav" aria-label="Navigation principale">
@@ -1564,8 +1606,44 @@ function fabAdd(event){
   show('add');
 }
 function toast(t){const el=document.getElementById('toast'); el.textContent=t; el.className='show'; setTimeout(()=>el.className='',1600)}
-function render(){applyTheme();document.querySelectorAll('.bottom button,.topnav button').forEach(b=>b.classList.remove('active')); document.getElementById('nav-'+view)?.classList.add('active'); document.getElementById('quick-add-fab')?.classList.toggle('active',view==='add'); document.getElementById('topnav-'+view)?.classList.add('active'); document.getElementById('topnav-'+view)?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); if(view==='add')addView(); else if(view==='reimburse')reimburseView(); else if(view==='history')historyView(); else if(view==='projects')projectsView(); else if(view==='documents')documentsView(); else homeView()}
+function render(){applyTheme();document.querySelectorAll('.bottom button,.topnav button').forEach(b=>b.classList.remove('active')); document.getElementById('nav-'+(view==='type-expenses'?'home':view))?.classList.add('active'); document.getElementById('quick-add-fab')?.classList.toggle('active',view==='add'); document.getElementById('topnav-'+(view==='type-expenses'?'home':view))?.classList.add('active'); document.getElementById('topnav-'+(view==='type-expenses'?'home':view))?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); if(view==='add')addView(); else if(view==='reimburse')reimburseView(); else if(view==='history')historyView(); else if(view==='type-expenses')typeExpensesView(); else if(view==='projects')projectsView(); else if(view==='documents')documentsView(); else homeView()}
 function layout(html){document.getElementById('root').innerHTML=html}
+const clickableExpenseTypes=['materiel','main_oeuvre','apport_frais_notaire'];
+function showTypeExpenses(type){
+  if(!clickableExpenseTypes.includes(type))return;
+  selectedExpenseType=type;
+  expenseEditReturnType=null;
+  view='type-expenses';
+  editingId=null;editingReimbursementId=null;editingProjectId=null;
+  render();
+  window.scrollTo(0,0);
+}
+function typeExpensesView(){
+  const type=clickableExpenseTypes.includes(selectedExpenseType)?selectedExpenseType:'materiel';
+  const labels={materiel:'Matériel',main_oeuvre:'Main d’œuvre',apport_frais_notaire:'Apport frais et notaire'};
+  const hints={materiel:'Achats et fournitures',main_oeuvre:'Prestations et artisans',apport_frais_notaire:'Frais liés à l’acquisition'};
+  const icon=movementIcon(type);
+  const list=state.expenses.filter(e=>expenseType(e)===type)
+    .sort((a,b)=>(b.date||'').localeCompare(a.date||'')||String(b.id).localeCompare(String(a.id)));
+  const count=list.length;
+  const totalAmount=list.reduce((sum,e)=>sum+Number(e.amount||0),0);
+  layout(`<div class="expense-drilldown expense-drilldown-${type}">
+    <div class="expense-drilldown-heading">
+      <button type="button" class="expense-drilldown-back" onclick="show('home')" aria-label="Retour à l’accueil">← <span>Accueil</span></button>
+      <span class="expense-drilldown-eyebrow">RÉPARTITION DU BUDGET</span>
+    </div>
+    <section class="expense-drilldown-hero" aria-label="Total ${labels[type]}">
+      <div class="expense-drilldown-hero-icon" aria-hidden="true">${icon}</div>
+      <div class="expense-drilldown-category">${labels[type]}</div>
+      <div class="expense-drilldown-amount">${money(totalAmount)}</div>
+      <div class="expense-drilldown-caption">${count} dépense${count>1?'s':''} · ${hints[type]}</div>
+    </section>
+    <section class="expense-drilldown-movements" aria-label="Dépenses ${labels[type]}">
+      <div class="expense-drilldown-list-heading"><h2>Dépenses</h2><span>${count} mouvement${count>1?'s':''}</span></div>
+      <div class="list">${count?list.map(expenseLine).join(''):'<div class="expense-drilldown-empty"><span aria-hidden="true">✦</span><p>Aucune dépense dans cette catégorie pour le moment.</p></div>'}</div>
+    </section>
+  </div>`);
+}
 function homeView(){
   const b=balance();
   const gNet=netPaid('Guillaume'), cNet=netPaid('Claire');
@@ -1594,9 +1672,9 @@ function homeView(){
     <section class="bank-categories" aria-label="Répartition des dépenses">
       <div class="bank-section-heading"><h2>Répartition</h2><span>Par type de dépense</span></div>
       <div class="bank-category-grid">
-        <div class="bank-category bank-category-material"><div class="bank-category-top"><span class="bank-category-symbol">▦</span><span>01</span></div><div class="bank-category-name">Matériel</div><div class="bank-category-amount">${money(totalByType('materiel'))}</div></div>
-        <div class="bank-category bank-category-labor"><div class="bank-category-top"><span class="bank-category-symbol">⚒</span><span>02</span></div><div class="bank-category-name">Main d’œuvre</div><div class="bank-category-amount">${money(totalByType('main_oeuvre'))}</div></div>
-        <div class="bank-category bank-category-acquisition"><div class="bank-category-top"><span class="bank-category-symbol">⌂</span><span>03</span></div><div class="bank-category-name">Apport frais et notaire</div><div class="bank-category-amount">${money(totalByType('apport_frais_notaire'))}</div></div>
+        <div class="bank-category bank-category-material" role="button" tabindex="0" aria-label="Voir les dépenses Matériel" onclick="showTypeExpenses('materiel')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showTypeExpenses('materiel')}"><div class="bank-category-top"><span class="bank-category-symbol">▦</span><span>01</span></div><div class="bank-category-name">Matériel</div><div class="bank-category-amount">${money(totalByType('materiel'))}</div></div>
+        <div class="bank-category bank-category-labor" role="button" tabindex="0" aria-label="Voir les dépenses Main d’œuvre" onclick="showTypeExpenses('main_oeuvre')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showTypeExpenses('main_oeuvre')}"><div class="bank-category-top"><span class="bank-category-symbol">⚒</span><span>02</span></div><div class="bank-category-name">Main d’œuvre</div><div class="bank-category-amount">${money(totalByType('main_oeuvre'))}</div></div>
+        <div class="bank-category bank-category-acquisition" role="button" tabindex="0" aria-label="Voir les dépenses Apport frais et notaire" onclick="showTypeExpenses('apport_frais_notaire')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showTypeExpenses('apport_frais_notaire')}"><div class="bank-category-top"><span class="bank-category-symbol">⌂</span><span>03</span></div><div class="bank-category-name">Apport frais et notaire</div><div class="bank-category-amount">${money(totalByType('apport_frais_notaire'))}</div></div>
       </div>
     </section>
     ${unclassified.length?`<div class="classification-alert" role="status"><span><b>${unclassified.length} dépense${unclassified.length>1?'s':''} à classer</b> (${money(unclassifiedTotal)}). Déjà incluse${unclassified.length>1?'s':''} dans le total général.</span><button class="small secondary" onclick="edit('${esc(unclassified[0].id)}')">Classer</button></div>`:''}
@@ -1677,7 +1755,7 @@ function addView(){
     <div class="field"><label for="amount">Montant payé</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="0,00" value="${e?Number(e.amount||0):''}"></div>
     <div class="field"><label for="payer">Payé par</label><select id="payer">${people.map(p=>`<option ${e?.payer===p?'selected':''}>${p}</option>`).join('')}</select></div>
     <div class="field"><label for="note">Note facultative</label><input id="note" placeholder="Magasin, artisan, facture..." value="${esc(e?.note||'')}"></div>
-    </div><div class="summaryline" id="preview">La moitié sera calculée automatiquement.</div><div class="actions"><button onclick="saveExpense()">${e?'Enregistrer les modifications':'Ajouter la dépense'}</button>${e?'<button class="secondary" onclick="show(\'history\')">Annuler</button>':''}</div></div>`);
+    </div><div class="summaryline" id="preview">La moitié sera calculée automatiquement.</div><div class="actions"><button onclick="saveExpense()">${e?'Enregistrer les modifications':'Ajouter la dépense'}</button>${e?`<button class="secondary" onclick="${expenseEditReturnType?`showTypeExpenses('${expenseEditReturnType}')`:`show('history')`}">Annuler</button>`:''}</div></div>`);
   ['amount','payer'].forEach(id=>document.getElementById(id).addEventListener('input',preview));
   document.getElementById('expenseType').addEventListener('change',updateExpenseCategories);
   document.getElementById('category').addEventListener('change',()=>{if(!editingId)document.getElementById('emoji').value=emojiFor(v('category'));preview()});
@@ -1692,7 +1770,7 @@ function saveExpense(){
   const data={date:v('date'),expenseType:expenseTypeValue,category:v('category'),title:v('title')||v('category'),emoji:v('emoji')||emojiFor(v('category')),amount,payer:v('payer'),note:v('note')};
   if(editingId){Object.assign(state.expenses.find(e=>e.id===editingId),data);toast('Dépense modifiée')}
   else{state.expenses.push({id:uid(),...data});toast('Dépense ajoutée')}
-  save();show('home');
+  save();if(expenseEditReturnType){const returnType=expenseEditReturnType;expenseEditReturnType=null;showTypeExpenses(returnType)}else show('home');
 }
 function reimburseView(){const r=editingReimbursementId?state.reimbursements.find(x=>x.id===editingReimbursementId):null;layout(`<div class="card"><h2>${r?'Modifier':'Ajouter'} un remboursement</h2><p class="muted">Note un virement ou paiement entre Guillaume et Claire. Ce montant ne compte pas comme une dépense : il vient uniquement réduire le solde dû entre vous.</p><div class="formgrid"><div class="field"><label>Date</label><input id="rdate" type="date" value="${esc(r?.date||new Date().toISOString().slice(0,10))}"></div><div class="field"><label>Qui a envoyé l’argent ?</label><select id="rfrom">${people.map(p=>`<option ${r?.from===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="field"><label>À qui ?</label><select id="rto">${people.map(p=>`<option ${r?.to===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="field"><label>Montant envoyé</label><input id="ramount" type="number" step="0.01" placeholder="0,00" value="${r?Number(r.amount||0):''}"></div><div class="field"><label>Note facultative</label><input id="rnote" placeholder="Ex : virement pour solder les dépenses en retard" value="${esc(r?.note||'')}"></div></div><div class="summaryline" id="rpreview">Le remboursement sera déduit du solde entre vous.</div><div class="actions"><button onclick="saveReimbursement()">${r?'Enregistrer les modifications':'Enregistrer le remboursement'}</button><button class="secondary" onclick="show('home')">Annuler</button></div></div>`); ['rfrom','rto','ramount'].forEach(id=>document.getElementById(id).addEventListener('input',previewReimbursement)); previewReimbursement()}
 function previewReimbursement(){const amount=num('ramount'), from=v('rfrom'), to=v('rto'); if(from===to){document.getElementById('rpreview').innerHTML='<b>Choisis deux personnes différentes.</b>';return} document.getElementById('rpreview').innerHTML=amount?`${from} envoie <b>${money(amount)}</b> à ${to}. Ce montant viendra réduire ce que ${from} doit éventuellement à ${to}.`:'Le remboursement sera déduit du solde entre vous.'}
@@ -1802,7 +1880,7 @@ function saveDocumentEdit(id){const d=state.documents.find(x=>x.id===id); if(!d)
 async function deleteDocument(id){if(!confirm('Supprimer ce document ?'))return; const d=state.documents.find(x=>x.id===id); if(d&&d.storagePath&&cloudSession){try{await deleteStoredDocument(d.storagePath)}catch(e){console.error(e)}} state.documents=state.documents.filter(d=>d.id!==id); save(); render(); toast('Document supprimé')}
 
 function historyView(){layout(`<div class="card"><h2>Historique</h2><p class="muted">Toutes les dépenses et remboursements enregistrés.</p><div class="actions"><button onclick="exportData()">Exporter</button><button class="secondary" onclick="importData()">Importer</button></div><h3>Dépenses</h3><div class="list" style="margin-top:14px">${state.expenses.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'') || String(b.id).localeCompare(String(a.id))).map(expenseLine).join('')||'<p class="muted">Aucune dépense.</p>'}</div><h3>Remboursements</h3><div class="list" style="margin-top:14px">${state.reimbursements.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'') || String(b.id).localeCompare(String(a.id))).map(reimbursementLine).join('')||'<p class="muted">Aucun remboursement.</p>'}</div></div>`) }
-function edit(id){editingId=id; view='add'; render()}
+function edit(id){expenseEditReturnType=view==='type-expenses'?selectedExpenseType:null;editingId=id; view='add'; render()}
 function del(id){if(!confirm('Supprimer cette dépense ?'))return; state.expenses=state.expenses.filter(e=>e.id!==id); save(); render(); toast('Dépense supprimée')}
 function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='maison-50-50-depenses.json'; a.click(); URL.revokeObjectURL(a.href)}
 function importData(){const inp=document.createElement('input'); inp.type='file'; inp.accept='application/json'; inp.onchange=async()=>{try{const data=JSON.parse(await inp.files[0].text()); if(!data.expenses)throw new Error(); state={expenses:data.expenses||[],reimbursements:data.reimbursements||[],projects:data.projects||[],docFolders:data.docFolders||[{id:'general',name:'Général'}],documents:data.documents||[]}; save(); render(); toast('Import réussi')}catch(e){toast('Fichier invalide')}}; inp.click()}
