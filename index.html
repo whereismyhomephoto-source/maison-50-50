@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MAISON_50_50_RELEASE: v18-premium-glass -->
+<!-- MAISON_50_50_RELEASE: v19-true-glass-dock -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v18-premium-glass">
+  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v19-true-glass-dock">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -914,7 +914,7 @@ td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
 }
 
 </style>
-  <meta name="maison-build" content="v18-premium-glass">
+  <meta name="maison-build" content="v19-true-glass-dock">
 
 <style id="maison-v18-premium-overrides">
 /* ===== v18 premium abstract glass ===== */
@@ -1068,8 +1068,133 @@ input::placeholder,textarea::placeholder{color:rgba(236,243,255,.44)!important}
 }
 </style>
 
+
+<style id="maison-v19-final">
+/* V19 — cible explicite des vraies cartes bancaires. Surface du verre non opaque. */
+html[data-theme="dark"] body{background:linear-gradient(165deg,#080e20,#0c1730 50%,#101a38 100%)!important}
+#ambientBackdrop{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;isolation:isolate;contain:layout paint}
+#ambientBackdrop .ambient-blob{position:absolute;border-radius:50%;transform:rotate(-26deg);opacity:.9}
+#ambientBackdrop .ambient-a{width:140vw;height:60vw;max-height:570px;top:-23vw;left:-27vw;background:radial-gradient(ellipse at 52% 58%,rgba(103,151,255,.78),rgba(59,95,228,.30) 50%,transparent 73%);filter:blur(22px)}
+#ambientBackdrop .ambient-b{width:110vw;height:86vw;max-height:720px;top:15%;right:-57vw;background:radial-gradient(ellipse at 45% 45%,rgba(63,198,235,.36),rgba(56,113,222,.21) 48%,transparent 72%);filter:blur(20px)}
+#ambientBackdrop .ambient-c{width:125vw;height:100vw;max-height:680px;bottom:-28vw;left:-53vw;background:radial-gradient(ellipse,rgba(194,115,223,.24),rgba(248,160,104,.12) 52%,transparent 78%);filter:blur(20px)}
+#ambientBackdrop .ambient-ribbon{position:absolute;width:115vw;height:100vh;top:13%;left:36%;border:clamp(56px,14vw,190px) solid rgba(121,168,255,.105);border-radius:50%;transform:rotate(-38deg);filter:blur(3px);opacity:.72}
+#ambientBackdrop .ambient-glow{position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.055),transparent 35%,rgba(126,182,255,.06) 75%,transparent 95%)}
+.app{z-index:1;position:relative!important;padding-bottom:calc(116px + env(safe-area-inset-bottom))!important}
+/* La classe bank-category n'etait pas couverte par les précédents effets glass. */
+html[data-theme="dark"] .banking-home .bank-category{
+ background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(15,28,65,.20) 60%,rgba(9,22,53,.34))!important;
+ border:1px solid rgba(255,255,255,.20)!important;
+ box-shadow:0 18px 40px rgba(1,10,29,.18),inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(255,255,255,.03)!important;
+ backdrop-filter:blur(20px) saturate(165%)!important;
+ -webkit-backdrop-filter:blur(20px) saturate(165%)!important;
+ color:#fff!important;
+}
+html[data-theme="dark"] .banking-home .bank-category-material{background:linear-gradient(135deg,rgba(103,210,185,.17),rgba(30,75,90,.17) 62%,rgba(9,20,48,.28))!important}
+html[data-theme="dark"] .banking-home .bank-category-labor{background:linear-gradient(135deg,rgba(137,166,255,.19),rgba(39,64,119,.16) 62%,rgba(9,20,48,.28))!important}
+html[data-theme="dark"] .banking-home .bank-category-acquisition{background:linear-gradient(135deg,rgba(236,167,195,.17),rgba(76,50,98,.16) 62%,rgba(9,20,48,.28))!important}
+html[data-theme="dark"] .banking-home .bank-category-symbol{
+ background:rgba(255,255,255,.10)!important;
+ border:1px solid rgba(255,255,255,.15)!important;
+ backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;
+}
+html[data-theme="dark"] .banking-home .classification-alert{
+ background:linear-gradient(120deg,rgba(178,151,79,.18),rgba(22,37,51,.24))!important;
+ border:1px solid rgba(255,226,158,.22)!important;
+ backdrop-filter:blur(18px) saturate(125%)!important;-webkit-backdrop-filter:blur(18px) saturate(125%)!important;
+ box-shadow:0 15px 32px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+html[data-theme="dark"] .banking-home .classification-alert button{background:rgba(15,26,52,.35)!important;border:1px solid rgba(255,255,255,.12)!important}
+html[data-theme="dark"] .banking-home .bank-payer,
+html[data-theme="dark"] .banking-home .bank-settlement,
+html[data-theme="dark"] .banking-home .bank-transactions{
+ background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(15,28,60,.20) 70%)!important;
+ border:1px solid rgba(255,255,255,.17)!important;
+ backdrop-filter:blur(20px) saturate(150%)!important;-webkit-backdrop-filter:blur(20px) saturate(150%)!important;
+ box-shadow:0 18px 38px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+html[data-theme="dark"] .movement-card.premium-movement{
+ background:linear-gradient(125deg,rgba(255,255,255,.12),rgba(21,42,75,.20))!important;
+ border:1px solid rgba(255,255,255,.13)!important;
+ backdrop-filter:blur(16px) saturate(140%)!important;-webkit-backdrop-filter:blur(16px) saturate(140%)!important;
+ box-shadow:0 10px 26px rgba(0,0,0,.13),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+/* Glassmorphism sur les raccourcis sans diminuer le contraste. */
+html[data-theme="dark"] .bank-action:not(:first-child) .bank-action-icon{
+ background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06))!important;
+ border:1px solid rgba(255,255,255,.13)!important;
+ backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+/* Dock: vraie capsule flottante; chaque onglet entièrement visible. */
+html[data-theme="dark"] nav.bottom.app-dock{
+ position:fixed!important;inset:auto 12px calc(10px + env(safe-area-inset-bottom)) 12px!important;
+ width:auto!important;max-width:720px!important;margin:0 auto!important;
+ height:77px!important;min-height:77px!important;
+ display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ align-items:center!important;gap:3px!important;
+ padding:6px 7px!important;
+ border-radius:27px!important;border:1px solid rgba(255,255,255,.22)!important;
+ background:linear-gradient(165deg,rgba(38,53,88,.45),rgba(9,19,39,.68))!important;
+ box-shadow:0 20px 60px rgba(0,5,24,.40),inset 0 1px 0 rgba(255,255,255,.20)!important;
+ backdrop-filter:blur(28px) saturate(175%)!important;-webkit-backdrop-filter:blur(28px) saturate(175%)!important;
+ overflow:visible!important;
+ z-index:9999!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock::before{border-radius:inherit!important;overflow:hidden!important}
+html[data-theme="dark"] nav.bottom.app-dock .dock-item,
+html[data-theme="dark"] nav.bottom.app-dock .dock-item:not(.active){
+ align-self:center!important;width:100%!important;min-width:0!important;height:63px!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ gap:5px!important;padding:7px 1px!important;margin:0!important;
+ font-size:10px!important;line-height:1.15!important;font-weight:660!important;
+ color:rgba(227,238,255,.72)!important;border:0!important;
+ background:transparent!important;border-radius:18px!important;box-shadow:none!important;
+ white-space:nowrap!important;overflow:visible!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock .dock-item.active{
+ background:linear-gradient(140deg,rgba(115,167,255,.27),rgba(130,166,255,.08))!important;
+ color:#fff!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock .dock-icon{flex:none!important;display:grid!important;place-items:center!important;height:25px!important;width:25px!important}
+html[data-theme="dark"] nav.bottom.app-dock .dock-icon svg{width:24px!important;height:24px!important}
+html[data-theme="dark"] nav.bottom.app-dock .fab.dock-add,
+html[data-theme="dark"] nav.bottom.app-dock .fab.dock-add.active{
+ align-self:center!important;justify-self:stretch!important;width:100%!important;min-width:0!important;
+ height:65px!important;min-height:65px!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ margin:0!important;gap:5px!important;padding:3px 0!important;
+ border:0!important;background:transparent!important;box-shadow:none!important;
+ color:#f8fbff!important;border-radius:19px!important;
+ overflow:visible!important;
+ transform:none!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock .fab.dock-add>.dock-add-symbol{
+ height:42px!important;width:42px!important;min-height:42px!important;min-width:42px!important;
+ background:linear-gradient(145deg,#7ca5ff,#5066f3)!important;
+ box-shadow:0 8px 16px rgba(70,103,255,.32),inset 0 1px 0 rgba(255,255,255,.37)!important;
+ border:1px solid rgba(255,255,255,.26)!important;border-radius:15px!important;
+ display:grid!important;place-items:center!important;transform:none!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock .fab.dock-add>.dock-add-label{
+ position:relative!important;display:block!important;visibility:visible!important;opacity:.96!important;
+ height:auto!important;min-height:12px!important;max-width:none!important;overflow:visible!important;
+ font-size:10px!important;font-weight:670!important;line-height:1.15!important;
+ color:#eaf0ff!important;transform:none!important;margin:0!important;padding:0!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock .dock-add:active>.dock-add-symbol{transform:scale(.89) rotate(15deg)!important}
+@media(max-width:390px){
+ html[data-theme="dark"] nav.bottom.app-dock{inset:auto 8px calc(7px + env(safe-area-inset-bottom)) 8px!important;padding:6px 4px!important;gap:1px!important}
+ html[data-theme="dark"] nav.bottom.app-dock .dock-item,html[data-theme="dark"] nav.bottom.app-dock .dock-item:not(.active){font-size:9px!important}
+ html[data-theme="dark"] nav.bottom.app-dock .fab.dock-add>.dock-add-label{font-size:9px!important}
+}
+@media(prefers-reduced-motion:reduce){#ambientBackdrop *{filter:none!important}}
+</style>
+
 </head>
 <body>
+  <div id="ambientBackdrop" aria-hidden="true"><div class="ambient-blob ambient-a"></div><div class="ambient-blob ambient-b"></div><div class="ambient-blob ambient-c"></div><div class="ambient-ribbon"></div><div class="ambient-glow"></div></div>
+
   <div class="app">
     <header class="top">
       <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis</p></div></div>
