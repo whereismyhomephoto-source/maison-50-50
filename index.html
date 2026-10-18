@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MAISON_50_50_RELEASE: v22-iphone-fix -->
+<!-- MAISON_50_50_RELEASE: v23-icon08-palette -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v22-totaux-interactifs">
+  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v23-icon08-palette">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -914,7 +914,7 @@ td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
 }
 
 </style>
-  <meta name="maison-build" content="v22-totaux-interactifs">
+  <meta name="maison-build" content="v23-icon08-palette">
 
 <style id="maison-v18-premium-overrides">
 /* ===== v18 premium abstract glass ===== */
@@ -1513,13 +1513,188 @@ html[data-theme="light"] .expense-drilldown-eyebrow{color:#526b94}
 @media(prefers-reduced-motion:reduce){.bank-category[role="button"]{transition:none!important}}
 </style>
 
+
+<style id="maison-v23-icon08-palette">
+:root{
+  --v23-bg:#0a1431;
+  --v23-bg-2:#10224f;
+  --v23-blue:#5a7bff;
+  --v23-blue-2:#7ea5ff;
+  --v23-orange:#e8c79b;
+  --v23-orange-2:#f1d9b7;
+  --v23-cream:#f7f1e7;
+  --v23-text:#f7fbff;
+  --v23-muted:rgba(231,238,255,.78);
+  --v23-glass:rgba(18,31,71,.48);
+  --v23-glass-soft:rgba(18,31,71,.28);
+  --v23-line:rgba(168,188,255,.20);
+  --v23-line-soft:rgba(255,255,255,.12);
+}
+html[data-theme="dark"], html[data-theme="dark"] body, body{
+  background:
+    radial-gradient(900px 360px at -10% -10%, rgba(106,136,255,.34), transparent 60%),
+    radial-gradient(760px 340px at 110% 5%, rgba(232,199,155,.16), transparent 55%),
+    radial-gradient(560px 280px at 50% 100%, rgba(126,165,255,.18), transparent 58%),
+    linear-gradient(180deg, var(--v23-bg) 0%, #0d1c42 42%, var(--v23-bg-2) 100%) !important;
+  color:var(--v23-text)!important;
+}
+html[data-theme="dark"] body::before, body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(36% 18% at 18% 15%, rgba(255,255,255,.12), transparent 64%),
+    radial-gradient(28% 16% at 82% 8%, rgba(232,199,155,.08), transparent 68%),
+    radial-gradient(26% 14% at 65% 60%, rgba(126,165,255,.12), transparent 70%);
+  filter: blur(8px);
+}
+html[data-theme="dark"] .top,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .item,
+html[data-theme="dark"] .summaryline,
+html[data-theme="dark"] .project-total,
+html[data-theme="dark"] .foldercard,
+html[data-theme="dark"] .import-preview,
+html[data-theme="dark"] table,
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] .bottom.app-dock,
+html[data-theme="dark"] .sync-indicator{
+  backdrop-filter: blur(22px) saturate(145%)!important;
+  -webkit-backdrop-filter: blur(22px) saturate(145%)!important;
+}
+html[data-theme="dark"] .top{
+  background:linear-gradient(180deg, rgba(18,31,71,.58), rgba(18,31,71,.34))!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:0 18px 40px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .item,
+html[data-theme="dark"] .summaryline,
+html[data-theme="dark"] .project-total,
+html[data-theme="dark"] .foldercard,
+html[data-theme="dark"] .import-preview,
+html[data-theme="dark"] table{
+  background:linear-gradient(180deg, rgba(20,35,79,.56), rgba(14,26,59,.44))!important;
+  border:1px solid var(--v23-line)!important;
+  box-shadow:0 20px 48px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+html[data-theme="dark"] .card.clickable-card{cursor:pointer;transition:transform .18s ease, box-shadow .18s ease}
+html[data-theme="dark"] .card.clickable-card:active,
+html[data-theme="dark"] .card.clickable-card:hover{transform:translateY(-1px);box-shadow:0 24px 54px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.10)!important}
+html[data-theme="dark"] .hero,
+html[data-theme="dark"] .total-top{
+  background:
+    radial-gradient(120% 120% at 10% 0%, rgba(126,165,255,.20), transparent 54%),
+    radial-gradient(70% 80% at 92% 100%, rgba(232,199,155,.10), transparent 52%),
+    linear-gradient(135deg, #244ff5 0%, #183bb5 48%, #122a80 100%) !important;
+  border-color:rgba(132,158,255,.28)!important;
+}
+html[data-theme="dark"] .metric .label,
+html[data-theme="dark"] .muted,
+html[data-theme="dark"] .item span,
+html[data-theme="dark"] .brand p,
+html[data-theme="dark"] .submetric,
+html[data-theme="dark"] .summaryline,
+html[data-theme="dark"] .project-total .label,
+html[data-theme="dark"] th,
+html[data-theme="dark"] td{color:var(--v23-muted)!important}
+html[data-theme="dark"] h1,
+html[data-theme="dark"] .brand h1,
+html[data-theme="dark"] .metric .value,
+html[data-theme="dark"] .settle,
+html[data-theme="dark"] .amount,
+html[data-theme="dark"] strong,
+html[data-theme="dark"] b{color:var(--v23-text)!important}
+html[data-theme="dark"] .pill,
+html[data-theme="dark"] .mini-recap span,
+html[data-theme="dark"] .hero-badge,
+html[data-theme="dark"] .fifty-pill{
+  background:rgba(255,255,255,.12)!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  color:var(--v23-orange-2)!important;
+}
+html[data-theme="dark"] button:not(.secondary):not(.small):not(.fab){
+  background:linear-gradient(135deg, var(--v23-blue-2), var(--v23-blue))!important;
+  box-shadow:0 14px 28px rgba(62,95,204,.30), inset 0 1px 0 rgba(255,255,255,.18)!important;
+}
+html[data-theme="dark"] button.secondary{
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04))!important;
+  border:1px solid var(--v23-line-soft)!important;
+  color:var(--v23-text)!important;
+}
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea{
+  background:rgba(255,255,255,.07)!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  color:var(--v23-text)!important;
+}
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder{color:rgba(231,238,255,.46)!important}
+html[data-theme="dark"] .expense-emoji,
+html[data-theme="dark"] .foldericon,
+html[data-theme="dark"] .filebig{
+  background:linear-gradient(180deg, rgba(232,199,155,.18), rgba(232,199,155,.07))!important;
+  color:var(--v23-orange-2)!important;
+  border:1px solid rgba(232,199,155,.16)!important;
+}
+html[data-theme="dark"] .topnav button{
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04))!important;
+  border:1px solid rgba(255,255,255,.10)!important;color:rgba(247,251,255,.82)!important;
+}
+html[data-theme="dark"] .topnav button.active{
+  background:linear-gradient(180deg, rgba(100,128,255,.28), rgba(100,128,255,.14))!important;
+  color:var(--v23-cream)!important;border-color:rgba(126,165,255,.28)!important;
+}
+html[data-theme="dark"] .sync-indicator{
+  background:linear-gradient(180deg, rgba(102,159,255,.22), rgba(52,111,232,.14))!important;
+  color:#e8f1ff!important;border:1px solid rgba(126,165,255,.24)!important;
+}
+html[data-theme="dark"] .bottom.app-dock{
+  background:linear-gradient(180deg, rgba(10,20,48,.76), rgba(9,18,42,.92))!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:0 24px 60px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+html[data-theme="dark"] .bottom.app-dock button.active:not(.fab){
+  color:var(--v23-orange-2)!important;background:rgba(255,255,255,.07)!important;
+}
+html[data-theme="dark"] .bottom.app-dock .fab,
+html[data-theme="dark"] .bottom.app-dock .fab.active{
+  background:linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.06)), linear-gradient(135deg, var(--v23-orange-2), #ddb27a)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  box-shadow:0 18px 36px rgba(221,178,122,.28), inset 0 1px 0 rgba(255,255,255,.24)!important;
+}
+html[data-theme="dark"] .bottom.app-dock .dock-add-label{color:#fff7eb!important}
+/* light theme harmonized with icon 08 */
+html[data-theme="light"], html[data-theme="light"] body{
+  background:linear-gradient(180deg,#edf2ff 0%, #dbe7ff 100%)!important;
+  color:#162544!important;
+}
+html[data-theme="light"] .top,
+html[data-theme="light"] .card,
+html[data-theme="light"] .item,
+html[data-theme="light"] .summaryline,
+html[data-theme="light"] .project-total,
+html[data-theme="light"] .foldercard,
+html[data-theme="light"] .import-preview,
+html[data-theme="light"] table{
+  background:rgba(255,255,255,.72)!important;border:1px solid rgba(88,123,255,.12)!important;
+}
+html[data-theme="light"] .hero,
+html[data-theme="light"] .total-top{background:linear-gradient(135deg,#5d7fff 0%, #3c5fe6 56%, #2f4bbd 100%)!important}
+html[data-theme="light"] button:not(.secondary):not(.small):not(.fab){background:linear-gradient(135deg,#6e8eff,#4e6cf0)!important}
+html[data-theme="light"] .bottom.app-dock .fab,
+html[data-theme="light"] .bottom.app-dock .fab.active{background:linear-gradient(135deg,#edd4b2,#e8c79b)!important;color:#2644af!important}
+html[data-theme="light"] .bottom.app-dock .dock-add-label{color:#2644af!important}
+</style>
+
 </head>
 <body>
   <div id="ambientBackdrop" aria-hidden="true"><div class="ambient-blob ambient-a"></div><div class="ambient-blob ambient-b"></div><div class="ambient-blob ambient-c"></div><div class="ambient-ribbon"></div><div class="ambient-glow"></div></div>
 
   <div class="app">
     <header class="top">
-      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v22</span></p></div></div>
+      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v23</span></p></div></div>
       <button class="secondary" onclick="resetAll()">Réinitialiser</button>
     </header>
     <nav class="topnav" aria-label="Navigation principale">
