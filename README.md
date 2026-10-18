@@ -1,1 +1,1 @@
-Maison 50/50 v24 — palette poussée + actions rondes sans cartes.
+Maison 50/50 v25 — correction des rectangles autour des actions rapides.

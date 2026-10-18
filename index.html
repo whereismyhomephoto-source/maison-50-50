@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MAISON_50_50_RELEASE: v24-premium-round-actions -->
+<!-- MAISON_50_50_RELEASE: v25-round-actions-fix -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v24-premium-round-actions">
+  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v25-round-actions-fix">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -914,7 +914,7 @@ td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
 }
 
 </style>
-  <meta name="maison-build" content="v24-premium-round-actions">
+  <meta name="maison-build" content="v25-round-actions-fix">
 
 <style id="maison-v18-premium-overrides">
 /* ===== v18 premium abstract glass ===== */
@@ -1514,7 +1514,7 @@ html[data-theme="light"] .expense-drilldown-eyebrow{color:#526b94}
 </style>
 
 
-<style id="maison-v24-premium-round-actions">
+<style id="maison-v25-round-actions-fix">
 :root{
   --v23-bg:#0a1431;
   --v23-bg-2:#10224f;
@@ -1845,13 +1845,58 @@ html[data-theme="light"] .movement-card.premium-movement{
 html[data-theme="light"] .banking-home .bank-action:first-child .bank-action-icon{box-shadow:0 14px 28px rgba(82,104,250,.22)!important}
 </style>
 
+
+<style id="maison-v25-round-actions-fix">
+/* v25 fix: remove any remaining rectangular styling around quick actions */
+html[data-theme] .banking-home .bank-quick-actions{background:transparent!important;border:0!important;box-shadow:none!important}
+html[data-theme] .banking-home button.bank-action,
+html[data-theme] .banking-home button.bank-action:hover,
+html[data-theme] .banking-home button.bank-action:focus,
+html[data-theme] .banking-home button.bank-action:active{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  outline:none!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:0!important;
+  margin:0!important;
+  min-height:unset!important;
+  min-width:unset!important;
+  filter:none!important;
+}
+html[data-theme] .banking-home button.bank-action::before,
+html[data-theme] .banking-home button.bank-action::after{display:none!important;content:none!important}
+html[data-theme] .banking-home .bank-action>span:last-child{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+}
+html[data-theme] .banking-home .bank-action{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+}
+html[data-theme] .banking-home .bank-action-icon{
+  width:60px!important;height:60px!important;border-radius:999px!important;
+}
+@media(max-width:760px){
+  html[data-theme] .banking-home .bank-action-icon{width:56px!important;height:56px!important}
+}
+</style>
+
 </head>
 <body>
   <div id="ambientBackdrop" aria-hidden="true"><div class="ambient-blob ambient-a"></div><div class="ambient-blob ambient-b"></div><div class="ambient-blob ambient-c"></div><div class="ambient-ribbon"></div><div class="ambient-glow"></div></div>
 
   <div class="app">
     <header class="top">
-      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v24</span></p></div></div>
+      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v25</span></p></div></div>
       <button class="secondary" onclick="resetAll()">Réinitialiser</button>
     </header>
     <nav class="topnav" aria-label="Navigation principale">
