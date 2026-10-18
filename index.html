@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MAISON_50_50_RELEASE: v25-round-actions-fix -->
+<!-- MAISON_50_50_RELEASE: v26-actions-rondes-reelles -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v25-round-actions-fix">
+  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v26-actions-rondes-reelles">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -914,7 +914,7 @@ td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
 }
 
 </style>
-  <meta name="maison-build" content="v25-round-actions-fix">
+  <meta name="maison-build" content="v26-actions-rondes-reelles">
 
 <style id="maison-v18-premium-overrides">
 /* ===== v18 premium abstract glass ===== */
@@ -1022,7 +1022,7 @@ button.secondary, .home-shortcuts .shortcut{
   border:1px solid rgba(255,255,255,.12)!important;color:var(--p-text)!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
 }
-button:not(.secondary):not(.small):not(.fab){box-shadow:0 12px 26px rgba(59,101,214,.24), inset 0 1px 0 rgba(255,255,255,.18)!important}
+button:not(.secondary):not(.small):not(.fab):not(.bank-action){box-shadow:0 12px 26px rgba(59,101,214,.24), inset 0 1px 0 rgba(255,255,255,.18)!important}
 input,select,textarea{
   background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04))!important;
   border:1px solid rgba(255,255,255,.12)!important;color:var(--p-text)!important;
@@ -1514,7 +1514,7 @@ html[data-theme="light"] .expense-drilldown-eyebrow{color:#526b94}
 </style>
 
 
-<style id="maison-v25-round-actions-fix">
+<style id="maison-v26-actions-rondes-reelles">
 :root{
   --v23-bg:#0a1431;
   --v23-bg-2:#10224f;
@@ -1613,7 +1613,7 @@ html[data-theme="dark"] .fifty-pill{
   border:1px solid rgba(255,255,255,.14)!important;
   color:var(--v23-orange-2)!important;
 }
-html[data-theme="dark"] button:not(.secondary):not(.small):not(.fab){
+html[data-theme="dark"] button:not(.secondary):not(.small):not(.fab):not(.bank-action){
   background:linear-gradient(135deg, var(--v23-blue-2), var(--v23-blue))!important;
   box-shadow:0 14px 28px rgba(62,95,204,.30), inset 0 1px 0 rgba(255,255,255,.18)!important;
 }
@@ -1682,7 +1682,7 @@ html[data-theme="light"] table{
 }
 html[data-theme="light"] .hero,
 html[data-theme="light"] .total-top{background:linear-gradient(135deg,#5d7fff 0%, #3c5fe6 56%, #2f4bbd 100%)!important}
-html[data-theme="light"] button:not(.secondary):not(.small):not(.fab){background:linear-gradient(135deg,#6e8eff,#4e6cf0)!important}
+html[data-theme="light"] button:not(.secondary):not(.small):not(.fab):not(.bank-action){background:linear-gradient(135deg,#6e8eff,#4e6cf0)!important}
 html[data-theme="light"] .bottom.app-dock .fab,
 html[data-theme="light"] .bottom.app-dock .fab.active{background:linear-gradient(135deg,#edd4b2,#e8c79b)!important;color:#2644af!important}
 html[data-theme="light"] .bottom.app-dock .dock-add-label{color:#2644af!important}
@@ -1846,7 +1846,7 @@ html[data-theme="light"] .banking-home .bank-action:first-child .bank-action-ico
 </style>
 
 
-<style id="maison-v25-round-actions-fix">
+<style id="maison-v26-actions-rondes-reelles">
 /* v25 fix: remove any remaining rectangular styling around quick actions */
 html[data-theme] .banking-home .bank-quick-actions{background:transparent!important;border:0!important;box-shadow:none!important}
 html[data-theme] .banking-home button.bank-action,
@@ -1890,13 +1890,35 @@ html[data-theme] .banking-home .bank-action-icon{
 }
 </style>
 
+
+<style id="maison-v26-real-round-actions">
+/* v26: les boutons d'action rapide n'ont AUCUN fond; seul le rond interne en a un. */
+html[data-theme] .banking-home .bank-quick-actions > button.bank-action:not(.secondary):not(.small):not(.fab),
+html[data-theme] .banking-home .bank-quick-actions > button.bank-action:not(.secondary):not(.small):not(.fab):is(:hover,:active,:focus){
+  appearance:none!important;-webkit-appearance:none!important;
+  background:transparent!important;background-color:transparent!important;background-image:none!important;
+  box-shadow:none!important;border:0!important;border-radius:0!important;
+  outline:0!important;padding:0!important;margin:0!important;
+  filter:none!important;min-height:0!important;
+}
+html[data-theme] .banking-home .bank-quick-actions > button.bank-action:focus-visible .bank-action-icon{
+  outline:2px solid #b7c7ff!important;outline-offset:4px!important;
+}
+html[data-theme] .banking-home .bank-quick-actions > button.bank-action .bank-action-icon{
+  flex:0 0 auto!important;border-radius:50%!important;
+}
+html[data-theme] .banking-home .bank-quick-actions > button.bank-action > span:last-child{
+  display:block!important;background:none!important;border:none!important;
+  box-shadow:none!important;white-space:nowrap!important;
+}
+</style>
 </head>
 <body>
   <div id="ambientBackdrop" aria-hidden="true"><div class="ambient-blob ambient-a"></div><div class="ambient-blob ambient-b"></div><div class="ambient-blob ambient-c"></div><div class="ambient-ribbon"></div><div class="ambient-glow"></div></div>
 
   <div class="app">
     <header class="top">
-      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v25</span></p></div></div>
+      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v26</span></p></div></div>
       <button class="secondary" onclick="resetAll()">Réinitialiser</button>
     </header>
     <nav class="topnav" aria-label="Navigation principale">
