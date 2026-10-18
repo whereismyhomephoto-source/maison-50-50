@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<!-- MAISON_50_50_RELEASE: v23-icon08-palette -->
+<!-- MAISON_50_50_RELEASE: v24-premium-round-actions -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>La maison des mimis — Suivi des dépenses</title>
-  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v23-icon08-palette">
+  <meta name="theme-color" content="#172137"><meta name="maison-build" content="v24-premium-round-actions">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -914,7 +914,7 @@ td, th{border-bottom-color: rgba(255,255,255,.07) !important;}
 }
 
 </style>
-  <meta name="maison-build" content="v23-icon08-palette">
+  <meta name="maison-build" content="v24-premium-round-actions">
 
 <style id="maison-v18-premium-overrides">
 /* ===== v18 premium abstract glass ===== */
@@ -1514,7 +1514,7 @@ html[data-theme="light"] .expense-drilldown-eyebrow{color:#526b94}
 </style>
 
 
-<style id="maison-v23-icon08-palette">
+<style id="maison-v24-premium-round-actions">
 :root{
   --v23-bg:#0a1431;
   --v23-bg-2:#10224f;
@@ -1688,13 +1688,170 @@ html[data-theme="light"] .bottom.app-dock .fab.active{background:linear-gradient
 html[data-theme="light"] .bottom.app-dock .dock-add-label{color:#2644af!important}
 </style>
 
+
+<style id="maison-v24-premium-refine">
+/* ===== v24 refinements ===== */
+:root{
+  --v24-navy:#0b1533;
+  --v24-navy-2:#122454;
+  --v24-blue:#6f8fff;
+  --v24-blue-2:#91adff;
+  --v24-orange:#e9c89f;
+  --v24-orange-2:#f3dcc0;
+  --v24-card:rgba(18,31,71,.50);
+  --v24-card-soft:rgba(18,31,71,.38);
+  --v24-line:rgba(150,177,255,.18);
+  --v24-line-soft:rgba(255,255,255,.10);
+}
+/* quick actions: icons roundes, sans carte */
+html[data-theme] .banking-home .bank-quick-actions{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;
+  padding:18px 2px 2px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+html[data-theme] .banking-home .bank-action,
+html[data-theme] .banking-home .bank-action:hover{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  border-radius:0!important;
+  min-height:auto!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+}
+html[data-theme] .banking-home .bank-action-icon{
+  width:64px!important;
+  height:64px!important;
+  border-radius:50%!important;
+  display:grid!important;
+  place-items:center!important;
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04))!important;
+  border:1px solid rgba(255,255,255,.11)!important;
+  box-shadow:0 14px 28px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.14)!important;
+  color:#f6f9ff!important;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease!important;
+}
+html[data-theme] .banking-home .bank-action:first-child .bank-action-icon{
+  background:linear-gradient(135deg, var(--v24-blue-2), var(--v24-blue))!important;
+  color:#fff!important;
+  border-color:rgba(255,255,255,.14)!important;
+  box-shadow:0 16px 34px rgba(84,116,235,.34), inset 0 1px 0 rgba(255,255,255,.20)!important;
+}
+html[data-theme] .banking-home .bank-action:nth-child(2) .bank-action-icon{
+  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))!important;
+  color:#f2f6ff!important;
+}
+html[data-theme] .banking-home .bank-action:nth-child(3) .bank-action-icon{
+  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))!important;
+  color:#f2f6ff!important;
+}
+html[data-theme] .banking-home .bank-action>span:last-child{
+  display:block!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+  font-weight:760!important;
+  letter-spacing:-.01em!important;
+  color:#f7fbff!important;
+  opacity:1!important;
+  text-align:center!important;
+}
+html[data-theme="light"] .banking-home .bank-action>span:last-child{color:#1f325e!important}
+html[data-theme] .banking-home .bank-action:active .bank-action-icon{
+  transform:scale(.92)!important;
+}
+@media(max-width:760px){
+  html[data-theme] .banking-home .bank-quick-actions{gap:10px!important;padding-top:16px!important}
+  html[data-theme] .banking-home .bank-action-icon{width:58px!important;height:58px!important}
+}
+/* cards and movements more premium */
+html[data-theme="dark"] .banking-home .bank-category,
+html[data-theme="dark"] .banking-home .bank-payer,
+html[data-theme="dark"] .banking-home .bank-settlement,
+html[data-theme="dark"] .banking-home .bank-transactions,
+html[data-theme="dark"] .movement-card.premium-movement{
+  background:linear-gradient(180deg, rgba(18,31,71,.58), rgba(13,24,56,.42))!important;
+  border:1px solid var(--v24-line)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+html[data-theme="dark"] .banking-home .bank-category{
+  overflow:hidden; position:relative;
+}
+html[data-theme="dark"] .banking-home .bank-category::before,
+html[data-theme="dark"] .movement-card.premium-movement::before{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(145deg, rgba(255,255,255,.10), transparent 38%, transparent 72%, rgba(255,255,255,.04));
+}
+html[data-theme="dark"] .banking-home .bank-category-material{background:linear-gradient(135deg, rgba(31,74,71,.55), rgba(13,24,56,.54) 62%, rgba(11,21,51,.70))!important}
+html[data-theme="dark"] .banking-home .bank-category-labor{background:linear-gradient(135deg, rgba(36,58,102,.58), rgba(13,24,56,.54) 62%, rgba(11,21,51,.70))!important}
+html[data-theme="dark"] .banking-home .bank-category-acquisition{background:linear-gradient(135deg, rgba(69,53,74,.50), rgba(13,24,56,.54) 62%, rgba(11,21,51,.70))!important}
+html[data-theme="dark"] .movement-card.premium-movement{
+  border-radius:22px!important;
+  grid-template-columns:46px minmax(0,1fr) minmax(96px,auto)!important;
+}
+html[data-theme="dark"] .premium-movement .movement-icon{
+  background:linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.04))!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+}
+html[data-theme="dark"] .premium-movement .movement-chip{
+  background:rgba(233,200,159,.11)!important;
+  border:1px solid rgba(233,200,159,.12)!important;
+  color:var(--v24-orange-2)!important;
+}
+html[data-theme="dark"] .premium-movement .premium-more{
+  background:rgba(255,255,255,.05)!important;
+  border:1px solid rgba(255,255,255,.11)!important;
+  color:#d9e5ff!important;
+}
+html[data-theme="dark"] .premium-movement .premium-more:active{background:rgba(111,143,255,.24)!important}
+html[data-theme="dark"] .premium-movement .movement-amount{color:#fbfdff!important}
+html[data-theme="dark"] .premium-movement .movement-credit{color:#b7f0cf!important}
+html[data-theme="dark"] .premium-movement .movement-subtitle,
+html[data-theme="dark"] .premium-movement .movement-payer{color:#c5d3ef!important}
+html[data-theme="dark"] .premium-movement .movement-breakdown{background:rgba(9,18,43,.52)!important;border-color:rgba(255,255,255,.08)!important;color:#d4def4!important}
+/* dock refined */
+html[data-theme] nav.bottom.app-dock{
+  border-radius:32px!important;
+  overflow:hidden!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock{
+  background:linear-gradient(180deg, rgba(9,18,43,.82), rgba(8,16,37,.94))!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  box-shadow:0 24px 64px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock .dock-item,
+html[data-theme="dark"] nav.bottom.app-dock .dock-item:not(.active){color:#d8e2fb!important}
+html[data-theme="dark"] nav.bottom.app-dock .dock-item.active:not(.fab){background:rgba(255,255,255,.06)!important;color:var(--v24-orange-2)!important}
+html[data-theme="dark"] nav.bottom.app-dock .fab.dock-add{
+  background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.06)), linear-gradient(135deg, var(--v24-orange-2), var(--v24-orange))!important;
+  box-shadow:0 18px 38px rgba(233,200,159,.22), inset 0 1px 0 rgba(255,255,255,.26)!important;
+}
+html[data-theme="dark"] nav.bottom.app-dock .fab.dock-add>.dock-add-label{color:#263863!important}
+html[data-theme="light"] .banking-home .bank-category,
+html[data-theme="light"] .banking-home .bank-payer,
+html[data-theme="light"] .banking-home .bank-settlement,
+html[data-theme="light"] .banking-home .bank-transactions,
+html[data-theme="light"] .movement-card.premium-movement{
+  background:linear-gradient(180deg, rgba(255,255,255,.80), rgba(245,249,255,.68))!important;
+  border:1px solid rgba(85,115,214,.11)!important;
+}
+html[data-theme="light"] .banking-home .bank-action:first-child .bank-action-icon{box-shadow:0 14px 28px rgba(82,104,250,.22)!important}
+</style>
+
 </head>
 <body>
   <div id="ambientBackdrop" aria-hidden="true"><div class="ambient-blob ambient-a"></div><div class="ambient-blob ambient-b"></div><div class="ambient-blob ambient-c"></div><div class="ambient-ribbon"></div><div class="ambient-glow"></div></div>
 
   <div class="app">
     <header class="top">
-      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v23</span></p></div></div>
+      <div class="brand"><img class="brand-icon" src="icon-192.png" alt=""><div><h1>Maison 50/50</h1><p>La maison des mimis <span class="build-label" style="font-size:10px;opacity:.63;white-space:nowrap">· v24</span></p></div></div>
       <button class="secondary" onclick="resetAll()">Réinitialiser</button>
     </header>
     <nav class="topnav" aria-label="Navigation principale">

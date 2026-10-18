@@ -1,1 +1,1 @@
-Maison 50/50 v23 — icône 08 + palette bleue / orange clair harmonisée.
+Maison 50/50 v24 — palette poussée + actions rondes sans cartes.
