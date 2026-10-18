@@ -1,15 +1,10 @@
-# Maison 50/50 — v10 · Ventilation des dépenses et design flat
+# Maison 50/50 — v12 · Design bancaire
 
-## Nouveautés
-- Trois indicateurs côte à côte sur l’accueil : total général, matériel, main d’œuvre.
-- Saisie : nature de la dépense (Matériel / Main d’œuvre), puis catégorie ou métier dépendant du choix.
-- Les dépenses antérieures à la v10 ne sont **pas reclassées automatiquement** : elles restent dans le total général et apparaissent « À classer » jusqu’à modification manuelle.
-- Mise à jour de la palette sombre : surfaces unies, teintes terracotta, sauge et bleu doux, sans dégradés ni ombres lourdes.
-- Conservation des données et du fonctionnement Supabase ; aucun changement SQL nécessaire.
-- Préservation du correctif v9 qui évite le rechargement des formulaires pendant la saisie.
+Nouvelle interface d’accueil inspirée des codes graphiques des applications bancaires, sans reprendre la marque Revolut : bleu profond, solde principal, raccourcis circulaires, ventilation des dépenses, cartes Guillaume/Claire, solde et historique.
 
-## Installation
-Décompresser puis déposer tous les fichiers à la racine du dépôt GitHub Pages maison-50-50, en remplaçant les anciens. Laisser GitHub Pages terminer le déploiement.
+## Données et installation
+Les quatre totaux restent présents : total général, matériel, main d’œuvre, apport frais et notaire. Les formulaires et la synchronisation Supabase sont inchangés. Les anciennes dépenses non classées restent dans le total général.
 
-## Important
-Une sauvegarde/export JSON depuis Historique est recommandée avant la mise à jour. La v10 ne supprime ni ne transforme les anciennes dépenses.
+Remplacer les fichiers à la racine du dépôt GitHub Pages puis attendre la publication. Ne pas modifier les tables Supabase. Faire une sauvegarde JSON avant déploiement.
+
+L’application inclut le CSS et le JavaScript directement dans index.html pour éviter les versions mixtes sur iPhone. Cache PWA v12.

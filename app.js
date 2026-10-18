@@ -4,8 +4,10 @@ const THEME_KEY='maison5050_theme';
 const people=['Guillaume','Claire'];
 const categories=['Salle de bains','Cuisine','Électricité','Plomberie','Peinture','Sol','Extérieur','Outillage','Mobilier / déco','Autre'];
 const laborCategories=['Électricité / électricien','Carrelage / carreleur','Plomberie / plombier','Peinture / peintre','Maçonnerie / maçon','Menuiserie / menuisier','Plâtrerie / plaquiste','Couverture / couvreur','Chauffage / chauffagiste','Terrassement / terrassier','Extérieur / paysagiste','Autre prestation'];
-function expenseType(e){return e?.expenseType==='materiel'||e?.expenseType==='main_oeuvre'?e.expenseType:'a_classer'}
-function expenseTypeLabel(t){return t==='materiel'?'Matériel':t==='main_oeuvre'?'Main d’œuvre':'À classer'}
+const acquisitionCategories=['Apport personnel','Frais de notaire','Frais d’agence','Frais de dossier bancaire','Frais de garantie / caution','Autres frais d’acquisition'];
+function categoriesForType(type){return type==='main_oeuvre'?laborCategories:type==='apport_frais_notaire'?acquisitionCategories:categories}
+function expenseType(e){return ['materiel','main_oeuvre','apport_frais_notaire'].includes(e?.expenseType)?e.expenseType:'a_classer'}
+function expenseTypeLabel(t){return t==='materiel'?'Matériel':t==='main_oeuvre'?'Main d’œuvre':t==='apport_frais_notaire'?'Apport frais et notaire':'À classer'}
 function totalByType(type){return state.expenses.filter(e=>expenseType(e)===type).reduce((sum,e)=>sum+Number(e.amount||0),0)}
 const emojis=['🏠','🛁','🍽️','⚡','🚿','🎨','🪵','🌿','🛠️','🪑','🧾','🚚','💡','📦','✨'];
 let state=load();
@@ -58,17 +60,35 @@ function homeView(){
   const lines=combinedLinesChronological();
   const unclassified=state.expenses.filter(e=>expenseType(e)==='a_classer');
   const unclassifiedTotal=totalByType('a_classer');
-  layout(`<div class="grid home-grid">
-    <section class="home-overview" aria-label="Répartition des dépenses">
-      <div class="card overview-card overview-all"><div class="label">Total dépenses</div><div class="value">${money(total())}</div></div>
-      <div class="card overview-card overview-material"><div class="label">Matériel</div><div class="value">${money(totalByType('materiel'))}</div></div>
-      <div class="card overview-card overview-labor"><div class="label">Main d’œuvre</div><div class="value">${money(totalByType('main_oeuvre'))}</div></div>
+  layout(`<div class="grid home-grid banking-home">
+    <section class="bank-dashboard" aria-label="Vue d’ensemble du budget">
+      <div class="bank-hero">
+        <div class="bank-hero-top"><span class="bank-eyebrow">BUDGET MAISON</span><span class="bank-balance-badge">50 / 50</span></div>
+        <div class="bank-balance-label">Total des dépenses</div>
+        <div class="bank-balance-amount">${money(total())}</div>
+        <div class="bank-balance-caption">Toutes catégories confondues · hors remboursements</div>
+        <div class="bank-hero-decoration" aria-hidden="true"></div>
+      </div>
+      <div class="bank-quick-actions" aria-label="Actions rapides">
+        <button type="button" onclick="fabAdd(event)" class="bank-action"><span class="bank-action-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span>Ajouter</span></button>
+        <button type="button" onclick="show('reimburse')" class="bank-action"><span class="bank-action-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16l-4-4M20 17H4l4 4"/><path d="M20 7l-4 4M4 17l4-4"/></svg></span><span>Rembourser</span></button>
+        <button type="button" onclick="show('history')" class="bank-action"><span class="bank-action-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 7v5l3.5 2"/></svg></span><span>Historique</span></button>
+      </div>
     </section>
-    ${unclassified.length?`<div class="classification-alert" role="status"><span><b>${unclassified.length} dépense${unclassified.length>1?'s':''} ancienne${unclassified.length>1?'s':''} à classer</b> (${money(unclassifiedTotal)}). Elles sont incluses dans le total général, mais pas encore dans Matériel ou Main d’œuvre.</span><button class="small secondary" onclick="edit('${esc(unclassified[0].id)}')">Classer maintenant</button></div>`:''}
-    <section class="card hero"><span class="pill">Suivi simplifié</span><h2>Qui a payé quoi ?</h2><p class="muted">Chaque dépense est divisée par deux. Les remboursements entre vous réduisent le solde final, sans être ajoutés au total des dépenses.</p><div class="home-shortcuts single"><button class="shortcut" onclick="show('reimburse')"><span>⇄</span>Remboursement</button></div></section>
-    <div class="home-payers"><div class="card metric halfmetric"><div class="label">Guillaume a payé</div><div class="value ${gClass}">${money(gPaid)}</div><div class="submetric">dont ${money(gReimb)} de remboursement à Claire</div></div><div class="card metric halfmetric"><div class="label">Claire a payé</div><div class="value ${cClass}">${money(cPaid)}</div><div class="submetric">dont ${money(cReimb)} de remboursement à Guillaume</div></div></div>
-    <section class="card full solde-card"><h3>Solde final</h3><div class="settle ${b.g>0?'positive':b.g<0?'negative':''}">${settleText()}</div><p class="muted">Calcul basé sur les dépenses maison divisées en deux, puis corrigé avec les remboursements déjà enregistrés.</p><div class="mini-recap"><span>Remboursements Guillaume → Claire : <b>${money(gReimb)}</b></span><span>Claire → Guillaume : <b>${money(cReimb)}</b></span></div></section>
-    <section class="card full"><h3>Détail par dépense</h3><p class="muted">Dépenses et remboursements classés par date.</p><div class="list">${lines.map(line=>line.kind==='expense'?expenseLine(line.data):reimbursementLine(line.data)).join('')||'<p class="muted">Aucune dépense. Ajoute la première.</p>'}</div></section>
+    <section class="bank-categories" aria-label="Répartition des dépenses">
+      <div class="bank-section-heading"><h2>Répartition</h2><span>Par type de dépense</span></div>
+      <div class="bank-category-grid">
+        <div class="bank-category bank-category-material"><div class="bank-category-top"><span class="bank-category-symbol">▦</span><span>01</span></div><div class="bank-category-name">Matériel</div><div class="bank-category-amount">${money(totalByType('materiel'))}</div></div>
+        <div class="bank-category bank-category-labor"><div class="bank-category-top"><span class="bank-category-symbol">⚒</span><span>02</span></div><div class="bank-category-name">Main d’œuvre</div><div class="bank-category-amount">${money(totalByType('main_oeuvre'))}</div></div>
+        <div class="bank-category bank-category-acquisition"><div class="bank-category-top"><span class="bank-category-symbol">⌂</span><span>03</span></div><div class="bank-category-name">Apport frais et notaire</div><div class="bank-category-amount">${money(totalByType('apport_frais_notaire'))}</div></div>
+      </div>
+    </section>
+    ${unclassified.length?`<div class="classification-alert" role="status"><span><b>${unclassified.length} dépense${unclassified.length>1?'s':''} à classer</b> (${money(unclassifiedTotal)}). Déjà incluse${unclassified.length>1?'s':''} dans le total général.</span><button class="small secondary" onclick="edit('${esc(unclassified[0].id)}')">Classer</button></div>`:''}
+    <section class="bank-payers-section" aria-label="Paiements par personne"><div class="bank-section-heading"><h2>Qui a payé ?</h2><span>Suivi à deux</span></div>
+      <div class="home-payers"><div class="card metric halfmetric bank-payer"><div class="bank-person-avatar">G</div><div class="label">Guillaume</div><div class="value ${gClass}">${money(gPaid)}</div><div class="submetric">dont ${money(gReimb)} remboursés à Claire</div></div><div class="card metric halfmetric bank-payer"><div class="bank-person-avatar">C</div><div class="label">Claire</div><div class="value ${cClass}">${money(cPaid)}</div><div class="submetric">dont ${money(cReimb)} remboursés à Guillaume</div></div></div>
+    </section>
+    <section class="card full solde-card bank-settlement"><div class="bank-section-heading"><h2>Équilibre 50/50</h2><span>Solde actuel</span></div><div class="settle ${b.g>0?'positive':b.g<0?'negative':''}">${settleText()}</div><p class="muted">Chaque dépense est partagée en deux. Les remboursements déjà effectués sont pris en compte.</p><div class="mini-recap"><span>Guillaume → Claire : <b>${money(gReimb)}</b></span><span>Claire → Guillaume : <b>${money(cReimb)}</b></span></div></section>
+    <section class="card full bank-transactions"><div class="bank-section-heading"><h2>Mouvements</h2><button type="button" class="bank-link" onclick="show('history')">Tout voir →</button></div><p class="muted">Dépenses et remboursements par date.</p><div class="list">${lines.map(line=>line.kind==='expense'?expenseLine(line.data):reimbursementLine(line.data)).join('')||'<p class="muted">Aucune dépense. Ajoute la première.</p>'}</div></section>
   </div>`)
 }
 function combinedLinesChronological(){
@@ -77,9 +97,9 @@ function combinedLinesChronological(){
   return exp.concat(reimb).sort((a,b)=>(b.date||'').localeCompare(a.date||'') || String(b.created).localeCompare(String(a.created)));
 }
 function expenseLine(e){const half=Number(e.amount||0)/2; const phrase=e.payer==='Guillaume'?`Claire doit ${money(half)} à Guillaume`:`Guillaume doit ${money(half)} à Claire`; const emo=e.emoji||emojiFor(e.category); return `<div class="item"><div class="expense-main"><div class="expense-emoji">${esc(emo)}</div><div><b>${esc(e.title||e.category)}</b><span><span class="type-chip ${expenseType(e)==='a_classer'?'unclassified':''}">${expenseTypeLabel(expenseType(e))}</span> ${esc(e.date)} · ${esc(e.category||'Sans catégorie')} · payé par ${esc(e.payer)}<br>Montant : ${money(e.amount)} · Part Guillaume : ${money(half)} · Part Claire : ${money(half)}<br><strong class="redline">${phrase}</strong></span></div></div><div class="rowactions"><div class="amount">${money(e.amount)}</div><button class="small secondary" onclick="edit('${e.id}')">Modifier</button><button class="small danger" onclick="del('${e.id}')">Supprimer</button></div></div>`}
-function emojiFor(category){const map={'Salle de bains':'🛁','Cuisine':'🍽️','Électricité':'⚡','Plomberie':'🚿','Peinture':'🎨','Sol':'🪵','Extérieur':'🌿','Outillage':'🛠️','Mobilier / déco':'🪑','Autre':'🧾'};return map[category]||'🏠'}
+function emojiFor(category){const map={'Apport personnel':'🏡','Frais de notaire':'📜','Frais d’agence':'🏠','Frais de dossier bancaire':'🏦','Frais de garantie / caution':'🔑','Autres frais d’acquisition':'🧾','Salle de bains':'🛁','Cuisine':'🍽️','Électricité':'⚡','Plomberie':'🚿','Peinture':'🎨','Sol':'🪵','Extérieur':'🌿','Outillage':'🛠️','Mobilier / déco':'🪑','Autre':'🧾'};return map[category]||'🏠'}
 function categoryOptions(type,selected){
-  const opts=type==='main_oeuvre'?laborCategories:categories;
+  const opts=categoriesForType(type);
   const all=selected&&!opts.includes(selected)?[selected,...opts]:opts;
   return all.map(c=>`<option value="${esc(c)}" ${selected===c?'selected':''}>${esc(c)}</option>`).join('');
 }
@@ -88,7 +108,7 @@ function updateExpenseCategories(){
   if(!category)return;
   const previous=category.value;
   const type=v('expenseType');
-  const opts=type==='main_oeuvre'?laborCategories:categories;
+  const opts=categoriesForType(type);
   const selected=opts.includes(previous)?previous:opts[0];
   category.innerHTML=categoryOptions(type,selected);
   if(!editingId)document.getElementById('emoji').value=emojiFor(selected);
@@ -97,10 +117,10 @@ function updateExpenseCategories(){
 function addView(){
   const e=editingId?state.expenses.find(x=>x.id===editingId):null;
   const type=e?expenseType(e):'materiel';
-  layout(`<div class="card"><h2>${e?'Modifier':'Ajouter'} une dépense</h2><p class="muted">Choisis d’abord Matériel ou Main d’œuvre, puis la catégorie correspondante. Le partage 50/50 reste automatique.</p><div class="formgrid">
+  layout(`<div class="card"><h2>${e?'Modifier':'Ajouter'} une dépense</h2><p class="muted">Choisis Matériel, Main d’œuvre ou Apport frais et notaire, puis la catégorie correspondante. Le partage 50/50 reste automatique.</p><div class="formgrid">
     <div class="field"><label for="date">Date</label><input id="date" type="date" value="${esc(e?.date||new Date().toISOString().slice(0,10))}"></div>
-    <div class="field"><label for="expenseType">Nature de la dépense</label><select id="expenseType">${type==='a_classer'?'<option value="a_classer" selected>À classer (ancienne dépense)</option>':''}<option value="materiel" ${type==='materiel'?'selected':''}>Matériel</option><option value="main_oeuvre" ${type==='main_oeuvre'?'selected':''}>Main d’œuvre</option></select></div>
-    <div class="field"><label for="category">Catégorie / métier</label><select id="category">${categoryOptions(type,e?.category||(type==='main_oeuvre'?laborCategories[0]:categories[0]))}</select></div>
+    <div class="field"><label for="expenseType">Nature de la dépense</label><select id="expenseType">${type==='a_classer'?'<option value="a_classer" selected>À classer (ancienne dépense)</option>':''}<option value="materiel" ${type==='materiel'?'selected':''}>Matériel</option><option value="main_oeuvre" ${type==='main_oeuvre'?'selected':''}>Main d’œuvre</option><option value="apport_frais_notaire" ${type==='apport_frais_notaire'?'selected':''}>Apport frais et notaire</option></select></div>
+    <div class="field"><label for="category">Catégorie / métier</label><select id="category">${categoryOptions(type,e?.category||categoriesForType(type)[0])}</select></div>
     <div class="field"><label for="emoji">Emoji repère visuel</label><select id="emoji">${emojis.map(em=>`<option ${((e?.emoji)||emojiFor(e?.category))===em?'selected':''}>${em}</option>`).join('')}</select></div>
     <div class="field"><label for="title">Libellé</label><input id="title" placeholder="Ex : Carrelage salle de bains" value="${esc(e?.title||'')}"></div>
     <div class="field"><label for="amount">Montant payé</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="0,00" value="${e?Number(e.amount||0):''}"></div>
@@ -117,7 +137,7 @@ function saveExpense(){
   const amount=num('amount');
   if(!amount||amount<=0){toast('Entre un montant valide');return}
   const expenseTypeValue=v('expenseType');
-  if(expenseTypeValue!=='materiel'&&expenseTypeValue!=='main_oeuvre'){toast('Choisis Matériel ou Main d’œuvre');return}
+  if(!['materiel','main_oeuvre','apport_frais_notaire'].includes(expenseTypeValue)){toast('Choisis une nature de dépense');return}
   const data={date:v('date'),expenseType:expenseTypeValue,category:v('category'),title:v('title')||v('category'),emoji:v('emoji')||emojiFor(v('category')),amount,payer:v('payer'),note:v('note')};
   if(editingId){Object.assign(state.expenses.find(e=>e.id===editingId),data);toast('Dépense modifiée')}
   else{state.expenses.push({id:uid(),...data});toast('Dépense ajoutée')}
