@@ -1,11 +1,11 @@
 {
   "name": "Maison 50/50",
   "short_name": "Maison 50/50",
-  "start_url": "./index.html",
+  "start_url": "./index.html?v=10",
   "scope": "./",
   "display": "standalone",
-  "theme_color": "#151411",
-  "background_color": "#151411",
+  "theme_color": "#151a1b",
+  "background_color": "#151a1b",
   "icons": [
     {
       "src": "icon-192.png",

@@ -1,7 +1,12 @@
+
 const KEY='maison5050_simple_v1';
 const THEME_KEY='maison5050_theme';
 const people=['Guillaume','Claire'];
 const categories=['Salle de bains','Cuisine','Électricité','Plomberie','Peinture','Sol','Extérieur','Outillage','Mobilier / déco','Autre'];
+const laborCategories=['Électricité / électricien','Carrelage / carreleur','Plomberie / plombier','Peinture / peintre','Maçonnerie / maçon','Menuiserie / menuisier','Plâtrerie / plaquiste','Couverture / couvreur','Chauffage / chauffagiste','Terrassement / terrassier','Extérieur / paysagiste','Autre prestation'];
+function expenseType(e){return e?.expenseType==='materiel'||e?.expenseType==='main_oeuvre'?e.expenseType:'a_classer'}
+function expenseTypeLabel(t){return t==='materiel'?'Matériel':t==='main_oeuvre'?'Main d’œuvre':'À classer'}
+function totalByType(type){return state.expenses.filter(e=>expenseType(e)===type).reduce((sum,e)=>sum+Number(e.amount||0),0)}
 const emojis=['🏠','🛁','🍽️','⚡','🚿','🎨','🪵','🌿','🛠️','🪑','🧾','🚚','💡','📦','✨'];
 let state=load();
 let currentDocFolder=null;
@@ -30,7 +35,7 @@ function paidOut(name){return paidBy(name)+sentBy(name)}
 function other(name){return name==='Guillaume'?'Claire':'Guillaume'}
 function balance(){const t=total()/2; const g=netPaid('Guillaume')-t; const c=netPaid('Claire')-t; return {t,g,c}}
 function settleText(){const b=balance(); if(Math.abs(b.g)<0.005)return 'Vous êtes à l’équilibre.'; return b.g>0?`Claire doit ${money(b.g)} à Guillaume.`:`Guillaume doit ${money(-b.g)} à Claire.`}
-function show(x){view=x;editingId=null;editingReimbursementId=null;editingProjectId=null;render()}
+function show(x){view=x;editingId=null;editingReimbursementId=null;editingProjectId=null;pendingCloudRender=false;render()}
 function fabAdd(event){
   const fab=document.getElementById('quick-add-fab');
   if(fab){
@@ -51,18 +56,73 @@ function homeView(){
   const gClass=gNet>cNet?'positive':gNet<cNet?'negative':'';
   const cClass=cNet>gNet?'positive':cNet<gNet?'negative':'';
   const lines=combinedLinesChronological();
-  layout(`<div class="grid"><section class="card hero"><span class="pill">Suivi simplifié</span><h2>Qui a payé quoi ?</h2><p class="muted">Chaque dépense est divisée par deux. Les remboursements entre vous réduisent le solde final, sans être ajoutés au total des dépenses.</p><div class="home-shortcuts single"><button class="shortcut" onclick="show('reimburse')"><span>⇄</span>Remboursement</button></div></section><div class="card metric total-top home-total-centered"><div class="label">Total dépenses</div><div class="value">${money(total())}</div><div class="submetric">hors remboursements</div></div><div class="home-payers"><div class="card metric halfmetric"><div class="label">Guillaume a payé</div><div class="value ${gClass}">${money(gPaid)}</div><div class="submetric">dont ${money(gReimb)} de remboursement à Claire</div></div><div class="card metric halfmetric"><div class="label">Claire a payé</div><div class="value ${cClass}">${money(cPaid)}</div><div class="submetric">dont ${money(cReimb)} de remboursement à Guillaume</div></div></div><section class="card full solde-card"><h3>Solde final</h3><div class="settle ${b.g>0?'positive':b.g<0?'negative':''}">${settleText()}</div><p class="muted">Calcul basé sur les dépenses maison divisées en deux, puis corrigé avec les remboursements déjà enregistrés.</p><div class="mini-recap"><span>Remboursements Guillaume → Claire : <b>${money(gReimb)}</b></span><span>Claire → Guillaume : <b>${money(cReimb)}</b></span></div></section><section class="card full"><h3>Détail par dépense</h3><p class="muted">Dépenses et remboursements classés par date. Chaque dépense affiche la part de chacun et la phrase de remboursement associée.</p><div class="list">${lines.map(line=>line.kind==='expense'?expenseLine(line.data):reimbursementLine(line.data)).join('')||'<p class="muted">Aucune dépense. Ajoute la première.</p>'}</div></section></div>`)
+  const unclassified=state.expenses.filter(e=>expenseType(e)==='a_classer');
+  const unclassifiedTotal=totalByType('a_classer');
+  layout(`<div class="grid home-grid">
+    <section class="home-overview" aria-label="Répartition des dépenses">
+      <div class="card overview-card overview-all"><div class="label">Total dépenses</div><div class="value">${money(total())}</div></div>
+      <div class="card overview-card overview-material"><div class="label">Matériel</div><div class="value">${money(totalByType('materiel'))}</div></div>
+      <div class="card overview-card overview-labor"><div class="label">Main d’œuvre</div><div class="value">${money(totalByType('main_oeuvre'))}</div></div>
+    </section>
+    ${unclassified.length?`<div class="classification-alert" role="status"><span><b>${unclassified.length} dépense${unclassified.length>1?'s':''} ancienne${unclassified.length>1?'s':''} à classer</b> (${money(unclassifiedTotal)}). Elles sont incluses dans le total général, mais pas encore dans Matériel ou Main d’œuvre.</span><button class="small secondary" onclick="edit('${esc(unclassified[0].id)}')">Classer maintenant</button></div>`:''}
+    <section class="card hero"><span class="pill">Suivi simplifié</span><h2>Qui a payé quoi ?</h2><p class="muted">Chaque dépense est divisée par deux. Les remboursements entre vous réduisent le solde final, sans être ajoutés au total des dépenses.</p><div class="home-shortcuts single"><button class="shortcut" onclick="show('reimburse')"><span>⇄</span>Remboursement</button></div></section>
+    <div class="home-payers"><div class="card metric halfmetric"><div class="label">Guillaume a payé</div><div class="value ${gClass}">${money(gPaid)}</div><div class="submetric">dont ${money(gReimb)} de remboursement à Claire</div></div><div class="card metric halfmetric"><div class="label">Claire a payé</div><div class="value ${cClass}">${money(cPaid)}</div><div class="submetric">dont ${money(cReimb)} de remboursement à Guillaume</div></div></div>
+    <section class="card full solde-card"><h3>Solde final</h3><div class="settle ${b.g>0?'positive':b.g<0?'negative':''}">${settleText()}</div><p class="muted">Calcul basé sur les dépenses maison divisées en deux, puis corrigé avec les remboursements déjà enregistrés.</p><div class="mini-recap"><span>Remboursements Guillaume → Claire : <b>${money(gReimb)}</b></span><span>Claire → Guillaume : <b>${money(cReimb)}</b></span></div></section>
+    <section class="card full"><h3>Détail par dépense</h3><p class="muted">Dépenses et remboursements classés par date.</p><div class="list">${lines.map(line=>line.kind==='expense'?expenseLine(line.data):reimbursementLine(line.data)).join('')||'<p class="muted">Aucune dépense. Ajoute la première.</p>'}</div></section>
+  </div>`)
 }
 function combinedLinesChronological(){
   const exp=state.expenses.map(e=>({kind:'expense',date:e.date||'',created:e.id||'',data:e}));
   const reimb=state.reimbursements.map(r=>({kind:'reimbursement',date:r.date||'',created:r.id||'',data:r}));
   return exp.concat(reimb).sort((a,b)=>(b.date||'').localeCompare(a.date||'') || String(b.created).localeCompare(String(a.created)));
 }
-function expenseLine(e){const half=Number(e.amount||0)/2; const phrase=e.payer==='Guillaume'?`Claire doit ${money(half)} à Guillaume`:`Guillaume doit ${money(half)} à Claire`; const emo=e.emoji||emojiFor(e.category); return `<div class="item"><div class="expense-main"><div class="expense-emoji">${esc(emo)}</div><div><b>${esc(e.title||e.category)}</b><span>${esc(e.date)} · ${esc(e.category)} · payé par ${esc(e.payer)}<br>Montant : ${money(e.amount)} · Part Guillaume : ${money(half)} · Part Claire : ${money(half)}<br><strong class="redline">${phrase}</strong></span></div></div><div class="rowactions"><div class="amount">${money(e.amount)}</div><button class="small secondary" onclick="edit('${e.id}')">Modifier</button><button class="small danger" onclick="del('${e.id}')">Supprimer</button></div></div>`}
+function expenseLine(e){const half=Number(e.amount||0)/2; const phrase=e.payer==='Guillaume'?`Claire doit ${money(half)} à Guillaume`:`Guillaume doit ${money(half)} à Claire`; const emo=e.emoji||emojiFor(e.category); return `<div class="item"><div class="expense-main"><div class="expense-emoji">${esc(emo)}</div><div><b>${esc(e.title||e.category)}</b><span><span class="type-chip ${expenseType(e)==='a_classer'?'unclassified':''}">${expenseTypeLabel(expenseType(e))}</span> ${esc(e.date)} · ${esc(e.category||'Sans catégorie')} · payé par ${esc(e.payer)}<br>Montant : ${money(e.amount)} · Part Guillaume : ${money(half)} · Part Claire : ${money(half)}<br><strong class="redline">${phrase}</strong></span></div></div><div class="rowactions"><div class="amount">${money(e.amount)}</div><button class="small secondary" onclick="edit('${e.id}')">Modifier</button><button class="small danger" onclick="del('${e.id}')">Supprimer</button></div></div>`}
 function emojiFor(category){const map={'Salle de bains':'🛁','Cuisine':'🍽️','Électricité':'⚡','Plomberie':'🚿','Peinture':'🎨','Sol':'🪵','Extérieur':'🌿','Outillage':'🛠️','Mobilier / déco':'🪑','Autre':'🧾'};return map[category]||'🏠'}
-function addView(){const e=editingId?state.expenses.find(x=>x.id===editingId):null; layout(`<div class="card"><h2>${e?'Modifier':'Ajouter'} une dépense</h2><p class="muted">Une seule règle : tu saisis le montant payé et qui a payé. Le partage 50/50 est calculé automatiquement.</p><div class="formgrid"><div class="field"><label>Date</label><input id="date" type="date" value="${esc(e?.date||new Date().toISOString().slice(0,10))}"></div><div class="field"><label>Catégorie</label><select id="category">${categories.map(c=>`<option ${e?.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="field"><label>Emoji repère visuel</label><select id="emoji">${emojis.map(em=>`<option ${((e?.emoji)||emojiFor(e?.category))===em?'selected':''}>${em}</option>`).join('')}</select></div><div class="field"><label>Libellé</label><input id="title" placeholder="Ex : Carrelage salle de bains" value="${esc(e?.title||'')}"></div><div class="field"><label>Montant payé</label><input id="amount" type="number" step="0.01" placeholder="0,00" value="${e?Number(e.amount||0):''}"></div><div class="field"><label>Payé par</label><select id="payer">${people.map(p=>`<option ${e?.payer===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="field"><label>Note facultative</label><input id="note" placeholder="Magasin, facture, commentaire..." value="${esc(e?.note||'')}"></div></div><div class="summaryline" id="preview">La moitié sera calculée automatiquement.</div><div class="actions"><button onclick="saveExpense()">${e?'Enregistrer les modifications':'Ajouter la dépense'}</button>${e?'<button class="secondary" onclick="show(\'history\')">Annuler</button>':''}</div></div>`); ['amount','payer'].forEach(id=>document.getElementById(id).addEventListener('input',preview)); document.getElementById('category').addEventListener('change',()=>{if(!editingId)document.getElementById('emoji').value=emojiFor(v('category'));preview()}); preview()}
-function preview(){const amount=num('amount'), payer=v('payer'); const half=amount/2; const other=payer==='Guillaume'?'Claire':'Guillaume'; document.getElementById('preview').innerHTML= amount?`Part chacun : <b>${money(half)}</b>. ${other} doit <b>${money(half)}</b> à ${payer}.`:'La moitié sera calculée automatiquement.'}
-function saveExpense(){const amount=num('amount'); if(!amount){toast('Entre un montant');return} const data={date:v('date'),category:v('category'),title:v('title')||v('category'),emoji:v('emoji')||emojiFor(v('category')),amount,payer:v('payer'),note:v('note')}; if(editingId){Object.assign(state.expenses.find(e=>e.id===editingId),data); toast('Dépense modifiée')} else {state.expenses.push({id:uid(),...data}); toast('Dépense ajoutée')} save(); show('home')}
+function categoryOptions(type,selected){
+  const opts=type==='main_oeuvre'?laborCategories:categories;
+  const all=selected&&!opts.includes(selected)?[selected,...opts]:opts;
+  return all.map(c=>`<option value="${esc(c)}" ${selected===c?'selected':''}>${esc(c)}</option>`).join('');
+}
+function updateExpenseCategories(){
+  const category=document.getElementById('category');
+  if(!category)return;
+  const previous=category.value;
+  const type=v('expenseType');
+  const opts=type==='main_oeuvre'?laborCategories:categories;
+  const selected=opts.includes(previous)?previous:opts[0];
+  category.innerHTML=categoryOptions(type,selected);
+  if(!editingId)document.getElementById('emoji').value=emojiFor(selected);
+  preview();
+}
+function addView(){
+  const e=editingId?state.expenses.find(x=>x.id===editingId):null;
+  const type=e?expenseType(e):'materiel';
+  layout(`<div class="card"><h2>${e?'Modifier':'Ajouter'} une dépense</h2><p class="muted">Choisis d’abord Matériel ou Main d’œuvre, puis la catégorie correspondante. Le partage 50/50 reste automatique.</p><div class="formgrid">
+    <div class="field"><label for="date">Date</label><input id="date" type="date" value="${esc(e?.date||new Date().toISOString().slice(0,10))}"></div>
+    <div class="field"><label for="expenseType">Nature de la dépense</label><select id="expenseType">${type==='a_classer'?'<option value="a_classer" selected>À classer (ancienne dépense)</option>':''}<option value="materiel" ${type==='materiel'?'selected':''}>Matériel</option><option value="main_oeuvre" ${type==='main_oeuvre'?'selected':''}>Main d’œuvre</option></select></div>
+    <div class="field"><label for="category">Catégorie / métier</label><select id="category">${categoryOptions(type,e?.category||(type==='main_oeuvre'?laborCategories[0]:categories[0]))}</select></div>
+    <div class="field"><label for="emoji">Emoji repère visuel</label><select id="emoji">${emojis.map(em=>`<option ${((e?.emoji)||emojiFor(e?.category))===em?'selected':''}>${em}</option>`).join('')}</select></div>
+    <div class="field"><label for="title">Libellé</label><input id="title" placeholder="Ex : Carrelage salle de bains" value="${esc(e?.title||'')}"></div>
+    <div class="field"><label for="amount">Montant payé</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="0,00" value="${e?Number(e.amount||0):''}"></div>
+    <div class="field"><label for="payer">Payé par</label><select id="payer">${people.map(p=>`<option ${e?.payer===p?'selected':''}>${p}</option>`).join('')}</select></div>
+    <div class="field"><label for="note">Note facultative</label><input id="note" placeholder="Magasin, artisan, facture..." value="${esc(e?.note||'')}"></div>
+    </div><div class="summaryline" id="preview">La moitié sera calculée automatiquement.</div><div class="actions"><button onclick="saveExpense()">${e?'Enregistrer les modifications':'Ajouter la dépense'}</button>${e?'<button class="secondary" onclick="show(\'history\')">Annuler</button>':''}</div></div>`);
+  ['amount','payer'].forEach(id=>document.getElementById(id).addEventListener('input',preview));
+  document.getElementById('expenseType').addEventListener('change',updateExpenseCategories);
+  document.getElementById('category').addEventListener('change',()=>{if(!editingId)document.getElementById('emoji').value=emojiFor(v('category'));preview()});
+  preview();
+}
+function preview(){const amount=num('amount'), payer=v('payer'); const half=amount/2; const recipient=payer==='Guillaume'?'Claire':'Guillaume'; const el=document.getElementById('preview'); if(!el)return; el.innerHTML=amount?`Part chacun : <b>${money(half)}</b>. ${recipient} doit <b>${money(half)}</b> à ${payer}.`:'La moitié sera calculée automatiquement.'}
+function saveExpense(){
+  const amount=num('amount');
+  if(!amount||amount<=0){toast('Entre un montant valide');return}
+  const expenseTypeValue=v('expenseType');
+  if(expenseTypeValue!=='materiel'&&expenseTypeValue!=='main_oeuvre'){toast('Choisis Matériel ou Main d’œuvre');return}
+  const data={date:v('date'),expenseType:expenseTypeValue,category:v('category'),title:v('title')||v('category'),emoji:v('emoji')||emojiFor(v('category')),amount,payer:v('payer'),note:v('note')};
+  if(editingId){Object.assign(state.expenses.find(e=>e.id===editingId),data);toast('Dépense modifiée')}
+  else{state.expenses.push({id:uid(),...data});toast('Dépense ajoutée')}
+  save();show('home');
+}
 function reimburseView(){const r=editingReimbursementId?state.reimbursements.find(x=>x.id===editingReimbursementId):null;layout(`<div class="card"><h2>${r?'Modifier':'Ajouter'} un remboursement</h2><p class="muted">Note un virement ou paiement entre Guillaume et Claire. Ce montant ne compte pas comme une dépense : il vient uniquement réduire le solde dû entre vous.</p><div class="formgrid"><div class="field"><label>Date</label><input id="rdate" type="date" value="${esc(r?.date||new Date().toISOString().slice(0,10))}"></div><div class="field"><label>Qui a envoyé l’argent ?</label><select id="rfrom">${people.map(p=>`<option ${r?.from===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="field"><label>À qui ?</label><select id="rto">${people.map(p=>`<option ${r?.to===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="field"><label>Montant envoyé</label><input id="ramount" type="number" step="0.01" placeholder="0,00" value="${r?Number(r.amount||0):''}"></div><div class="field"><label>Note facultative</label><input id="rnote" placeholder="Ex : virement pour solder les dépenses en retard" value="${esc(r?.note||'')}"></div></div><div class="summaryline" id="rpreview">Le remboursement sera déduit du solde entre vous.</div><div class="actions"><button onclick="saveReimbursement()">${r?'Enregistrer les modifications':'Enregistrer le remboursement'}</button><button class="secondary" onclick="show('home')">Annuler</button></div></div>`); ['rfrom','rto','ramount'].forEach(id=>document.getElementById(id).addEventListener('input',previewReimbursement)); previewReimbursement()}
 function previewReimbursement(){const amount=num('ramount'), from=v('rfrom'), to=v('rto'); if(from===to){document.getElementById('rpreview').innerHTML='<b>Choisis deux personnes différentes.</b>';return} document.getElementById('rpreview').innerHTML=amount?`${from} envoie <b>${money(amount)}</b> à ${to}. Ce montant viendra réduire ce que ${from} doit éventuellement à ${to}.`:'Le remboursement sera déduit du solde entre vous.'}
 function saveReimbursement(){const amount=num('ramount'), from=v('rfrom'), to=v('rto'); if(!amount){toast('Entre un montant');return} if(from===to){toast('Choisis deux personnes différentes');return} const data={date:v('rdate'),from,to,amount,note:v('rnote')}; if(editingReimbursementId){Object.assign(state.reimbursements.find(r=>r.id===editingReimbursementId),data); toast('Remboursement modifié')} else {state.reimbursements.push({id:uid(),...data}); toast('Remboursement ajouté')} save(); show('home')}
@@ -121,7 +181,11 @@ const SUPABASE_URL='https://vcdztuiwethnqdubqbkf.supabase.co';
 const SUPABASE_KEY='sb_publishable_rcdRN1EIjIpLR0TEZ5kW9g_uWYpdGW3';
 const SESSION_KEY='maison5050_supabase_session';
 let cloudSession=null, syncTimer=null;
-let syncState='idle', lastSyncAt=null, syncBusy=0;
+let syncState='idle', lastSyncAt=null, syncBusy=0, pendingCloudRender=false;
+function normalizedState(src){return {expenses:src?.expenses||[],reimbursements:src?.reimbursements||[],projects:src?.projects||[],docFolders:src?.docFolders||[{id:'general',name:'Général'}],documents:src?.documents||[]}}
+function stateSignature(src){try{return JSON.stringify(normalizedState(src))}catch(e){return ''}}
+function formIsOpen(){const root=document.getElementById('root');return !!root?.querySelector('input, textarea, select')}
+function safeToRefreshUI(){return !formIsOpen() && !['add','reimburse'].includes(view)}
 function syncLabel(){
   if(!navigator.onLine)return '⚠️ Hors ligne';
   if(syncState==='syncing')return '↻ Synchronisation…';
@@ -170,19 +234,42 @@ async function uploadDocument(d){if(!d.dataUrl||d.storagePath)return; const safe
 async function signedDocumentUrl(path){const r=await fetch(SUPABASE_URL+'/storage/v1/object/sign/maison-documents/'+encodeURIComponent(path),{method:'POST',headers:apiHeaders({'Content-Type':'application/json'}),body:JSON.stringify({expiresIn:3600})});const j=await r.json();if(!r.ok)throw new Error('Ouverture impossible');return SUPABASE_URL+'/storage/v1'+j.signedURL}
 async function deleteStoredDocument(path){const r=await fetch(SUPABASE_URL+'/storage/v1/object/maison-documents/'+encodeURIComponent(path),{method:'DELETE',headers:apiHeaders()});if(!r.ok)throw new Error('Suppression cloud impossible')}
 async function migrateLocalDocuments(){for(const d of state.documents||[]){if(d.dataUrl&&!d.storagePath){try{await uploadDocument(d)}catch(e){console.error(e)}}}}
-async function pullCloud(){try{const c=await cloudFetch(); if(c&&Object.keys(c).length){state={expenses:c.expenses||[],reimbursements:c.reimbursements||[],projects:c.projects||[],docFolders:c.docFolders||[{id:'general',name:'Général'}],documents:c.documents||[]};localStorage.setItem(KEY,JSON.stringify(state));render()}}catch(e){console.error(e)}}
+async function pullCloud(){
+  // Ne jamais interrompre une sauvegarde en cours : évite qu'une ancienne version cloud
+  // remplace momentanément une dépense qui vient d'être ajoutée.
+  if(syncBusy>0)return;
+  try{
+    const c=await cloudFetch();
+    if(!c||!Object.keys(c).length)return;
+    const next=normalizedState(c);
+    // Si rien n'a changé dans Supabase, on ne reconstruit surtout pas l'interface.
+    if(stateSignature(next)===stateSignature(state))return;
+    state=next;
+    localStorage.setItem(KEY,JSON.stringify(state));
+    // Pendant une saisie, on synchronise les données en arrière-plan mais on conserve
+    // intégralement le formulaire affiché (texte, montant, clavier, focus, etc.).
+    if(!safeToRefreshUI()){
+      pendingCloudRender=true;
+      return;
+    }
+    pendingCloudRender=false;
+    render();
+  }catch(e){console.error(e)}
+}
 async function startCloud(){
   document.querySelector('.bottom').style.display='flex';document.querySelector('.topnav').style.display='flex';
   try{const cloud=await cloudFetch(); const local=load(); const cloudEmpty=!(cloud.expenses?.length||cloud.reimbursements?.length||cloud.projects?.length||cloud.documents?.length);
     if(cloudEmpty&&(local.expenses.length||local.reimbursements.length||local.projects.length||local.documents.length)){state=local;await migrateLocalDocuments();await cloudSave();toast('Données locales envoyées dans le cloud')}
     else if(Object.keys(cloud).length){state={expenses:cloud.expenses||[],reimbursements:cloud.reimbursements||[],projects:cloud.projects||[],docFolders:cloud.docFolders||[{id:'general',name:'Général'}],documents:cloud.documents||[]};localStorage.setItem(KEY,JSON.stringify(state))}
-    render(); addCloudButton(); ensureSyncIndicator(); clearInterval(syncTimer);syncTimer=setInterval(pullCloud,15000)
+    render(); addCloudButton(); ensureSyncIndicator(); clearInterval(syncTimer);syncTimer=setInterval(pullCloud,60000)
   }catch(e){loginView('Connexion au cloud impossible. Vérifie la connexion internet.')}
 }
 function addCloudButton(){const top=document.querySelector('.top');if(!top)return;let actions=top.querySelector('.top-actions');if(!actions){actions=document.createElement('div');actions.className='top-actions';const reset=top.querySelector('button.secondary');if(reset){reset.classList.add('reset-btn');actions.appendChild(reset)}top.appendChild(actions)}if(!document.getElementById('themeToggle')){const t=document.createElement('button');t.id='themeToggle';t.className='secondary theme-toggle';t.onclick=toggleTheme;actions.appendChild(t)}if(!document.getElementById('cloudLogout')){const b=document.createElement('button');b.id='cloudLogout';b.className='secondary';b.textContent='Déconnexion';b.onclick=logout;actions.appendChild(b)}applyTheme();ensureSyncIndicator()}
 async function boot(){try{cloudSession=JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(e){} if(cloudSession){await startCloud()}else loginView()}
-window.addEventListener('focus',()=>{if(cloudSession)pullCloud()});
+window.addEventListener('focus',()=>{if(cloudSession&&safeToRefreshUI())pullCloud()});
 window.addEventListener('online',()=>{updateSyncIndicator();if(cloudSession)pullCloud()});
 window.addEventListener('offline',updateSyncIndicator);
 boot();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
+
+
