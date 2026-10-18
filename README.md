@@ -1,16 +1,16 @@
-# Maison 50/50 — v14 · Mouvements premium
+# Maison 50/50 — v15 · Mouvements modernes + correction bouton +
 
-## Nouveautés
-- Cartes Mouvements et Historique avec icônes vectorielles, typographie plus nette, couleur contextuelle et montant à droite.
-- Bouton Options circulaire et discret sur chaque mouvement ; ouverture d’un panneau d’actions depuis le bas de l’écran avec Modifier et Supprimer (confirmation de suppression conservée).
-- Balayage facultatif de droite à gauche sur une dépense ou un remboursement pour ouvrir le même panneau. Le bouton reste disponible à la souris et au clavier.
-- Animations d’apparition légères et interactions tactiles ; réglage « réduire les animations » respecté.
-- Compatibilité avec thème clair ou sombre, montants 50/50 et classements de la v13.
-- Aucun changement de schéma Supabase ; protection des formulaires et synchronisation existantes préservées.
+## Changements visibles
+- Les cartes **Mouvements** sont réellement renouvelées : design bleu profond comme le total des dépenses, icône vectorielle par type de dépense, montant clairement à droite, métadonnées et répartition 50/50 repliable.
+- Les actions **Modifier** / **Supprimer** ne prennent plus de place sur chaque carte. Touche le bouton **•••** pour ouvrir un panneau d’actions animé depuis le bas.
+- Le bouton **+** du dock est corrigé : le libellé « Ajouter » ne déborde plus sur les autres onglets. Il ouvre immédiatement le formulaire.
+- Les anciennes dépenses et catégories restent intactes ; aucune migration Supabase n’est nécessaire.
+- Cache PWA : v15. CSS et JavaScript du rendu embarqués dans `index.html` afin d’éviter le mélange de versions.
 
-## Installation
-1. Exporter la sauvegarde JSON depuis l’Historique avant mise à jour.
-2. Remplacer les fichiers à la racine du dépôt GitHub Pages par ceux de cette archive.
-3. Attendre la fin du déploiement puis ouvrir Safari. En cas d’ancienne version dans la PWA, la retirer de l’écran d’accueil et la réajouter depuis Safari.
+## Installation sur GitHub Pages
+1. Fais une sauvegarde JSON depuis l’application avant publication.
+2. Décompresse l’archive, puis téléverse **les fichiers à l’intérieur du ZIP à la racine du dépôt** `maison-50-50`, en remplaçant notamment `index.html`, `sw.js`, `app.js` et `styles.css` (sans créer de sous-dossier).
+3. Valide **Commit changes**, puis attends la fin du déploiement dans GitHub **Actions**.
+4. Ouvre `https://whereismyhomephoto-source.github.io/maison-50-50/?v=15` dans Safari. Si l’app installée affiche encore une ancienne version, retire l’icône de l’écran d’accueil, puis ajoute-la de nouveau depuis Safari.
 
-Le CSS et le JavaScript sont également intégrés à index.html pour éviter le mélange des versions sur iOS. Le cache service worker est nommé v14.
+La première vérification : sous **Mouvements**, les montants apparaissent à droite de chaque carte et `•••` ouvre une feuille d’actions en bas.

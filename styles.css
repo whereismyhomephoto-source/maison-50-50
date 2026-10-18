@@ -709,3 +709,39 @@ html[data-theme="light"] .movement-sheet .movement-sheet-cancel{color:#58688a}
  .premium-movement .premium-more{height:34px!important;width:34px!important}
 }
 @media(prefers-reduced-motion:reduce){.movement-card.premium-movement,.movement-sheet-backdrop,.movement-sheet-panel,.premium-movement .premium-more{animation:none!important;transition:none!important;transform:none!important}}
+
+/* v15: correction ciblée de la taille du texte sous le bouton + du dock.
+   Les anciens styles .bottom .fab span imposaient font-size:38px!important
+   sur les deux spans, ce qui faisait déborder « Ajouter » sur l’écran. */
+.bottom.app-dock .dock-add > .dock-add-symbol,
+.bottom.app-dock .fab.dock-add > .dock-add-symbol {
+  width:40px!important;height:40px!important;min-width:40px!important;
+  display:grid!important;place-items:center!important;
+  font-size:0!important;font-weight:400!important;line-height:1!important;
+  transform:none!important;white-space:nowrap!important;
+  border-radius:14px!important;background:#5c70ff!important;color:white!important;
+  padding:0!important;margin:0!important;
+}
+.bottom.app-dock .dock-add > .dock-add-symbol svg {
+  width:23px!important;height:23px!important;display:block!important;
+  fill:none!important;stroke:currentColor!important;stroke-width:2.4!important;
+}
+.bottom.app-dock .dock-add > .dock-add-label,
+.bottom.app-dock .fab.dock-add > .dock-add-label {
+  width:auto!important;max-width:100%!important;height:auto!important;display:block!important;
+  margin:0!important;padding:0!important;
+  font-size:10px!important;font-weight:700!important;letter-spacing:0!important;
+  line-height:1.1!important;transform:none!important;
+  white-space:nowrap!important;text-align:center!important;overflow:hidden!important;
+  color:#c9d2f5!important;
+}
+.bottom.app-dock .dock-add,
+.bottom.app-dock .fab.dock-add {
+  overflow:hidden!important;flex-wrap:nowrap!important;gap:6px!important;
+}
+.bottom.app-dock .dock-add:active > .dock-add-symbol {transform:scale(.9) rotate(90deg)!important}
+html[data-theme="light"] .bottom.app-dock .dock-add > .dock-add-label{color:#445bd0!important}
+@media(max-width:430px){
+  .bottom.app-dock .dock-add > .dock-add-symbol{width:38px!important;height:38px!important;min-width:38px!important}
+  .bottom.app-dock .dock-add > .dock-add-label{font-size:9px!important}
+}
